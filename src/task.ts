@@ -18,7 +18,7 @@ async function run(): Promise<void> {
     stderr: process.stderr,
   }
 
-  synthetics.utils.setCiTriggerApp('github_action')
+  synthetics.utils.setCiTriggerApp('azure_devops_task')
   const reporter = synthetics.utils.getReporter([new synthetics.DefaultReporter({context})])
   const config = await resolveConfig()
 
