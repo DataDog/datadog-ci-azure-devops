@@ -1,0 +1,5 @@
+# Global Code Owners
+* @DataDog/synthetics-worker
+
+# Documentation
+*README.md @DataDog/documentation @DataDog/synthetics-worker
