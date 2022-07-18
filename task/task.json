@@ -1,0 +1,21 @@
+{
+    "id": "bf418475-6eb8-4d3b-bc46-8c6f6394d313",
+    "name": "synthetics-test-automation-azure-devops",
+    "author": "Datadog",
+    "friendlyName": "Datadog Synthetics CI",
+    "description": "Run Datadog Synthetics CI tests as part of your Azure pipelines",
+    "releaseNotes": "Run Datadog Synthetics CI tests as part of your Azure pipelines",
+    "category": "Utility",
+    "version": {
+        "Major": 0,
+        "Minor": 1,
+        "Patch": 0
+    },
+    "instanceNameFormat": "Query Datadog monitors",
+    "inputs": [],
+    "execution": {
+        "Node10": {
+            "target": "../lib/task.js"
+        }
+    }
+}

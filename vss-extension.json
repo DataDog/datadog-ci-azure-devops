@@ -1,0 +1,64 @@
+{
+    "manifestVersion": 1,
+    "id": "synthetics-test-automation-azure-devops",
+    "publisher": "Datadog",
+    "version": "0.1.0",
+    "name": "Datadog Synthetics CI",
+    "description": "Run Datadog Synthetics CI tests as part of your Azure pipelines",
+    "public": false,
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "tags": [
+        "azure",
+        "azure-devops",
+        "datadog",
+        "synthetics",
+        "test"
+    ],
+    "files": [
+        {
+            "path": "src"
+        }
+    ],
+    "content": {
+        "details": {
+            "path": "README.md"
+        }
+    },
+    "branding": {
+        "color": "rgb(99, 44, 166)",
+        "theme": "dark"
+    },
+    "links": {
+        "learn": {
+            "uri": "https://docs.datadoghq.com/"
+        },
+        "support": {
+            "uri": "https://www.datadoghq.com/support/"
+        },
+        "privacypolicy": {
+            "uri": "https://www.datadoghq.com/legal/privacy"
+        },
+        "license": {
+            "uri": "https://www.datadoghq.com/legal/msa"
+        }
+    },
+    "contributions": [
+        {
+            "id": "synthetics-test-automation-azure-devops",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "src"
+            }
+        }
+    ]
+}
