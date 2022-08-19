@@ -11,7 +11,7 @@ import {reportCiError} from './report-ci-error'
 import {resolveConfig} from './resolve-config'
 
 async function run(): Promise<void> {
-  task.setResourcePath(path.join(__dirname, '../task/task.json'))
+  task.setResourcePath(path.join(__dirname, 'task.json'))
 
   const context: BaseContext = {
     stdin: process.stdin,
@@ -50,8 +50,6 @@ async function run(): Promise<void> {
 export const printSummary = (summary: synthetics.Summary): string =>
   `criticalErrors: ${summary.criticalErrors}, passed: ${summary.passed}, failedNonBlocking: ${summary.failedNonBlocking}, failed: ${summary.failed}, skipped: ${summary.skipped}, notFound: ${summary.testsNotFound.size}, timedOut: ${summary.timedOut}`
 
-if (require.main === module) {
-  run()
-}
-
-export default run
+void run().catch(e => {
+  console.error('[UNCAUGHT_ERROR]', e)
+})

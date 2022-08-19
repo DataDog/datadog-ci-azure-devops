@@ -11,11 +11,12 @@
         "Minor": 1,
         "Patch": 0
     },
-    "instanceNameFormat": "Query Datadog monitors",
+    "preview": true,
+    "instanceNameFormat": "Run Synthetics CI tests",
     "inputs": [],
     "execution": {
         "Node10": {
-            "target": "../lib/task.js"
+            "target": "task.js"
         }
     }
 }

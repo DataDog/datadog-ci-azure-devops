@@ -14,17 +14,20 @@
     "categories": [
         "Azure Pipelines"
     ],
+    "icons": {
+        "default": "extension-icon.png"
+    },
+    "files": [
+        {
+            "path": "datadog-ci"
+        }
+    ],
     "tags": [
         "azure",
         "azure-devops",
         "datadog",
         "synthetics",
         "test"
-    ],
-    "files": [
-        {
-            "path": "src"
-        }
     ],
     "content": {
         "details": {
@@ -57,7 +60,7 @@
                 "ms.vss-distributed-task.tasks"
             ],
             "properties": {
-                "name": "src"
+                "name": "datadog-ci"
             }
         }
     ]
