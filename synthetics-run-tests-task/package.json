@@ -7,10 +7,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint **/*.ts",
-    "test": "jest",
-    "prepackage": "yarn install --production",
-    "package": "cd .. && tfx extension create --manifest-globs vss-extension.json --trace-level debug",
-    "postpackage": "yarn install"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
