@@ -19,7 +19,7 @@
     },
     "files": [
         {
-            "path": "datadog-ci"
+            "path": "synthetics-run-tests-task"
         }
     ],
     "tags": [
@@ -60,7 +60,7 @@
                 "ms.vss-distributed-task.tasks"
             ],
             "properties": {
-                "name": "datadog-ci"
+                "name": "synthetics-run-tests-task"
             }
         }
     ]
