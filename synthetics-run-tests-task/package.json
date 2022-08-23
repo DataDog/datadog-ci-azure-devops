@@ -6,7 +6,7 @@
   "main": "lib/task.js",
   "scripts": {
     "build": "tsc",
-    "lint": "eslint src/**/*.ts",
+    "lint": "eslint **/*.ts",
     "test": "jest"
   },
   "repository": {
@@ -22,10 +22,10 @@
   ],
   "license": "MIT",
   "engines": {
-    "node": "10.24.1"
+    "node": "10.21.0"
   },
   "dependencies": {
-    "@datadog/datadog-ci": "^1.8.0",
+    "@datadog/datadog-ci": "^1.12.0",
     "azure-pipelines-task-lib": "^3.1.1",
     "azure-pipelines-tasks-packaging-common": "^2.198.1",
     "chalk": "^4.1.2",
@@ -35,8 +35,8 @@
   "devDependencies": {
     "@types/jest": "^27.0.2",
     "@types/node": "^10.17.0",
-    "@typescript-eslint/parser": "^4.33.0",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
     "eslint": "^7.32.0",
     "eslint-plugin-jest": "^24.4.2",
     "eslint-plugin-prettier": "4.0.0",

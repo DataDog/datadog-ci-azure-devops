@@ -1,4 +1,5 @@
 node_modules
-dist
 *.vsix
 .taskkey
+*.js
+!jest.config.js
