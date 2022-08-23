@@ -62,6 +62,54 @@
             "properties": {
                 "name": "synthetics-run-tests-task"
             }
+        },
+        {
+            "id": "datadog-service-endpoint",
+            "description": "Service endpoint type for Datadog",
+            "type": "ms.vss-endpoint.service-endpoint-type",
+            "targets": [
+                "ms.vss-endpoint.endpoint-types"
+            ],
+            "helpMarkDown": "[Learn More](https://docs.datadoghq.com/account_management/api-app-keys/)",
+            "properties": {
+                "name": "datadog",
+                "displayName": "Datadog",
+                "url": {
+                    "isVisible": "false"
+                },
+                "authenticationSchemes": [
+                    {
+                        "type": "ms.vss-endpoint.endpoint-auth-scheme-token",
+                        "inputDescriptors": [
+                            {
+                                "_comment": "We need to override this input and keep the original ID from the `ms.vss-endpoint.endpoint-auth-scheme-token` scheme",
+                                "id": "apitoken",
+                                "name": "i18n:API Key",
+                                "description": "i18n:Your Datadog API key",
+                                "inputMode": "textbox",
+                                "isConfidential": true,
+                                "validation": {
+                                    "isRequired": true,
+                                    "dataType": "string",
+                                    "maxLength": 300
+                                }
+                            },
+                            {
+                                "id": "appkey",
+                                "name": "i18n:APP Key",
+                                "description": "i18n:Your Datadog APP key",
+                                "inputMode": "textbox",
+                                "isConfidential": true,
+                                "validation": {
+                                    "isRequired": true,
+                                    "dataType": "string",
+                                    "maxLength": 300
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
         }
     ]
 }
