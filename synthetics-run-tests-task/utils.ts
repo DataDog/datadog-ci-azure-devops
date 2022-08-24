@@ -7,3 +7,7 @@ export const removeUndefinedValues = <T extends {[key: string]: unknown}>(object
   }
   return newObject
 }
+
+export const parseMultiline = (value: string | undefined) => {
+  return value?.split(/,|\n/).map((variableString: string) => variableString.trim())
+}

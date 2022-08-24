@@ -3,7 +3,7 @@ import * as task from 'azure-pipelines-task-lib/task'
 import {synthetics, utils} from '@datadog/datadog-ci'
 import deepExtend from 'deep-extend'
 
-import {removeUndefinedValues} from './utils'
+import {parseMultiline, removeUndefinedValues} from './utils'
 
 const DEFAULT_CONFIG: synthetics.CommandConfig = {
   apiKey: '',
@@ -60,22 +60,13 @@ function resolveKeys(): {apiKey: string; appKey: string} {
 export const resolveConfig = async (): Promise<synthetics.CommandConfig> => {
   const {apiKey, appKey} = resolveKeys()
 
-  const publicIds = task
-    .getInput('publicIds')
-    ?.split(',')
-    .map((publicId: string) => publicId.trim())
+  const publicIds = parseMultiline(task.getInput('publicIds'))
   const datadogSite = task.getInput('datadogSite')
   const configPath = task.getPathInput('configPath')
-  const files = task
-    .getInput('files')
-    ?.split(',')
-    .map((file: string) => file.trim())
+  const files = parseMultiline(task.getInput('files'))
   const testSearchQuery = task.getInput('testSearchQuery')
   const subdomain = task.getInput('subdomain')
-  const variableStrings = task
-    .getInput('variables')
-    ?.split(',')
-    .map((variableString: string) => variableString.trim())
+  const variableStrings = parseMultiline(task.getInput('variables'))
 
   let config = JSON.parse(JSON.stringify(DEFAULT_CONFIG))
   // Override with file config variables
