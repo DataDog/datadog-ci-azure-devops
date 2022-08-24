@@ -20,6 +20,5 @@ jobs:
         with:
           node-version-file: synthetics-run-tests-task/.node-version
       - run: yarn install --immutable
-      - run: yarn build
       - run: yarn lint
       - run: yarn test

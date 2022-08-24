@@ -15,18 +15,15 @@ stages:
           - task: TfxInstaller@3
             inputs:
               version: "v0.12.x"
-          - task: Npm@1
-            inputs:
-              customCommand: 'install --production'
-              workingDir: 'synthetics-run-tests-task'
           - task: Bash@3
             displayName: Compile Javascript
             inputs:
               targetType: "inline"
               script: |
                 cd synthetics-run-tests-task
-                tsc
-          
+                yarn install
+                yarn build
+
           # Always patch the extension (`vss-extension.json` will never show the current published extension version),
           # but use the committed version in `task.json` for the task.
           - task: QueryAzureDevOpsExtensionVersion@3
