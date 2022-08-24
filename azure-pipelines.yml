@@ -1,0 +1,48 @@
+trigger: 
+- main
+
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  - group: ci-variables
+
+stages:
+  - stage: Package_extension_and_publish_build_artifacts
+    jobs:
+      - job:
+        steps:
+          - task: TfxInstaller@3
+            inputs:
+              version: "v0.12.x"
+          - task: NodeTool@0
+            displayName: Install Node.js
+            inputs:
+              versionSpec: '10.21.0'
+          - task: Bash@3
+            displayName: Compile the task
+            inputs:
+              targetType: "inline"
+              script: |
+                cd synthetics-run-tests-task
+                yarn install
+                yarn build
+
+          # Always patch the extension (`vss-extension.json` will never show the current published extension version),
+          # but use the committed version in `task.json` for the task.
+          - task: QueryAzureDevOpsExtensionVersion@3
+            inputs:
+              connectTo: 'VsTeam'
+              connectedServiceName: 'marketplace-service-connection'
+              publisherId: '$(PublisherID)'
+              extensionId: '$(ExtensionID)'
+              versionAction: 'Patch'
+          - task: PackageAzureDevOpsExtension@3
+            inputs:
+              rootFolder: '$(System.DefaultWorkingDirectory)'
+              publisherId: '$(PublisherID)'
+              extensionId: '$(ExtensionID)'
+              extensionName: '$(ExtensionName)'
+              extensionVersion: '$(QueryAzureDevOpsExtensionVersion.Extension.Version)'
+              extensionVisibility: 'private'
+              extensionPricing: 'free'
