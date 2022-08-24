@@ -15,8 +15,12 @@ stages:
           - task: TfxInstaller@3
             inputs:
               version: "v0.12.x"
+          - task: NodeTool@0
+            displayName: Install Node.js
+            inputs:
+              versionSpec: '10.21.0'
           - task: Bash@3
-            displayName: Compile Javascript
+            displayName: Compile the task
             inputs:
               targetType: "inline"
               script: |
