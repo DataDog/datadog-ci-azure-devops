@@ -1,8 +1,11 @@
-trigger: 
-- main
+trigger:
+  - main
+
+# Do not trigger on Pull Requests.
+pr: none
 
 pool:
-  vmImage: "ubuntu-latest"
+  vmImage: 'ubuntu-latest'
 
 variables:
   - group: ci-variables
@@ -14,7 +17,7 @@ stages:
         steps:
           - task: TfxInstaller@3
             inputs:
-              version: "v0.12.x"
+              version: 'v0.12.x'
           - task: NodeTool@0
             displayName: Install Node.js
             inputs:
@@ -22,7 +25,7 @@ stages:
           - task: Bash@3
             displayName: Compile the task
             inputs:
-              targetType: "inline"
+              targetType: 'inline'
               script: |
                 cd synthetics-run-tests-task
                 yarn install
@@ -44,5 +47,42 @@ stages:
               extensionId: '$(ExtensionID)'
               extensionName: '$(ExtensionName)'
               extensionVersion: '$(QueryAzureDevOpsExtensionVersion.Extension.Version)'
+              extensionVisibility: 'private'
+              extensionPricing: 'free'
+
+          - task: CopyFiles@2
+            displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+            inputs:
+              Contents: '**/*.vsix'
+              TargetFolder: '$(Build.ArtifactStagingDirectory)'
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: '$(ArtifactName)'
+              publishLocation: 'Container'
+
+  - stage: Download_build_artifacts_and_publish_the_extension
+    jobs:
+      - job:
+        steps:
+          - task: TfxInstaller@3
+            inputs:
+              version: 'v0.12.x'
+          - task: DownloadBuildArtifacts@0
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: '$(ArtifactName)'
+              downloadPath: '$(System.DefaultWorkingDirectory)'
+          - task: PublishAzureDevOpsExtension@3
+            inputs:
+              connectTo: 'VsTeam'
+              connectedServiceName: 'marketplace-service-connection'
+              fileType: 'vsix'
+              vsixFile: '$(ArtifactName)/$(PublisherID).$(ExtensionID)-*.vsix'
+              publisherId: '$(PublisherID)'
+              extensionId: '$(ExtensionID)'
+              extensionName: '$(ExtensionName)'
+              updateTasksVersion: false
               extensionVisibility: 'private'
               extensionPricing: 'free'
