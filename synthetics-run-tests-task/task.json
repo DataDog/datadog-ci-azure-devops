@@ -57,14 +57,16 @@
             "type": "string",
             "label": "Custom subdomain",
             "defaultValue": "app",
-            "helpMarkDown": "The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, the subdomain value needs to be set to `myorg`."
+            "helpMarkDown": "The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, the subdomain value needs to be set to `myorg`.",
+            "visibleRule": "authenticationType = apiAppKeys"
         },
         {
             "name": "datadogSite",
             "type": "string",
             "label": "Datadog Site",
             "defaultValue": "datadoghq.com",
-            "helpMarkDown": "The Datadog site. For users in the EU, set to `datadoghq.eu`. For example: `datadoghq.com` or `datadoghq.eu`."
+            "helpMarkDown": "The Datadog site. For users in the EU, set to `datadoghq.eu`. For example: `datadoghq.com` or `datadoghq.eu`.",
+            "visibleRule": "authenticationType = apiAppKeys"
         },
         {
             "name": "publicIds",

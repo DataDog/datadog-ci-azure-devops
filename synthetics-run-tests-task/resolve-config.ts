@@ -57,15 +57,31 @@ function resolveKeys(): {apiKey: string; appKey: string} {
   }
 }
 
+function resolveDatadogEndpoint(): {datadogSite?: string; subdomain?: string} {
+  const authenticationType = task.getInput('authenticationType')
+
+  if (authenticationType === 'apiAppKeys') {
+    const datadogSite = task.getInput('datadogSite')
+    const subdomain = task.getInput('subdomain')
+    return {datadogSite, subdomain}
+  }
+
+  const serviceId = task.getInputRequired('connectedService')
+  const url = task.getEndpointUrlRequired(serviceId)
+  const datadogSite = url.replace(/https:\/\/(app\.)?/, '')
+  const subdomain = task.getEndpointAuthorizationParameter(serviceId, 'subdomain', true) // True means optional here.
+
+  return {datadogSite, subdomain}
+}
+
 export const resolveConfig = async (): Promise<synthetics.CommandConfig> => {
   const {apiKey, appKey} = resolveKeys()
+  const {datadogSite, subdomain} = resolveDatadogEndpoint()
 
   const publicIds = parseMultiline(task.getInput('publicIds'))
-  const datadogSite = task.getInput('datadogSite')
   const configPath = task.getPathInput('configPath')
   const files = parseMultiline(task.getInput('files'))
   const testSearchQuery = task.getInput('testSearchQuery')
-  const subdomain = task.getInput('subdomain')
   const variableStrings = parseMultiline(task.getInput('variables'))
 
   let config = JSON.parse(JSON.stringify(DEFAULT_CONFIG))

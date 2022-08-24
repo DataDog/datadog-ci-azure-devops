@@ -75,8 +75,75 @@
                 "name": "datadog",
                 "displayName": "Datadog",
                 "url": {
-                    "isVisible": "false"
+                    "displayName": "Datadog Site",
+                    "isVisible": "false",
+                    "value": "https://app.datadoghq.com",
+                    "dependsOn": {
+                        "input": "environment",
+                        "map": [
+                            {
+                                "key": "us1",
+                                "value": "https://app.datadoghq.com"
+                            },
+                            {
+                                "key": "us3",
+                                "value": "https://us3.datadoghq.com"
+                            },
+                            {
+                                "key": "us5",
+                                "value": "https://us5.datadoghq.com"
+                            },
+                            {
+                                "key": "eu",
+                                "value": "https://app.datadoghq.eu"
+                            },
+                            {
+                                "key": "us1-fed",
+                                "value": "https://app.ddog-gov.com"
+                            }
+                        ]
+                    }
                 },
+                "inputDescriptors": [
+                    {
+                        "id": "environment",
+                        "name": "Environment",
+                        "description": "Datadog environment to connect to",
+                        "inputMode": "combo",
+                        "isConfidential": false,
+                        "validation": {
+                            "isRequired": true,
+                            "dataType": "string",
+                            "maxLength": 300
+                        },
+                        "values": {
+                            "inputId": "environmentValues",
+                            "defaultValue": "us1",
+                            "possibleValues": [
+                                {
+                                    "value": "us1",
+                                    "displayValue": "US1"
+                                },
+                                {
+                                    "value": "us3",
+                                    "displayValue": "US3"
+                                },
+                                {
+                                    "value": "us5",
+                                    "displayValue": "US5"
+                                },
+                                {
+                                    "value": "eu",
+                                    "displayValue": "EU"
+                                },
+                                {
+                                    "value": "us1-fed",
+                                    "displayValue": "US1-FED"
+                                }
+                            ]
+                        }
+                    }
+                ],
                 "authenticationSchemes": [
                     {
                         "type": "ms.vss-endpoint.endpoint-auth-scheme-token",
@@ -84,8 +151,8 @@
                             {
                                 "_comment": "We need to override this input and keep the original ID from the `ms.vss-endpoint.endpoint-auth-scheme-token` scheme",
                                 "id": "apitoken",
-                                "name": "i18n:API Key",
-                                "description": "i18n:Your Datadog API key",
+                                "name": "API Key",
+                                "description": "Your Datadog API key. This key is created by your Datadog organization.",
                                 "inputMode": "textbox",
                                 "isConfidential": true,
                                 "validation": {
@@ -96,12 +163,23 @@
                             },
                             {
                                 "id": "appkey",
-                                "name": "i18n:APP Key",
-                                "description": "i18n:Your Datadog APP key",
+                                "name": "APP Key",
+                                "description": "Your Datadog APP key. This key is created by your Datadog organization.",
                                 "inputMode": "textbox",
                                 "isConfidential": true,
                                 "validation": {
                                     "isRequired": true,
+                                    "dataType": "string",
+                                    "maxLength": 300
+                                }
+                            },
+                            {
+                                "id": "subdomain",
+                                "name": "Custom subdomain",
+                                "description": "The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, the subdomain value needs to be set to `myorg`.",
+                                "inputMode": "textbox",
+                                "validation": {
+                                    "isRequired": false,
                                     "dataType": "string",
                                     "maxLength": 300
                                 }
