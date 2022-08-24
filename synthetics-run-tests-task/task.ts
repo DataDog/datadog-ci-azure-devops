@@ -52,4 +52,5 @@ export const printSummary = (summary: synthetics.Summary): string =>
 
 void run().catch(e => {
   console.error('[UNCAUGHT_ERROR]', e)
+  task.setResult(task.TaskResult.Failed, 'An uncaught error occurred.')
 })
