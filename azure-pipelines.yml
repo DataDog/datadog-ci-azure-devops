@@ -37,9 +37,6 @@ stages:
                 yarn install
                 yarn build
                 yarn install --production
-          - publish: '$(Build.SourcesDirectory)'
-            displayName: Publish compiled files
-            artifact: compiled
           - task: PackageAzureDevOpsExtension@3
             displayName: Package extension
             name: 'packageStep'
@@ -74,13 +71,19 @@ stages:
           vmImage: $(imageName)
         steps:
           - download: current
-            artifact: compiled
+            artifact: $(ArtifactName)
+          - task: ExtractFiles@1
+            inputs:
+              archiveFilePatterns: '$(Pipeline.Workspace)/$(ArtifactName)/$(ExtensionID)-$(Build.BuildNumber).vsix'
           - task: Bash@3
             displayName: Run the task
             inputs:
               # workingDirectory: 'synthetics-run-tests-task'
               targetType: 'inline'
-              script: ls -R
+              script: |
+                ls -R
+                cd synthetics-run-tests-task
+                node task.js
             env:
               INPUT_AUTHENTICATIONTYPE: 'connectedService'
               INPUT_CONNECTEDSERVICE: 'datadog-us1'
