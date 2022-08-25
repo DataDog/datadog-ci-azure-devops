@@ -49,12 +49,9 @@ stages:
               extensionVersion: '$(Build.BuildNumber)'
               extensionVisibility: 'private'
               extensionPricing: 'free'
-          - task: PublishPipelineArtifact@1
-            displayName: Publish pipeline artifact
-            inputs:
-              publishLocation: pipeline
-              targetPath: '$(packageStep.Extension.OutputPath)'
-              artifact: '$(ArtifactName)'
+          - publish: '$(packageStep.Extension.OutputPath)'
+            displayName: Publish VSIX
+            artifact: $(ArtifactName)
 
   - stage: Test
     displayName: E2E tests
@@ -63,6 +60,8 @@ stages:
       - job: PublishPrivate
         displayName: Publish (private)
         steps:
+          - download: current
+            artifact: $(ArtifactName)
           - task: TfxInstaller@3
             displayName: Install TFX CLI
             inputs:
@@ -109,6 +108,8 @@ stages:
       - job: PublishPublic
         displayName: Publish (public)
         steps:
+          - download: current
+            artifact: $(ArtifactName)
           - task: TfxInstaller@3
             displayName: Install TFX CLI
             inputs:
