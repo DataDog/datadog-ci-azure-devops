@@ -99,6 +99,12 @@ stages:
           # This is the fully qualified task name, since the `-dev` suffix is added to the EXTENSION name.
           # Format: `PublisherId.ExtensionId.ContributionId.TaskName`
           - task: Datadog.synthetics-test-automation-azure-devops-temporary-dev.synthetics-test-automation-azure-devops.synthetics-test-automation-azure-devops-temporary@0
+            inputs:
+              authenticationType: 'connectedService'
+              connectedService: 'datadog-us1'
+              publicIds: |
+                2r9-q7u-4nn
+                pwd-mwg-3p5
 
   - stage: Release
     displayName: Release
