@@ -71,13 +71,19 @@ stages:
           vmImage: $(imageName)
         steps:
           - download: current
+            displayName: Download VSIX
             artifact: $(ArtifactName)
           - task: ExtractFiles@1
+            displayName: Extract VSIX
             inputs:
               archiveFilePatterns: '$(Pipeline.Workspace)/$(ArtifactName)/$(ExtensionID)-$(Build.BuildNumber).vsix'
               destinationFolder: 'extracted'
-          - script: node task.js
-            workingDirectory: 'extracted/synthetics-run-tests-task'
+          - task: Bash@3
+            displayName: Run the task
+            inputs:
+              workingDirectory: 'extracted/synthetics-run-tests-task'
+              targetType: 'inline'
+              script: env | sort
             env:
               INPUT_AUTHENTICATIONTYPE: 'connectedService'
               INPUT_CONNECTEDSERVICE: 'datadog-us1'
@@ -93,6 +99,7 @@ stages:
         displayName: Publish (public)
         steps:
           - download: current
+            displayName: Download VSIX
             artifact: $(ArtifactName)
           - task: TfxInstaller@3
             displayName: Install TFX CLI
