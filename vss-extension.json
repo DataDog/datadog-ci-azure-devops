@@ -1,6 +1,6 @@
 {
     "manifestVersion": 1,
-    "id": "synthetics-test-automation-azure-devops",
+    "id": "synthetics-test-automation-azure-devops-temporary",
     "publisher": "Datadog",
     "version": "0.1.0",
     "name": "Datadog Synthetics CI",

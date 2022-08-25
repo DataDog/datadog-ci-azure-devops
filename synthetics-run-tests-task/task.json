@@ -1,6 +1,6 @@
 {
     "id": "bf418475-6eb8-4d3b-bc46-8c6f6394d313",
-    "name": "synthetics-test-automation-azure-devops",
+    "name": "synthetics-test-automation-azure-devops-temporary",
     "author": "Datadog",
     "friendlyName": "Datadog Synthetics CI",
     "description": "Run Datadog Synthetics CI tests as part of your Azure pipelines",
