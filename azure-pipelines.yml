@@ -37,6 +37,9 @@ stages:
                 yarn install
                 yarn build
                 yarn install --production
+          - publish: '$(Build.SourcesDirectory)'
+            displayName: Publish compiled files
+            artifact: compiled
           - task: PackageAzureDevOpsExtension@3
             displayName: Package extension
             name: 'packageStep'
@@ -57,33 +60,8 @@ stages:
     displayName: E2E tests
     dependsOn: 'Build'
     jobs:
-      - job: PublishPrivate
-        displayName: Publish (private)
-        steps:
-          - download: current
-            artifact: $(ArtifactName)
-          - task: TfxInstaller@3
-            displayName: Install TFX CLI
-            inputs:
-              version: 'v0.12.x'
-          - task: PublishAzureDevOpsExtension@3
-            displayName: Publish
-            inputs:
-              connectTo: 'VsTeam'
-              connectedServiceName: 'marketplace-service-connection'
-              fileType: 'vsix'
-              vsixFile: '$(Pipeline.Workspace)/$(ArtifactName)/$(ExtensionID)-$(Build.BuildNumber).vsix'
-              publisherId: '$(PublisherID)'
-              extensionId: '$(ExtensionID)'
-              extensionTag: '-dev'
-              extensionName: '$(ExtensionName) DEV'
-              updateTasksVersion: false
-              extensionVisibility: 'private'
-              shareWith: 'synthetics-test-automation'
-              extensionPricing: 'free'
       - job: E2E
         displayName: E2E cross-platform
-        dependsOn: PublishPrivate
         strategy:
           matrix:
             Linux:
@@ -95,17 +73,19 @@ stages:
         pool:
           vmImage: $(imageName)
         steps:
-          # Update the version here if you do a major release of the TASK.
-          # This is the fully qualified task name, since the `-dev` suffix is added to the EXTENSION name.
-          # Format: `PublisherId.ExtensionId.ContributionId.TaskName`
-          - task: Datadog.synthetics-test-automation-azure-devops-temporary-dev.synthetics-test-automation-azure-devops.synthetics-test-automation-azure-devops-temporary@0
+          - download: current
+            artifact: compiled
+          - task: Bash@3
+            displayName: Run the task
             inputs:
-              authenticationType: 'connectedService'
-              connectedService: 'datadog-us1'
-              configPath: './e2e/global.config.json'
-              publicIds: |
-                2r9-q7u-4nn
-                pwd-mwg-3p5
+              workingDirectory: 'synthetics-run-tests-task'
+              targetType: 'inline'
+              script: node task.js
+            env:
+              INPUT_AUTHENTICATIONTYPE: 'connectedService'
+              INPUT_CONNECTEDSERVICE: 'datadog-us1'
+              INPUT_CONFIGPATH: './e2e/global.config.json'
+              INPUT_PUBLICIDS: '2r9-q7u-4nn,pwd-mwg-3p5'
 
   - stage: Release
     displayName: Release
