@@ -81,6 +81,8 @@ function resolveDatadogEndpoint(): {datadogSite?: string; subdomain?: string} {
   const datadogSite = endpointUrlToDatadogSite[endpointUrl]
   const subdomain = task.getEndpointDataParameter(serviceId, 'subdomain', true)
 
+  task.logDetail('1', JSON.stringify({datadogSite, subdomain}))
+
   return {datadogSite, subdomain}
 }
 
