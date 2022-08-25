@@ -62,7 +62,7 @@ function resolveKeys(): {apiKey: string; appKey: string} {
       }
 
     default:
-      task.setResult(task.TaskResult.Failed, 'Unknown authentication type')
+      task.setResult(task.TaskResult.Failed, `Unknown authentication type: ${authenticationType}`)
       throw Error('Unknown authentication type')
   }
 }
