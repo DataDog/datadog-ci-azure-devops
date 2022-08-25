@@ -678,6 +678,11 @@
   resolved "https://registry.yarnpkg.com/@types/datadog-metrics/-/datadog-metrics-0.6.1.tgz#9957ad75fe3a4742c87b94273e94c40228c8dd4c"
   integrity sha512-p6zVpfmNcXwtcXjgpz7do/fKyfndGhU5sGJVtb5Gn5PvLDiQUAgD0mI/itf/99sBi9DRxeyhFQ9dQF6OxxQNbA==
 
+"@types/deep-extend@^0.4.32":
+  version "0.4.32"
+  resolved "https://registry.yarnpkg.com/@types/deep-extend/-/deep-extend-0.4.32.tgz#0af51fffde55cb168e8d68f8236908c2cdfe7419"
+  integrity sha512-7/pcMJr5I5OnpWTTfv0o3fJ9+f36EqoQa27/oJlbfvfZAMMrPyU5/+AUC+5OOtTEKdyoW4lAeIBYHtodtEdNUA==
+
 "@types/form-data@0.0.33":
   version "0.0.33"
   resolved "https://registry.yarnpkg.com/@types/form-data/-/form-data-0.0.33.tgz#c9ac85b2a5fd18435b8c85d9ecb50e6d6c893ff8"
