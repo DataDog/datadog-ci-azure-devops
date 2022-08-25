@@ -102,6 +102,7 @@ stages:
             inputs:
               authenticationType: 'connectedService'
               connectedService: 'datadog-us1'
+              configPath: './e2e/global.config.json'
               publicIds: |
                 2r9-q7u-4nn
                 pwd-mwg-3p5
