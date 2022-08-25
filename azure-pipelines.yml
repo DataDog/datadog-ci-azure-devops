@@ -75,6 +75,7 @@ stages:
           - task: ExtractFiles@1
             inputs:
               archiveFilePatterns: '$(Pipeline.Workspace)/$(ArtifactName)/$(ExtensionID)-$(Build.BuildNumber).vsix'
+              cleanDestinationFolder: false
           - task: Bash@3
             displayName: Run the task
             inputs:
