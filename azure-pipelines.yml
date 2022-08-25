@@ -1,8 +1,13 @@
-trigger:
-  - main
+# Defines the `$(Build.BuildNumber)` variable.
+# Update this if you need to do a new major/minor version of the EXTENSION.
+# In general, there should not be any reason to do this.
+# If you do it anyway but also did a change to the TASK, you WILL NEED to bump the task version.
+# Tasks and extensions are independent.
+name: '0.1$(rev:.r)'
 
-# Do not trigger on Pull Requests.
-pr: none
+# Disable the pipeline for individual commits.
+# The pipeline requires a Pull Request to run.
+trigger: none
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -11,11 +16,12 @@ variables:
   - group: ci-variables
 
 stages:
-  - stage: Package_extension_and_publish_build_artifacts
+  - stage: Build
     jobs:
-      - job:
+      - job: Build
         steps:
           - task: TfxInstaller@3
+            displayName: Install TFX CLI
             inputs:
               version: 'v0.12.x'
           - task: NodeTool@0
@@ -30,59 +36,93 @@ stages:
                 cd synthetics-run-tests-task
                 yarn install
                 yarn build
-
-          # Always patch the extension (`vss-extension.json` will never show the current published extension version),
-          # but use the committed version in `task.json` for the task.
-          - task: QueryAzureDevOpsExtensionVersion@3
-            inputs:
-              connectTo: 'VsTeam'
-              connectedServiceName: 'marketplace-service-connection'
-              publisherId: '$(PublisherID)'
-              extensionId: '$(ExtensionID)'
-              versionAction: 'Patch'
+                yarn install --production
           - task: PackageAzureDevOpsExtension@3
+            displayName: Package extension
+            name: 'packageStep'
             inputs:
-              rootFolder: '$(System.DefaultWorkingDirectory)'
+              rootFolder: '$(Build.SourcesDirectory)'
+              outputPath: '$(Build.ArtifactStagingDirectory)/$(ExtensionID)-$(Build.BuildNumber).vsix'
               publisherId: '$(PublisherID)'
               extensionId: '$(ExtensionID)'
               extensionName: '$(ExtensionName)'
-              extensionVersion: '$(QueryAzureDevOpsExtensionVersion.Extension.Version)'
+              extensionVersion: '$(Build.BuildNumber)'
               extensionVisibility: 'private'
               extensionPricing: 'free'
-
-          - task: CopyFiles@2
-            displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+          - task: PublishPipelineArtifact@1
+            displayName: Publish pipeline artifact
             inputs:
-              Contents: '**/*.vsix'
-              TargetFolder: '$(Build.ArtifactStagingDirectory)'
-          - task: PublishBuildArtifacts@1
-            inputs:
-              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-              ArtifactName: '$(ArtifactName)'
-              publishLocation: 'Container'
+              publishLocation: pipeline
+              targetPath: '$(packageStep.Extension.OutputPath)'
+              artifact: '$(ArtifactName)'
 
-  - stage: Download_build_artifacts_and_publish_the_extension
+  - stage: Test
+    displayName: E2E tests
+    dependsOn: 'Build'
     jobs:
-      - job:
+      - job: PublishPrivate
+        displayName: Publish (private)
         steps:
           - task: TfxInstaller@3
+            displayName: Install TFX CLI
             inputs:
               version: 'v0.12.x'
-          - task: DownloadBuildArtifacts@0
-            inputs:
-              buildType: 'current'
-              downloadType: 'single'
-              artifactName: '$(ArtifactName)'
-              downloadPath: '$(System.DefaultWorkingDirectory)'
           - task: PublishAzureDevOpsExtension@3
+            displayName: Publish
             inputs:
               connectTo: 'VsTeam'
               connectedServiceName: 'marketplace-service-connection'
               fileType: 'vsix'
-              vsixFile: '$(ArtifactName)/$(PublisherID).$(ExtensionID)-*.vsix'
+              vsixFile: '$(Pipeline.Workspace)/$(ArtifactName)/$(ExtensionID)-$(Build.BuildNumber).vsix'
+              publisherId: '$(PublisherID)'
+              extensionId: '$(ExtensionID)'
+              extensionTag: '-dev'
+              extensionName: '$(ExtensionName) DEV'
+              updateTasksVersion: false
+              extensionVisibility: 'private'
+              shareWith: 'synthetics-test-automation'
+              extensionPricing: 'free'
+      - job: E2E
+        displayName: E2E cross-platform
+        dependsOn: PublishPrivate
+        strategy:
+          matrix:
+            Linux:
+              imageName: 'ubuntu-latest'
+            Mac:
+              imageName: 'macOS-latest'
+            Windows:
+              imageName: 'windows-latest'
+        pool:
+          vmImage: $(imageName)
+        steps:
+          # Update the version here if you do a major release of the TASK.
+          # This is the fully qualified task name, since the `-dev` suffix is added to the EXTENSION name.
+          # Format: `PublisherId.ExtensionId.ContributionId.TaskName`
+          - task: Datadog.synthetics-test-automation-azure-devops-dev.synthetics-test-automation-azure-devops.synthetics-test-automation-azure-devops@0
+
+  - stage: Release
+    displayName: Release
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    dependsOn: 'Test'
+    jobs:
+      - job: PublishPublic
+        displayName: Publish (public)
+        steps:
+          - task: TfxInstaller@3
+            displayName: Install TFX CLI
+            inputs:
+              version: 'v0.12.x'
+          - task: PublishAzureDevOpsExtension@3
+            displayName: Publish
+            inputs:
+              connectTo: 'VsTeam'
+              connectedServiceName: 'marketplace-service-connection'
+              fileType: 'vsix'
+              vsixFile: '$(Pipeline.Workspace)/$(ArtifactName)/$(ExtensionID)-$(Build.BuildNumber).vsix'
               publisherId: '$(PublisherID)'
               extensionId: '$(ExtensionID)'
               extensionName: '$(ExtensionName)'
               updateTasksVersion: false
-              extensionVisibility: 'private'
+              extensionVisibility: 'private' # TODO: to change to public
               extensionPricing: 'free'

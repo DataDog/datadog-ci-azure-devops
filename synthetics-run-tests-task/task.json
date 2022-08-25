@@ -5,7 +5,7 @@
     "friendlyName": "Datadog Synthetics CI",
     "description": "Run Datadog Synthetics CI tests as part of your Azure pipelines",
     "releaseNotes": "Run Datadog Synthetics CI tests as part of your Azure pipelines",
-    "category": "Utility",
+    "category": "Test",
     "version": {
         "Major": 0,
         "Minor": 1,
