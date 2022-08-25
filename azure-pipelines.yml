@@ -78,9 +78,9 @@ stages:
           - task: Bash@3
             displayName: Run the task
             inputs:
-              workingDirectory: 'synthetics-run-tests-task'
+              # workingDirectory: 'synthetics-run-tests-task'
               targetType: 'inline'
-              script: node task.js
+              script: ls -R
             env:
               INPUT_AUTHENTICATIONTYPE: 'connectedService'
               INPUT_CONNECTEDSERVICE: 'datadog-us1'
