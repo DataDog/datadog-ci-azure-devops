@@ -83,13 +83,13 @@ stages:
             inputs:
               workingDirectory: 'extracted/synthetics-run-tests-task'
               targetType: 'inline'
-              script: env | sort
-            env:
-              INPUT_AUTHENTICATIONTYPE: 'connectedService'
-              INPUT_CONNECTEDSERVICE: 'datadog-us1'
-              INPUT_CONFIGPATH: './e2e/global.config.json'
-              INPUT_PUBLICIDS: '2r9-q7u-4nn,pwd-mwg-3p5'
-              FOO: 'bar'
+              script: |
+                INPUT_AUTHENTICATIONTYPE='connectedService'
+                INPUT_CONNECTEDSERVICE='datadog-us1'
+                INPUT_CONFIGPATH='./e2e/global.config.json'
+                INPUT_PUBLICIDS='2r9-q7u-4nn,pwd-mwg-3p5'
+
+                node task.js
 
   - stage: Release
     displayName: Release
