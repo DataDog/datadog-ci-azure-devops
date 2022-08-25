@@ -84,8 +84,9 @@ stages:
               workingDirectory: 'extracted/synthetics-run-tests-task'
               targetType: 'inline'
               script: |
-                INPUT_AUTHENTICATIONTYPE='connectedService' \
-                INPUT_CONNECTEDSERVICE='datadog-us1' \
+                INPUT_AUTHENTICATIONTYPE='apiAppKeys' \
+                INPUT_APIKEY='$(API_KEY)' \
+                INPUT_APPKEY='$(APP_KEY)' \
                 INPUT_CONFIGPATH='./e2e/global.config.json' \
                 INPUT_PUBLICIDS='2r9-q7u-4nn,pwd-mwg-3p5' \
                 node task.js
