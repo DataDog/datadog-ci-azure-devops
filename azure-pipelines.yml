@@ -75,16 +75,13 @@ stages:
           - task: ExtractFiles@1
             inputs:
               archiveFilePatterns: '$(Pipeline.Workspace)/$(ArtifactName)/$(ExtensionID)-$(Build.BuildNumber).vsix'
-              cleanDestinationFolder: false
+              destinationFolder: 'extracted'
           - task: Bash@3
             displayName: Run the task
             inputs:
-              # workingDirectory: 'synthetics-run-tests-task'
+              workingDirectory: 'extracted/synthetics-run-tests-task'
               targetType: 'inline'
-              script: |
-                ls -R
-                cd synthetics-run-tests-task
-                node task.js
+              script: node task.js
             env:
               INPUT_AUTHENTICATIONTYPE: 'connectedService'
               INPUT_CONNECTEDSERVICE: 'datadog-us1'
