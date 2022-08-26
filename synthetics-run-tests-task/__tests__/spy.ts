@@ -23,3 +23,9 @@ export const expectSpy = <Fn extends (...args: any) => any>(
     expect(logs).toContainEqual(args)
   },
 })
+
+export const setupWarnSpy = () => {
+  console.warn = (...data) => {
+    console.log(`##vso[task.warn]${data[0]}`)
+  }
+}

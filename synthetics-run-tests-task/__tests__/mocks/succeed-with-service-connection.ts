@@ -1,9 +1,11 @@
 import {synthetics} from '@datadog/datadog-ci'
 import {TaskMockRunner} from 'azure-pipelines-task-lib/mock-run'
 import {emptySummary, inputs} from '../fixtures'
-import {spyLog} from '../spy'
+import {setupWarnSpy, spyLog} from '../spy'
 import {join} from 'path'
 import type task from 'azure-pipelines-task-lib/task'
+
+setupWarnSpy()
 
 const mockRunner = new TaskMockRunner(join(__dirname, '../..', 'task.js'))
 
@@ -32,10 +34,9 @@ taskMock.getEndpointAuthorizationParameterRequired = (_: string, key: string) =>
 }
 mockRunner.registerMock('azure-pipelines-task-lib/mock-task', taskMock)
 
-const syntheticsMock = Object.assign({}, synthetics)
 mockRunner.registerMock('@datadog/datadog-ci', {
   synthetics: {
-    ...syntheticsMock,
+    ...synthetics,
     executeTests: async (
       ...args: Parameters<typeof synthetics.executeTests>
     ): ReturnType<typeof synthetics.executeTests> => {

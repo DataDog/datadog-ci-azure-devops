@@ -10,10 +10,14 @@ const mockRunner = new TaskMockRunner(join(__dirname, '../..', 'task.js'))
 
 const publicIds = ['public_id1', 'public_id2', 'public_id3']
 
-mockRunner.setInput('authenticationType', 'apiAppKeys')
-mockRunner.setInput('apiKey', inputs.apiKey)
-mockRunner.setInput('appKey', inputs.appKey)
-mockRunner.setInput('publicIds', publicIds.join(', '))
+process.env['INPUT_AUTHENTICATIONTYPE'] = 'connectedService'
+process.env['INPUT_CONNECTEDSERVICE'] = 'foo'
+process.env['INPUT_PUBLICIDS'] = publicIds.join(', ')
+
+process.env['ENDPOINT_URL_foo'] = 'https://app.datadoghq.eu'
+process.env['ENDPOINT_AUTH_PARAMETER_FOO_APITOKEN'] = inputs.apiKey
+process.env['ENDPOINT_AUTH_PARAMETER_FOO_APPKEY'] = inputs.appKey
+process.env['ENDPOINT_DATA_foo_SUBDOMAIN'] = 'myorg'
 
 mockRunner.registerMock('@datadog/datadog-ci', {
   synthetics: {
