@@ -4,7 +4,7 @@ import {join} from 'path'
 import {config, inputs} from './fixtures'
 import {expectSpy} from './spy'
 
-const runMockedTask = (mockTaskFile: string) => {
+const runMockedTask = (mockTaskFile: string): MockTestRunner => {
   const task = new MockTestRunner(join(__dirname, 'mocks', mockTaskFile))
   task.run()
 
