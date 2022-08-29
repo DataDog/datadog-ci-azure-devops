@@ -1,9 +1,10 @@
+import {join} from 'path'
+
 import {synthetics} from '@datadog/datadog-ci'
 import {TaskMockRunner} from 'azure-pipelines-task-lib/mock-run'
-import {emptySummary, inputs} from '../fixtures'
-import {setupWarnSpy, spyLog} from '../spy'
-import {join} from 'path'
 import type task from 'azure-pipelines-task-lib/task'
+
+import {BASE_INPUTS, EMPTY_SUMMARY, setupWarnSpy, spyLog} from '../fixtures'
 
 setupWarnSpy()
 
@@ -25,9 +26,9 @@ taskMock.getEndpointDataParameter = (_: string, key: string, __: boolean) => {
 taskMock.getEndpointAuthorizationParameterRequired = (_: string, key: string) => {
   switch (key) {
     case 'apitoken':
-      return inputs.apiKey
+      return BASE_INPUTS.apiKey
     case 'appkey':
-      return inputs.appKey
+      return BASE_INPUTS.appKey
     default:
       return ''
   }
@@ -43,7 +44,7 @@ mockRunner.registerMock('@datadog/datadog-ci', {
       spyLog(synthetics.executeTests, args)
       return {
         results: [],
-        summary: emptySummary,
+        summary: EMPTY_SUMMARY,
       }
     },
   },

@@ -1,6 +1,8 @@
-import {TaskMockRunner} from 'azure-pipelines-task-lib/mock-run'
 import {join} from 'path'
-import {setupWarnSpy} from '../spy'
+
+import {TaskMockRunner} from 'azure-pipelines-task-lib/mock-run'
+
+import {setupWarnSpy} from '../fixtures'
 
 setupWarnSpy()
 
