@@ -49,9 +49,32 @@ stages:
               extensionVersion: '$(Build.BuildNumber)'
               extensionVisibility: 'private'
               extensionPricing: 'free'
-          - publish: '$(packageStep.Extension.OutputPath)'
-            displayName: Publish VSIX
-            artifact: $(ArtifactName)
+          # - publish: '$(packageStep.Extension.OutputPath)'
+          #   displayName: Publish VSIX
+          #   artifact: $(ArtifactName)
+          - task: PublishAzureDevOpsExtension@3
+            displayName: Publish
+            name: devPublishStep
+            inputs:
+              connectTo: 'VsTeam'
+              connectedServiceName: 'marketplace-service-connection'
+              fileType: 'vsix'
+              vsixFile: '$(Pipeline.Workspace)/$(ArtifactName)/$(ExtensionID)-$(Build.BuildNumber).vsix'
+              publisherId: '$(PublisherID)'
+              extensionId: '$(ExtensionID)'
+              extensionTag: '-dev'
+              extensionName: '$(ExtensionName) DEV'
+              updateTasksVersion: true
+              extensionVisibility: 'private'
+              shareWith: 'synthetics-test-automation'
+              extensionPricing: 'free'
+          - task: InvokeRESTAPI@1
+            inputs:
+              connectionType: 'connectedServiceNameARM'
+              method: 'POST'
+              urlSuffix: 'https://dev.azure.com/Datadog/$(system.TeamProjectId)/_apis/distributedtask/taskgroups/bf418475-6eb8-4d3b-bc46-8c6f6394d313'
+              waitForCompletion: 'true'
+              successCriteria: 'eq($.value.contributionVersion, "$(devPublishStep.)")'
 
   - stage: Test
     displayName: E2E tests
@@ -63,34 +86,39 @@ stages:
           matrix:
             Linux:
               imageName: 'ubuntu-latest'
-            Mac:
-              imageName: 'macOS-latest'
             Windows:
               imageName: 'windows-latest'
         pool:
           vmImage: $(imageName)
         steps:
-          - download: current
-            displayName: Download VSIX
-            artifact: $(ArtifactName)
-          - task: ExtractFiles@1
-            displayName: Extract VSIX
+          # - download: current
+          #   displayName: Download VSIX
+          #   artifact: $(ArtifactName)
+          # - task: ExtractFiles@1
+          #   displayName: Extract VSIX
+          #   inputs:
+          #     archiveFilePatterns: '$(Pipeline.Workspace)/$(ArtifactName)/$(ExtensionID)-$(Build.BuildNumber).vsix'
+          #     destinationFolder: 'extracted'
+          # - task: Bash@3
+          #   displayName: Run the task
+          #   inputs:
+          #     workingDirectory: 'extracted/synthetics-run-tests-task'
+          #     targetType: 'inline'
+          #     script: |
+          #       export INPUT_AUTHENTICATIONTYPE='apiAppKeys'
+          #       export INPUT_APIKEY='$(API_KEY)'
+          #       export INPUT_APPKEY='$(APP_KEY)'
+          #       export INPUT_CONFIGPATH='../../e2e/global.config.json'
+          #       export INPUT_PUBLICIDS='2r9-q7u-4nn,pwd-mwg-3p5'
+          #       node task.js
+          - task: Datadog.synthetics-test-automation-azure-devops-temporary-dev.synthetics-test-automation-azure-devops.synthetics-test-automation-azure-devops-temporary@0
             inputs:
-              archiveFilePatterns: '$(Pipeline.Workspace)/$(ArtifactName)/$(ExtensionID)-$(Build.BuildNumber).vsix'
-              destinationFolder: 'extracted'
-          - task: Bash@3
-            displayName: Run the task
-            inputs:
-              workingDirectory: 'extracted/synthetics-run-tests-task'
-              targetType: 'inline'
-              script: |
-                export INPUT_AUTHENTICATIONTYPE='apiAppKeys'
-                export INPUT_APIKEY='$(API_KEY)'
-                export INPUT_APPKEY='$(APP_KEY)'
-                export INPUT_CONFIGPATH='../../e2e/global.config.json'
-                export INPUT_PUBLICIDS='2r9-q7u-4nn,pwd-mwg-3p5'
-
-                node task.js
+              authenticationType: 'connectedService'
+              connectedService: 'datadog-us1'
+              configPath: './e2e/global.config.json'
+              publicIds: |
+                2r9-q7u-4nn
+                pwd-mwg-3p5
 
   - stage: Release
     displayName: Release
