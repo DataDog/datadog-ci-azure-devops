@@ -38,6 +38,10 @@ export const EMPTY_SUMMARY: synthetics.Summary = {
   batchId: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
 }
 
+export const CUSTOM_SUBDOMAIN = 'myorg'
+export const CUSTOM_SITE = 'datadoghq.eu'
+export const CUSTOM_PUBLIC_IDS = ['public_id1', 'public_id2', 'public_id3']
+
 const runMockedTask = (mockName: string): MockTestRunner => {
   const file = join(__dirname, 'mocks', `${mockName}.js`)
   const task = new MockTestRunner(file)

@@ -3,6 +3,9 @@ import {synthetics} from '@datadog/datadog-ci'
 import {
   BASE_CONFIG,
   BASE_INPUTS,
+  CUSTOM_PUBLIC_IDS,
+  CUSTOM_SITE,
+  CUSTOM_SUBDOMAIN,
   expectSpy,
   runMockTaskApiKeys,
   runMockTaskServiceConnection,
@@ -17,7 +20,7 @@ describe('Test suite', () => {
     expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
       ...BASE_CONFIG,
       ...BASE_INPUTS,
-      publicIds: ['public_id1', 'public_id2', 'public_id3'],
+      publicIds: CUSTOM_PUBLIC_IDS,
     })
 
     expect(task.succeeded).toBe(true)
@@ -46,9 +49,9 @@ describe('Test suite', () => {
     expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
       ...BASE_CONFIG,
       ...BASE_INPUTS,
-      publicIds: ['public_id1', 'public_id2', 'public_id3'],
-      datadogSite: 'datadoghq.eu',
-      subdomain: 'myorg',
+      publicIds: CUSTOM_PUBLIC_IDS,
+      datadogSite: CUSTOM_SITE,
+      subdomain: CUSTOM_SUBDOMAIN,
     })
 
     expect(task.succeeded).toBe(true)
@@ -62,9 +65,9 @@ describe('Test suite', () => {
     expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
       ...BASE_CONFIG,
       ...BASE_INPUTS,
-      publicIds: ['public_id1', 'public_id2', 'public_id3'],
-      datadogSite: 'datadoghq.eu',
-      subdomain: 'myorg',
+      publicIds: CUSTOM_PUBLIC_IDS,
+      datadogSite: CUSTOM_SITE,
+      subdomain: CUSTOM_SUBDOMAIN,
     })
 
     expect(task.succeeded).toBe(true)

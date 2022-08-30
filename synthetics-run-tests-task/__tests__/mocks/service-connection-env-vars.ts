@@ -3,22 +3,30 @@ import {join} from 'path'
 import {synthetics} from '@datadog/datadog-ci'
 import {TaskMockRunner} from 'azure-pipelines-task-lib/mock-run'
 
-import {BASE_INPUTS, EMPTY_SUMMARY, setupWarnSpy, spyLog} from '../fixtures'
+import {
+  BASE_INPUTS,
+  CUSTOM_PUBLIC_IDS,
+  CUSTOM_SITE,
+  CUSTOM_SUBDOMAIN,
+  EMPTY_SUMMARY,
+  setupWarnSpy,
+  spyLog,
+} from '../fixtures'
 
 setupWarnSpy()
 
 const mockRunner = new TaskMockRunner(join(__dirname, '../..', 'task.js'))
 
-const publicIds = ['public_id1', 'public_id2', 'public_id3']
+const CONNECTED_SERVICE_NAME = 'foo'
 
 process.env['INPUT_AUTHENTICATIONTYPE'] = 'connectedService'
-process.env['INPUT_CONNECTEDSERVICE'] = 'foo'
-process.env['INPUT_PUBLICIDS'] = publicIds.join(', ')
+process.env['INPUT_CONNECTEDSERVICE'] = CONNECTED_SERVICE_NAME
+process.env['INPUT_PUBLICIDS'] = CUSTOM_PUBLIC_IDS.join(', ')
 
-process.env['ENDPOINT_URL_foo'] = 'https://app.datadoghq.eu'
-process.env['ENDPOINT_AUTH_PARAMETER_FOO_APITOKEN'] = BASE_INPUTS.apiKey
-process.env['ENDPOINT_AUTH_PARAMETER_FOO_APPKEY'] = BASE_INPUTS.appKey
-process.env['ENDPOINT_DATA_foo_SUBDOMAIN'] = 'myorg'
+process.env[`ENDPOINT_URL_${CONNECTED_SERVICE_NAME}`] = `https://app.${CUSTOM_SITE}`
+process.env[`ENDPOINT_AUTH_PARAMETER_${CONNECTED_SERVICE_NAME.toLocaleUpperCase()}_APITOKEN`] = BASE_INPUTS.apiKey
+process.env[`ENDPOINT_AUTH_PARAMETER_${CONNECTED_SERVICE_NAME.toLocaleUpperCase()}_APPKEY`] = BASE_INPUTS.appKey
+process.env[`ENDPOINT_DATA_${CONNECTED_SERVICE_NAME}_SUBDOMAIN`] = CUSTOM_SUBDOMAIN
 
 mockRunner.registerMock('@datadog/datadog-ci', {
   synthetics: {

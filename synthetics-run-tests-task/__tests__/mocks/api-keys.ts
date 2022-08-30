@@ -3,18 +3,16 @@ import {join} from 'path'
 import {synthetics} from '@datadog/datadog-ci'
 import {TaskMockRunner} from 'azure-pipelines-task-lib/mock-run'
 
-import {BASE_INPUTS, EMPTY_SUMMARY, setupWarnSpy, spyLog} from '../fixtures'
+import {BASE_INPUTS, CUSTOM_PUBLIC_IDS, EMPTY_SUMMARY, setupWarnSpy, spyLog} from '../fixtures'
 
 setupWarnSpy()
 
 const mockRunner = new TaskMockRunner(join(__dirname, '../..', 'task.js'))
 
-const publicIds = ['public_id1', 'public_id2', 'public_id3']
-
 mockRunner.setInput('authenticationType', 'apiAppKeys')
 mockRunner.setInput('apiKey', BASE_INPUTS.apiKey)
 mockRunner.setInput('appKey', BASE_INPUTS.appKey)
-mockRunner.setInput('publicIds', publicIds.join(', '))
+mockRunner.setInput('publicIds', CUSTOM_PUBLIC_IDS.join(', '))
 
 mockRunner.registerMock('@datadog/datadog-ci', {
   synthetics: {

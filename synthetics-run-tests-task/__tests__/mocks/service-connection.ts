@@ -4,23 +4,29 @@ import {synthetics} from '@datadog/datadog-ci'
 import {TaskMockRunner} from 'azure-pipelines-task-lib/mock-run'
 import type task from 'azure-pipelines-task-lib/task'
 
-import {BASE_INPUTS, EMPTY_SUMMARY, setupWarnSpy, spyLog} from '../fixtures'
+import {
+  BASE_INPUTS,
+  CUSTOM_PUBLIC_IDS,
+  CUSTOM_SITE,
+  CUSTOM_SUBDOMAIN,
+  EMPTY_SUMMARY,
+  setupWarnSpy,
+  spyLog,
+} from '../fixtures'
 
 setupWarnSpy()
 
 const mockRunner = new TaskMockRunner(join(__dirname, '../..', 'task.js'))
 
-const publicIds = ['public_id1', 'public_id2', 'public_id3']
-
 mockRunner.setInput('authenticationType', 'connectedService')
 mockRunner.setInput('connectedService', 'my service connection')
-mockRunner.setInput('publicIds', publicIds.join(', '))
+mockRunner.setInput('publicIds', CUSTOM_PUBLIC_IDS.join(', '))
 
 const taskMock: typeof task = Object.assign({}, require('azure-pipelines-task-lib/mock-task'))
-taskMock.getEndpointUrlRequired = () => 'https://app.datadoghq.eu'
+taskMock.getEndpointUrlRequired = () => `https://app.${CUSTOM_SITE}`
 taskMock.getEndpointDataParameter = (_: string, key: string, __: boolean) => {
   if (key === 'subdomain') {
-    return 'myorg'
+    return CUSTOM_SUBDOMAIN
   }
 }
 taskMock.getEndpointAuthorizationParameterRequired = (_: string, key: string) => {
