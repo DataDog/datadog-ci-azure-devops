@@ -5,20 +5,20 @@ name: Run unit tests
 on: push
 
 jobs:
-  build-and-test:
-    name: Build and test
+  build-and-test-synthetics:
+    name: Build and test SyntheticsRunTestsTask
     runs-on: ubuntu-latest
 
     defaults:
       run:
-        working-directory: synthetics-run-tests-task
+        working-directory: SyntheticsRunTestsTask
 
     steps:
       - uses: actions/checkout@v2
       - name: Install node
         uses: actions/setup-node@v2
         with:
-          node-version-file: synthetics-run-tests-task/.node-version
+          node-version-file: SyntheticsRunTestsTask/.node-version
       - run: yarn install --immutable
       - run: yarn lint
       - run: yarn build && yarn test

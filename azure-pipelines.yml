@@ -30,11 +30,11 @@ stages:
             inputs:
               versionSpec: '10.21.0'
           - task: Bash@3
-            displayName: Compile the task
+            displayName: Compile the Synthetics task
             inputs:
               targetType: 'inline'
               script: |
-                cd synthetics-run-tests-task
+                cd SyntheticsRunTestsTask
                 yarn install --immutable
                 yarn build
                 yarn install --production --immutable
@@ -73,7 +73,7 @@ stages:
           - download: current
             displayName: Download VSIX artifact
             artifact: $(ArtifactName)
-          # Extract the extension then run the task directly with node by providing 
+          # Extract the extension then run the task directly with node by providing
           # the inputs through environment variables
           - task: ExtractFiles@1
             displayName: Extract VSIX
@@ -83,7 +83,7 @@ stages:
           - task: Bash@3
             displayName: Run the task
             inputs:
-              workingDirectory: 'extracted/synthetics-run-tests-task'
+              workingDirectory: 'extracted/SyntheticsRunTestsTask'
               targetType: 'inline'
               script: |
                 export INPUT_AUTHENTICATIONTYPE='apiAppKeys'
