@@ -23,15 +23,15 @@ const DEFAULT_CONFIG: synthetics.CommandConfig = {
   variableStrings: [],
 }
 
-const endpointUrlToDatadogSite = {
+const ENDPOINT_URL_TO_SITE = {
   'https://app.datadoghq.com/': 'datadoghq.com',
   'https://us3.datadoghq.com/': 'us3.datadoghq.com',
-  'https://us5.datadoghq.com': 'us5.datadoghq.com',
-  'https://app.datadoghq.eu': 'datadoghq.eu',
-  'https://app.ddog-gov.com': 'ddog-gov.com',
+  'https://us5.datadoghq.com/': 'us5.datadoghq.com',
+  'https://app.datadoghq.eu/': 'datadoghq.eu',
+  'https://app.ddog-gov.com/': 'ddog-gov.com',
 }
 
-type EndpointUrl = keyof typeof endpointUrlToDatadogSite
+type EndpointUrl = keyof typeof ENDPOINT_URL_TO_SITE
 
 function resolveKeys(): {apiKey: string; appKey: string} {
   const authenticationType = task.getInput('authenticationType')
@@ -78,10 +78,8 @@ function resolveDatadogEndpoint(): {datadogSite?: string; subdomain?: string} {
 
   const serviceId = task.getInputRequired('connectedService')
   const endpointUrl = task.getEndpointUrlRequired(serviceId) as EndpointUrl
-  const datadogSite = endpointUrlToDatadogSite[endpointUrl]
+  const datadogSite = ENDPOINT_URL_TO_SITE[endpointUrl]
   const subdomain = task.getEndpointDataParameter(serviceId, 'subdomain', true)
-
-  task.logDetail('1', JSON.stringify({datadogSite, subdomain}))
 
   return {datadogSite, subdomain}
 }
