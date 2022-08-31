@@ -1,8 +1,13 @@
-trigger:
-  - main
+# Defines the `$(Build.BuildNumber)` variable.
+# Update this if you need to do a new major/minor version of the EXTENSION.
+# In general, there should not be any reason to do this.
+# If you do it anyway but also did a change to the TASK, you WILL NEED to bump the task version.
+# Tasks and extensions are independent.
+name: '0.1$(rev:.r)'
 
-# Do not trigger on Pull Requests.
-pr: none
+# Disable the pipeline for individual commits.
+# The pipeline requires a Pull Request to run.
+trigger: none
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -11,11 +16,13 @@ variables:
   - group: ci-variables
 
 stages:
-  - stage: Package_extension_and_publish_build_artifacts
+  # Build and package .vsix extension file
+  - stage: Build
     jobs:
-      - job:
+      - job: Build
         steps:
           - task: TfxInstaller@3
+            displayName: Install TFX CLI
             inputs:
               version: 'v0.12.x'
           - task: NodeTool@0
@@ -28,61 +35,91 @@ stages:
               targetType: 'inline'
               script: |
                 cd synthetics-run-tests-task
-                yarn install
+                yarn install --immutable
                 yarn build
-
-          # Always patch the extension (`vss-extension.json` will never show the current published extension version),
-          # but use the committed version in `task.json` for the task.
-          - task: QueryAzureDevOpsExtensionVersion@3
-            inputs:
-              connectTo: 'VsTeam'
-              connectedServiceName: 'marketplace-service-connection'
-              publisherId: '$(PublisherID)'
-              extensionId: '$(ExtensionID)'
-              versionAction: 'Patch'
+                yarn install --production --immutable
           - task: PackageAzureDevOpsExtension@3
+            displayName: Package extension
+            name: 'packageStep'
             inputs:
-              rootFolder: '$(System.DefaultWorkingDirectory)'
+              rootFolder: '$(Build.SourcesDirectory)'
+              outputPath: '$(Build.ArtifactStagingDirectory)/$(ExtensionID)-$(Build.BuildNumber).vsix'
               publisherId: '$(PublisherID)'
               extensionId: '$(ExtensionID)'
               extensionName: '$(ExtensionName)'
-              extensionVersion: '$(QueryAzureDevOpsExtensionVersion.Extension.Version)'
+              extensionVersion: '$(Build.BuildNumber)'
               extensionVisibility: 'private'
               extensionPricing: 'free'
+          - publish: '$(packageStep.Extension.OutputPath)'
+            displayName: Publish VSIX artifact
+            artifact: $(ArtifactName)
 
-          - task: CopyFiles@2
-            displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
-            inputs:
-              Contents: '**/*.vsix'
-              TargetFolder: '$(Build.ArtifactStagingDirectory)'
-          - task: PublishBuildArtifacts@1
-            inputs:
-              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-              ArtifactName: '$(ArtifactName)'
-              publishLocation: 'Container'
-
-  - stage: Download_build_artifacts_and_publish_the_extension
+  # Retrieve .vsix artifact
+  - stage: Test
+    displayName: E2E tests
+    dependsOn: 'Build'
     jobs:
-      - job:
+      - job: E2E
+        displayName: E2E cross-platform
+        strategy:
+          matrix:
+            Linux:
+              imageName: 'ubuntu-latest'
+            Windows:
+              imageName: 'windows-latest'
+        pool:
+          vmImage: $(imageName)
         steps:
+          - download: current
+            displayName: Download VSIX artifact
+            artifact: $(ArtifactName)
+          # Extract the extension then run the task directly with node by providing 
+          # the inputs through environment variables
+          - task: ExtractFiles@1
+            displayName: Extract VSIX
+            inputs:
+              archiveFilePatterns: '$(Pipeline.Workspace)/$(ArtifactName)/$(ExtensionID)-$(Build.BuildNumber).vsix'
+              destinationFolder: 'extracted'
+          - task: Bash@3
+            displayName: Run the task
+            inputs:
+              workingDirectory: 'extracted/synthetics-run-tests-task'
+              targetType: 'inline'
+              script: |
+                export INPUT_AUTHENTICATIONTYPE='apiAppKeys'
+                export INPUT_APIKEY='$(API_KEY)'
+                export INPUT_APPKEY='$(APP_KEY)'
+                export INPUT_CONFIGPATH='../../ci/e2e.config.json'
+                export INPUT_PUBLICIDS='2r9-q7u-4nn,pwd-mwg-3p5'
+
+                node task.js
+
+  # Extension public release
+  - stage: Release
+    displayName: Release
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    dependsOn: 'Test'
+    jobs:
+      - job: PublishPublic
+        displayName: Publish (public)
+        steps:
+          - download: current
+            displayName: Download VSIX
+            artifact: $(ArtifactName)
           - task: TfxInstaller@3
+            displayName: Install TFX CLI
             inputs:
               version: 'v0.12.x'
-          - task: DownloadBuildArtifacts@0
-            inputs:
-              buildType: 'current'
-              downloadType: 'single'
-              artifactName: '$(ArtifactName)'
-              downloadPath: '$(System.DefaultWorkingDirectory)'
           - task: PublishAzureDevOpsExtension@3
+            displayName: Publish
             inputs:
               connectTo: 'VsTeam'
               connectedServiceName: 'marketplace-service-connection'
               fileType: 'vsix'
-              vsixFile: '$(ArtifactName)/$(PublisherID).$(ExtensionID)-*.vsix'
+              vsixFile: '$(Pipeline.Workspace)/$(ArtifactName)/$(ExtensionID)-$(Build.BuildNumber).vsix'
               publisherId: '$(PublisherID)'
               extensionId: '$(ExtensionID)'
               extensionName: '$(ExtensionName)'
               updateTasksVersion: false
-              extensionVisibility: 'private'
+              extensionVisibility: 'private' # TODO: to change to public
               extensionPricing: 'free'

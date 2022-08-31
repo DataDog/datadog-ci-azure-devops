@@ -1,6 +1,6 @@
 {
     "manifestVersion": 1,
-    "id": "synthetics-test-automation-azure-devops",
+    "id": "synthetics-test-automation-azure-devops-temporary",
     "publisher": "Datadog",
     "version": "0.1.0",
     "name": "Datadog Synthetics CI",
@@ -83,23 +83,23 @@
                         "map": [
                             {
                                 "key": "us1",
-                                "value": "https://app.datadoghq.com"
+                                "value": "https://app.datadoghq.com/"
                             },
                             {
                                 "key": "us3",
-                                "value": "https://us3.datadoghq.com"
+                                "value": "https://us3.datadoghq.com/"
                             },
                             {
                                 "key": "us5",
-                                "value": "https://us5.datadoghq.com"
+                                "value": "https://us5.datadoghq.com/"
                             },
                             {
                                 "key": "eu",
-                                "value": "https://app.datadoghq.eu"
+                                "value": "https://app.datadoghq.eu/"
                             },
                             {
                                 "key": "us1-fed",
-                                "value": "https://app.ddog-gov.com"
+                                "value": "https://app.ddog-gov.com/"
                             }
                         ]
                     }
