@@ -16,6 +16,7 @@ variables:
   - group: ci-variables
 
 stages:
+  # Build and package .vsix extension file
   - stage: Build
     jobs:
       - job: Build
@@ -34,9 +35,9 @@ stages:
               targetType: 'inline'
               script: |
                 cd synthetics-run-tests-task
-                yarn install
+                yarn install --immutable
                 yarn build
-                yarn install --production
+                yarn install --production --immutable
           - task: PackageAzureDevOpsExtension@3
             displayName: Package extension
             name: 'packageStep'
@@ -50,9 +51,10 @@ stages:
               extensionVisibility: 'private'
               extensionPricing: 'free'
           - publish: '$(packageStep.Extension.OutputPath)'
-            displayName: Publish VSIX
+            displayName: Publish VSIX artifact
             artifact: $(ArtifactName)
 
+  # Retrieve .vsix artifcat
   - stage: Test
     displayName: E2E tests
     dependsOn: 'Build'
@@ -63,16 +65,16 @@ stages:
           matrix:
             Linux:
               imageName: 'ubuntu-latest'
-            Mac:
-              imageName: 'macOS-latest'
             Windows:
               imageName: 'windows-latest'
         pool:
           vmImage: $(imageName)
         steps:
           - download: current
-            displayName: Download VSIX
+            displayName: Download VSIX artifact
             artifact: $(ArtifactName)
+          # Extract the extension then run the task directly with node by providing 
+          # the inuts through environement variables
           - task: ExtractFiles@1
             displayName: Extract VSIX
             inputs:
@@ -87,11 +89,12 @@ stages:
                 export INPUT_AUTHENTICATIONTYPE='apiAppKeys'
                 export INPUT_APIKEY='$(API_KEY)'
                 export INPUT_APPKEY='$(APP_KEY)'
-                export INPUT_CONFIGPATH='../../e2e/global.config.json'
+                export INPUT_CONFIGPATH='../../ci/e2e.config.json'
                 export INPUT_PUBLICIDS='2r9-q7u-4nn,pwd-mwg-3p5'
 
                 node task.js
 
+  # Extension public release
   - stage: Release
     displayName: Release
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
