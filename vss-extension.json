@@ -1,196 +1,182 @@
 {
-    "manifestVersion": 1,
-    "id": "datadog-ci-temporary",
-    "publisher": "Datadog",
-    "version": "0.1.0",
-    "name": "Datadog CI",
-    "description": "Use Datadog CI as part of your Azure pipelines",
-    "public": false,
-    "targets": [
-        {
-            "id": "Microsoft.VisualStudio.Services"
-        }
-    ],
-    "categories": [
-        "Azure Pipelines"
-    ],
-    "icons": {
-        "default": "extension-icon.png"
+  "manifestVersion": 1,
+  "id": "datadog-ci-temporary",
+  "publisher": "Datadog",
+  "version": "0.1.0",
+  "name": "Datadog CI",
+  "description": "Use Datadog CI as part of your Azure pipelines",
+  "public": false,
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "categories": ["Azure Pipelines"],
+  "icons": {
+    "default": "extension-icon.png"
+  },
+  "files": [
+    {
+      "path": "SyntheticsRunTestsTask"
+    }
+  ],
+  "tags": ["azure", "azure-devops", "datadog", "datadog-ci", "ci", "synthetics", "test"],
+  "content": {
+    "details": {
+      "path": "README.md"
+    }
+  },
+  "branding": {
+    "color": "rgb(99, 44, 166)",
+    "theme": "dark"
+  },
+  "links": {
+    "learn": {
+      "uri": "https://docs.datadoghq.com/"
     },
-    "files": [
-        {
-            "path": "SyntheticsRunTestsTask"
-        }
-    ],
-    "tags": [
-        "azure",
-        "azure-devops",
-        "datadog",
-        "datadog-ci",
-        "ci",
-        "synthetics",
-        "test"
-    ],
-    "content": {
-        "details": {
-            "path": "README.md"
-        }
+    "support": {
+      "uri": "https://www.datadoghq.com/support/"
     },
-    "branding": {
-        "color": "rgb(99, 44, 166)",
-        "theme": "dark"
+    "privacypolicy": {
+      "uri": "https://www.datadoghq.com/legal/privacy"
     },
-    "links": {
-        "learn": {
-            "uri": "https://docs.datadoghq.com/"
-        },
-        "support": {
-            "uri": "https://www.datadoghq.com/support/"
-        },
-        "privacypolicy": {
-            "uri": "https://www.datadoghq.com/legal/privacy"
-        },
-        "license": {
-            "uri": "https://www.datadoghq.com/legal/msa"
-        }
+    "license": {
+      "uri": "https://www.datadoghq.com/legal/msa"
+    }
+  },
+  "contributions": [
+    {
+      "id": "synthetics-test-automation-temporary",
+      "type": "ms.vss-distributed-task.task",
+      "targets": ["ms.vss-distributed-task.tasks"],
+      "properties": {
+        "name": "SyntheticsRunTestsTask"
+      }
     },
-    "contributions": [
-        {
-            "id": "synthetics-test-automation-temporary",
-            "type": "ms.vss-distributed-task.task",
-            "targets": [
-                "ms.vss-distributed-task.tasks"
-            ],
-            "properties": {
-                "name": "SyntheticsRunTestsTask"
-            }
+    {
+      "id": "datadog-ci-service-endpoint",
+      "description": "Service endpoint type for Datadog CI",
+      "type": "ms.vss-endpoint.service-endpoint-type",
+      "targets": ["ms.vss-endpoint.endpoint-types"],
+      "helpMarkDown": "[Learn More](https://docs.datadoghq.com/account_management/api-app-keys/)",
+      "properties": {
+        "name": "datadog-ci",
+        "displayName": "Datadog CI",
+        "url": {
+          "displayName": "Datadog Site",
+          "isVisible": "false",
+          "value": "https://app.datadoghq.com",
+          "dependsOn": {
+            "input": "environment",
+            "map": [
+              {
+                "key": "us1",
+                "value": "https://app.datadoghq.com/"
+              },
+              {
+                "key": "us3",
+                "value": "https://us3.datadoghq.com/"
+              },
+              {
+                "key": "us5",
+                "value": "https://us5.datadoghq.com/"
+              },
+              {
+                "key": "eu",
+                "value": "https://app.datadoghq.eu/"
+              },
+              {
+                "key": "us1-fed",
+                "value": "https://app.ddog-gov.com/"
+              }
+            ]
+          }
         },
-        {
-            "id": "datadog-ci-service-endpoint",
-            "description": "Service endpoint type for Datadog CI",
-            "type": "ms.vss-endpoint.service-endpoint-type",
-            "targets": [
-                "ms.vss-endpoint.endpoint-types"
-            ],
-            "helpMarkDown": "[Learn More](https://docs.datadoghq.com/account_management/api-app-keys/)",
-            "properties": {
-                "name": "datadog-ci",
-                "displayName": "Datadog CI",
-                "url": {
-                    "displayName": "Datadog Site",
-                    "isVisible": "false",
-                    "value": "https://app.datadoghq.com",
-                    "dependsOn": {
-                        "input": "environment",
-                        "map": [
-                            {
-                                "key": "us1",
-                                "value": "https://app.datadoghq.com/"
-                            },
-                            {
-                                "key": "us3",
-                                "value": "https://us3.datadoghq.com/"
-                            },
-                            {
-                                "key": "us5",
-                                "value": "https://us5.datadoghq.com/"
-                            },
-                            {
-                                "key": "eu",
-                                "value": "https://app.datadoghq.eu/"
-                            },
-                            {
-                                "key": "us1-fed",
-                                "value": "https://app.ddog-gov.com/"
-                            }
-                        ]
-                    }
+        "inputDescriptors": [
+          {
+            "id": "environment",
+            "name": "Environment",
+            "description": "Datadog environment to connect to",
+            "inputMode": "combo",
+            "isConfidential": false,
+            "validation": {
+              "isRequired": true,
+              "dataType": "string",
+              "maxLength": 300
+            },
+            "values": {
+              "inputId": "environmentValues",
+              "defaultValue": "us1",
+              "possibleValues": [
+                {
+                  "value": "us1",
+                  "displayValue": "US1"
                 },
-                "inputDescriptors": [
-                    {
-                        "id": "environment",
-                        "name": "Environment",
-                        "description": "Datadog environment to connect to",
-                        "inputMode": "combo",
-                        "isConfidential": false,
-                        "validation": {
-                            "isRequired": true,
-                            "dataType": "string",
-                            "maxLength": 300
-                        },
-                        "values": {
-                            "inputId": "environmentValues",
-                            "defaultValue": "us1",
-                            "possibleValues": [
-                                {
-                                    "value": "us1",
-                                    "displayValue": "US1"
-                                },
-                                {
-                                    "value": "us3",
-                                    "displayValue": "US3"
-                                },
-                                {
-                                    "value": "us5",
-                                    "displayValue": "US5"
-                                },
-                                {
-                                    "value": "eu",
-                                    "displayValue": "EU"
-                                },
-                                {
-                                    "value": "us1-fed",
-                                    "displayValue": "US1-FED"
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "id": "subdomain",
-                        "name": "Custom subdomain",
-                        "description": "The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, the subdomain value needs to be set to `myorg`.",
-                        "inputMode": "textbox",
-                        "isConfidential": false,
-                        "validation": {
-                            "isRequired": false,
-                            "dataType": "string",
-                            "maxLength": 300
-                        }
-                    }
-                ],
-                "authenticationSchemes": [
-                    {
-                        "type": "ms.vss-endpoint.endpoint-auth-scheme-token",
-                        "inputDescriptors": [
-                            {
-                                "_comment": "We need to override this input and keep the original ID from the `ms.vss-endpoint.endpoint-auth-scheme-token` scheme",
-                                "id": "apitoken",
-                                "name": "API Key",
-                                "description": "Your Datadog API key. This key is created by your Datadog organization.",
-                                "inputMode": "textbox",
-                                "isConfidential": true,
-                                "validation": {
-                                    "isRequired": true,
-                                    "dataType": "string",
-                                    "maxLength": 300
-                                }
-                            },
-                            {
-                                "id": "appkey",
-                                "name": "APP Key",
-                                "description": "Your Datadog APP key. This key is created by your Datadog organization.",
-                                "inputMode": "textbox",
-                                "isConfidential": true,
-                                "validation": {
-                                    "isRequired": true,
-                                    "dataType": "string",
-                                    "maxLength": 300
-                                }
-                            }
-                        ]
-                    }
-                ]
+                {
+                  "value": "us3",
+                  "displayValue": "US3"
+                },
+                {
+                  "value": "us5",
+                  "displayValue": "US5"
+                },
+                {
+                  "value": "eu",
+                  "displayValue": "EU"
+                },
+                {
+                  "value": "us1-fed",
+                  "displayValue": "US1-FED"
+                }
+              ]
             }
-        }
-    ]
+          },
+          {
+            "id": "subdomain",
+            "name": "Custom subdomain",
+            "description": "The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, the subdomain value needs to be set to `myorg`.",
+            "inputMode": "textbox",
+            "isConfidential": false,
+            "validation": {
+              "isRequired": false,
+              "dataType": "string",
+              "maxLength": 300
+            }
+          }
+        ],
+        "authenticationSchemes": [
+          {
+            "type": "ms.vss-endpoint.endpoint-auth-scheme-token",
+            "inputDescriptors": [
+              {
+                "_comment": "We need to override this input and keep the original ID from the `ms.vss-endpoint.endpoint-auth-scheme-token` scheme",
+                "id": "apitoken",
+                "name": "API Key",
+                "description": "Your Datadog API key. This key is created by your Datadog organization.",
+                "inputMode": "textbox",
+                "isConfidential": true,
+                "validation": {
+                  "isRequired": true,
+                  "dataType": "string",
+                  "maxLength": 300
+                }
+              },
+              {
+                "id": "appkey",
+                "name": "APP Key",
+                "description": "Your Datadog APP key. This key is created by your Datadog organization.",
+                "inputMode": "textbox",
+                "isConfidential": true,
+                "validation": {
+                  "isRequired": true,
+                  "dataType": "string",
+                  "maxLength": 300
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
 }
