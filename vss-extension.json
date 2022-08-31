@@ -1,10 +1,10 @@
 {
     "manifestVersion": 1,
-    "id": "synthetics-test-automation-azure-devops-temporary",
+    "id": "datadog-ci-temporary",
     "publisher": "Datadog",
     "version": "0.1.0",
-    "name": "Datadog Synthetics CI",
-    "description": "Run Datadog Synthetics CI tests as part of your Azure pipelines",
+    "name": "Datadog CI",
+    "description": "Use Datadog CI as part of your Azure pipelines",
     "public": false,
     "targets": [
         {
@@ -19,13 +19,15 @@
     },
     "files": [
         {
-            "path": "synthetics-run-tests-task"
+            "path": "SyntheticsRunTestsTask"
         }
     ],
     "tags": [
         "azure",
         "azure-devops",
         "datadog",
+        "datadog-ci",
+        "ci",
         "synthetics",
         "test"
     ],
@@ -54,26 +56,26 @@
     },
     "contributions": [
         {
-            "id": "synthetics-test-automation-azure-devops",
+            "id": "synthetics-test-automation-temporary",
             "type": "ms.vss-distributed-task.task",
             "targets": [
                 "ms.vss-distributed-task.tasks"
             ],
             "properties": {
-                "name": "synthetics-run-tests-task"
+                "name": "SyntheticsRunTestsTask"
             }
         },
         {
-            "id": "datadog-service-endpoint",
-            "description": "Service endpoint type for Datadog",
+            "id": "datadog-ci-service-endpoint",
+            "description": "Service endpoint type for Datadog CI",
             "type": "ms.vss-endpoint.service-endpoint-type",
             "targets": [
                 "ms.vss-endpoint.endpoint-types"
             ],
             "helpMarkDown": "[Learn More](https://docs.datadoghq.com/account_management/api-app-keys/)",
             "properties": {
-                "name": "datadog",
-                "displayName": "Datadog",
+                "name": "datadog-ci",
+                "displayName": "Datadog CI",
                 "url": {
                     "displayName": "Datadog Site",
                     "isVisible": "false",
