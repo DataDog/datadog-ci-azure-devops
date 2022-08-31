@@ -1,4 +1,5 @@
 @datadog/datadog-ci,import,Apache-2.0,"Copyright 2019-Present Datadog, Inc."
+@types/deep-extend,dev,MIT,Copyright Microsoft Corporation
 @types/jest,dev,MIT,Copyright Microsoft Corporation
 @types/node,dev,MIT,Copyright Microsoft Corporation
 @typescript-eslint/eslint-plugin,dev,BSD 2-Clause License, Copyright JS Foundation and other contributors
@@ -7,6 +8,7 @@ azure-pipelines-task-lib,import,MIT,Copyright (c) Microsoft Corporation
 azure-pipelines-tasks-packaging-common,import,MIT,Copyright (c) Microsoft Corporation
 chalk,import,MIT,Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
 clipanion,import,MIT,Copyright (c) 2019 Mael Nison
+deep-extend,import,MIT,"Copyright (c) 2013-2018, Viacheslav Lotsmanov"
 eslint,dev,MIT,Copyright OpenJS Foundation and other contributors
 eslint-plugin-jest,dev,MIT,Copyright (c) 2018 Jonathan Kim
 eslint-plugin-prettier,dev,MIT,Copyright © 2017 Andres Suarez and Teddy Katz
