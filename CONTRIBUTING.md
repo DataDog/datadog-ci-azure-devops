@@ -8,8 +8,8 @@ This document provides some basic guidelines for contributing to this repository
 
 GitHub issues are welcome, feel free to submit error reports and feature requests.
 
-- Ensure the bug was not already reported by searching on GitHub under [Issues](https://github.com/DataDog/synthetics-test-automation-azure-devops/issues).
-- If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/DataDog/synthetics-test-automation-azure-devops/issues/new/choose).
+- Ensure the bug was not already reported by searching on GitHub under [Issues](https://github.com/DataDog/datadog-ci-azure-devops/issues).
+- If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/DataDog/datadog-ci-azure-devops/issues/new/choose).
 - Make sure to add enough details to explain your use case.
 
 If you require further assistance, contact [Datadog Support](https://docs.datadoghq.com/help/).
@@ -24,8 +24,8 @@ To expedite your pull request's review, follow these best practices when submitt
 
 - **Keep it small and focused**: Pull requests should contain only one fix or one feature improvement. Bundling several fixes or features in the same PR makes it more difficult to review, and takes longer to release.
 
-- **Write tests for the code you wrote**: Each script should be tested. The tests for a script are located in the [`src/tests` folder](https://github.com/DataDog/synthetics-test-automation-azure-devops/tree/main/src/tests), under a file with the same name as the script.
-**Note:** Datadog's internal CI is not publicly available, so if your pull request status is failing, make sure that all tests pass locally. The Datadog team can help you address errors flagged by the CI.
+- **Write tests for the code you wrote**: Each script should be tested. The tests for a script are located in the [`src/tests` folder](https://github.com/DataDog/datadog-ci-azure-devops/tree/main/src/tests), under a file with the same name as the script.
+  **Note:** Datadog's internal CI is not publicly available, so if your pull request status is failing, make sure that all tests pass locally. The Datadog team can help you address errors flagged by the CI.
 
 ## Style guide
 
