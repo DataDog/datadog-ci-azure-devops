@@ -54,7 +54,7 @@ stages:
             displayName: Publish VSIX artifact
             artifact: $(ArtifactName)
 
-  # Retrieve .vsix artifcat
+  # Retrieve .vsix artifact
   - stage: Test
     displayName: E2E tests
     dependsOn: 'Build'
@@ -74,7 +74,7 @@ stages:
             displayName: Download VSIX artifact
             artifact: $(ArtifactName)
           # Extract the extension then run the task directly with node by providing 
-          # the inuts through environement variables
+          # the inputs through environment variables
           - task: ExtractFiles@1
             displayName: Extract VSIX
             inputs:
