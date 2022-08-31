@@ -23,7 +23,7 @@ mockRunner.setInput('connectedService', 'my service connection')
 mockRunner.setInput('publicIds', CUSTOM_PUBLIC_IDS.join(', '))
 
 const taskMock: typeof task = Object.assign({}, require('azure-pipelines-task-lib/mock-task'))
-taskMock.getEndpointUrlRequired = () => `https://app.${CUSTOM_SITE}`
+taskMock.getEndpointUrlRequired = () => `https://app.${CUSTOM_SITE}/`
 taskMock.getEndpointDataParameter = (_: string, key: string, __: boolean) => {
   if (key === 'subdomain') {
     return CUSTOM_SUBDOMAIN
