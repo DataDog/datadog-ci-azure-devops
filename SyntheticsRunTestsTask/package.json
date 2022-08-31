@@ -1,7 +1,8 @@
 {
-  "name": "synthetics-test-automation-azure-devops",
+  "name": "synthetics-test-automation",
   "version": "0.1.0",
   "author": "Datadog",
+  "license": "SEE LICENSE IN LICENSE",
   "description": "Run Datadog Synthetics CI tests as part of your Azure pipelines",
   "main": "lib/task.js",
   "scripts": {
@@ -11,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/DataDog/synthetics-test-automation-azure-devops"
+    "url": "https://github.com/DataDog/datadog-ci-azure-devops/SyntheticsRunTestsTask"
   },
   "keywords": [
     "azure",

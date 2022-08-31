@@ -1,6 +1,6 @@
 {
     "id": "bf418475-6eb8-4d3b-bc46-8c6f6394d313",
-    "name": "synthetics-test-automation-azure-devops-temporary",
+    "name": "synthetics-test-automation-temporary",
     "author": "Datadog",
     "friendlyName": "Datadog Synthetics CI",
     "description": "Run Datadog Synthetics CI tests as part of your Azure pipelines",
@@ -27,10 +27,10 @@
         },
         {
             "name": "connectedService",
-            "type": "connectedService:Datadog",
-            "label": "Datadog service connection",
+            "type": "connectedService:datadog-ci",
+            "label": "Datadog CI service connection",
             "defaultValue": "",
-            "helpMarkDown": "Select a Datadog service connection.",
+            "helpMarkDown": "Select a Datadog CI service connection.",
             "required": true,
             "visibleRule": "authenticationType = connectedService"
         },
