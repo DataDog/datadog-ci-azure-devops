@@ -17,5 +17,5 @@ Additional helpful documentation, links, and articles:
 - [Synthetics CI/CD Integrations Configuration][3]
 
 [1]: https://github.com/DataDog/datadog-ci
-[2]: SyntheticsRunTestsTask
+[2]: https://github.com/DataDog/datadog-ci-azure-devops/tree/main/SyntheticsRunTestsTask
 [3]: https://docs.datadoghq.com/synthetics/cicd_integrations/configuration
