@@ -1,8 +1,8 @@
 {
   "manifestVersion": 1,
-  "id": "datadog-ci-temporary",
+  "id": "datadog-ci-devops-temporary",
   "publisher": "Datadog",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "name": "Datadog CI",
   "description": "Use Datadog CI as part of your Azure pipelines",
   "public": false,

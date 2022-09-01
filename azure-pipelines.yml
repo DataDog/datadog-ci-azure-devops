@@ -1,13 +1,20 @@
-# Defines the `$(Build.BuildNumber)` variable.
-# Update this if you need to do a new major/minor version of the EXTENSION.
-# In general, there should not be any reason to do this.
-# If you do it anyway but also did a change to the TASK, you WILL NEED to bump the task version.
-# Tasks and extensions are independent.
-name: '0.1$(rev:.r)'
-
 # Disable the pipeline for individual commits.
 # The pipeline requires a Pull Request to run.
 trigger: none
+
+parameters:
+  - name: performRelease
+    displayName: Release Extension
+    type: boolean
+    default: false
+  - name: releaseSemver
+    displayName: Release semver
+    type: string
+    default: Patch
+    values:
+      - Patch
+      - Minor
+      - Major
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -39,87 +46,106 @@ stages:
                 yarn build
                 yarn install --production --immutable
           - task: PackageAzureDevOpsExtension@3
-            displayName: Package extension
+            displayName: Package Datadog CI extension
             name: 'packageStep'
             inputs:
               rootFolder: '$(Build.SourcesDirectory)'
-              outputPath: '$(Build.ArtifactStagingDirectory)/$(ExtensionID)-$(Build.BuildNumber).vsix'
-              publisherId: '$(PublisherID)'
-              extensionId: '$(ExtensionID)'
-              extensionName: '$(ExtensionName)'
-              extensionVersion: '$(Build.BuildNumber)'
+              outputPath: '$(Build.ArtifactStagingDirectory)/datadog-ci.vsix'
+              updateTasksVersion: false
               extensionVisibility: 'private'
               extensionPricing: 'free'
           - publish: '$(packageStep.Extension.OutputPath)'
             displayName: Publish VSIX artifact
             artifact: $(ArtifactName)
 
-  # Retrieve .vsix artifact
-  - stage: Test
-    displayName: E2E tests
-    dependsOn: 'Build'
-    jobs:
-      - job: E2E
-        displayName: E2E cross-platform
-        strategy:
-          matrix:
-            Linux:
-              imageName: 'ubuntu-latest'
-            Windows:
-              imageName: 'windows-latest'
-        pool:
-          vmImage: $(imageName)
-        steps:
-          - download: current
-            displayName: Download VSIX artifact
-            artifact: $(ArtifactName)
-          # Extract the extension then run the task directly with node by providing
-          # the inputs through environment variables
-          - task: ExtractFiles@1
-            displayName: Extract VSIX
-            inputs:
-              archiveFilePatterns: '$(Pipeline.Workspace)/$(ArtifactName)/$(ExtensionID)-$(Build.BuildNumber).vsix'
-              destinationFolder: 'extracted'
-          - task: Bash@3
-            displayName: Run the task
-            inputs:
-              workingDirectory: 'extracted/SyntheticsRunTestsTask'
-              targetType: 'inline'
-              script: |
-                export INPUT_AUTHENTICATIONTYPE='apiAppKeys'
-                export INPUT_APIKEY='$(API_KEY)'
-                export INPUT_APPKEY='$(APP_KEY)'
-                export INPUT_CONFIGPATH='../../ci/e2e.config.json'
-                export INPUT_PUBLICIDS='2r9-q7u-4nn,pwd-mwg-3p5'
+  - ${{ if eq(parameters.performRelease, false) }}:
+      - stage: Test
+        displayName: E2E tests
+        dependsOn: 'Build'
+        jobs:
+          - job: E2E
+            displayName: Cross-platform
+            strategy:
+              matrix:
+                Linux:
+                  imageName: 'ubuntu-latest'
+                Windows:
+                  imageName: 'windows-latest'
+            pool:
+              vmImage: $(imageName)
+            steps:
+              - download: current
+                displayName: Download VSIX artifact
+                artifact: $(ArtifactName)
+              # Extract the extension then run the task directly with node by providing
+              # the inputs through environment variables
+              - task: ExtractFiles@1
+                displayName: Extract VSIX
+                inputs:
+                  archiveFilePatterns: '$(Pipeline.Workspace)/$(ArtifactName)/datadog-ci.vsix'
+                  destinationFolder: 'extracted'
+              - task: Bash@3
+                displayName: Run the task
+                inputs:
+                  workingDirectory: 'extracted/SyntheticsRunTestsTask'
+                  targetType: 'inline'
+                  script: |
+                    export INPUT_AUTHENTICATIONTYPE='apiAppKeys'
+                    export INPUT_APIKEY='$(API_KEY)'
+                    export INPUT_APPKEY='$(APP_KEY)'
+                    export INPUT_CONFIGPATH='../../ci/e2e.config.json'
+                    export INPUT_PUBLICIDS='2r9-q7u-4nn,pwd-mwg-3p5'
+                    node task.js
 
-                node task.js
-
-  # Extension public release
-  - stage: Release
-    displayName: Release
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
-    dependsOn: 'Test'
-    jobs:
-      - job: PublishPublic
-        displayName: Publish (public)
-        steps:
-          - download: current
-            displayName: Download VSIX
-            artifact: $(ArtifactName)
-          - task: TfxInstaller@3
-            displayName: Install TFX CLI
-            inputs:
-              version: 'v0.12.x'
-          - task: PublishAzureDevOpsExtension@3
-            displayName: Publish
-            inputs:
-              connectTo: 'VsTeam'
-              connectedServiceName: 'marketplace-service-connection'
-              fileType: 'vsix'
-              vsixFile: '$(Pipeline.Workspace)/$(ArtifactName)/$(ExtensionID)-$(Build.BuildNumber).vsix'
-              publisherId: '$(PublisherID)'
-              extensionId: '$(ExtensionID)'
-              extensionName: '$(ExtensionName)'
-              updateTasksVersion: false
-              extensionVisibility: 'private' # TODO: to change to public
-              extensionPricing: 'free'
+  # Extension public release, only performed on manual runs
+  - ${{ if eq(parameters.performRelease, true) }}:
+      - stage: Release
+        displayName: Release
+        dependsOn: 'Build'
+        jobs:
+          - job: PublishPublic
+            displayName: Publish (public)
+            steps:
+              - download: current
+                displayName: Download VSIX
+                artifact: $(ArtifactName)
+              - task: TfxInstaller@3
+                displayName: Install TFX CLI
+                inputs:
+                  version: 'v0.12.x'
+              - task: QueryAzureDevOpsExtensionVersion@3
+                displayName: Query existing extension version
+                name: 'queryVersion'
+                inputs:
+                  connectTo: 'VsTeam'
+                  connectedServiceName: 'marketplace-service-connection'
+                  publisherId: 'Datadog'
+                  extensionId: 'datadog-ci-devops-temporary'
+                  versionAction: '${{ parameters.releaseSemver }}'
+                  setBuildNumber: 'false'
+              - task: PublishAzureDevOpsExtension@3
+                displayName: Publish Extnesion
+                inputs:
+                  connectTo: 'VsTeam'
+                  connectedServiceName: 'marketplace-service-connection'
+                  fileType: 'vsix'
+                  vsixFile: '$(Pipeline.Workspace)/$(ArtifactName)/datadog-ci.vsix'
+                  updateTasksVersion: false
+                  extensionVisibility: 'private' # TODO: to change to public
+                  extensionPricing: 'free'
+                  extensionVersion: '$(queryVersion.Extension.Version)'
+              - task: GitHubRelease@1
+                displayName: Create Github Release
+                inputs:
+                  gitHubConnection: 'github-service-connection-lefebvree'
+                  repositoryName: '$(Build.Repository.Name)'
+                  action: 'create'
+                  target: '$(Build.SourceVersion)'
+                  tagSource: 'userSpecifiedTag'
+                  assets: '$(Pipeline.Workspace)/$(ArtifactName)/datadog-ci.vsix'
+                  isDraft: true
+                  tag: 'v$(queryVersion.Extension.Version)'
+                  title: 'v$(queryVersion.Extension.Version)'
+                  releaseNotesSource: 'inline'
+                  changeLogCompareToRelease: 'lastFullRelease'
+                  changeLogType: 'commitBased'
