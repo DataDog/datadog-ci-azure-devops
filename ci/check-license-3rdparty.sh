@@ -3,7 +3,7 @@ set -e
 
 # Ensure all dependencies and devDepencencies is present in LICENSE-3rdparty.csv
 PACKAGE_DEPENDENCIES=$(
-  grep -Poz '[dD]ependencies": {\n\K[^\}]+' synthetics-run-tests-task/package.json | \
+  grep -Poz '[dD]ependencies": {\n\K[^\}]+' SyntheticsRunTestsTask/package.json | \
   grep -Poa '"\K[^"]+(?=":)' | \
   sort
 )
