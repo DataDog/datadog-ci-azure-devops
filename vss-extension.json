@@ -46,7 +46,7 @@
   },
   "contributions": [
     {
-      "id": "synthetics-test-automation-temporary",
+      "id": "synthetics-application-testing-temporary",
       "type": "ms.vss-distributed-task.task",
       "targets": ["ms.vss-distributed-task.tasks"],
       "properties": {
@@ -67,7 +67,7 @@
           "isVisible": "false",
           "value": "https://app.datadoghq.com",
           "dependsOn": {
-            "input": "environment",
+            "input": "site",
             "map": [
               {
                 "key": "us1",
@@ -94,9 +94,9 @@
         },
         "inputDescriptors": [
           {
-            "id": "environment",
-            "name": "Environment",
-            "description": "Datadog environment to connect to",
+            "id": "site",
+            "name": "Datadog Site",
+            "description": "Datadog site to connect to",
             "inputMode": "combo",
             "isConfidential": false,
             "validation": {
@@ -105,7 +105,7 @@
               "maxLength": 300
             },
             "values": {
-              "inputId": "environmentValues",
+              "inputId": "siteValues",
               "defaultValue": "us1",
               "possibleValues": [
                 {
@@ -134,7 +134,7 @@
           {
             "id": "subdomain",
             "name": "Custom subdomain",
-            "description": "The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, the subdomain value needs to be set to `myorg`.",
+            "description": "The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`.",
             "inputMode": "textbox",
             "isConfidential": false,
             "validation": {
@@ -152,7 +152,7 @@
                 "_comment": "We need to override this input and keep the original ID from the `ms.vss-endpoint.endpoint-auth-scheme-token` scheme",
                 "id": "apitoken",
                 "name": "API Key",
-                "description": "Your Datadog API key. This key is created by your Datadog organization.",
+                "description": "Your Datadog API key. This key is created by your [Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/).",
                 "inputMode": "textbox",
                 "isConfidential": true,
                 "validation": {
@@ -163,8 +163,8 @@
               },
               {
                 "id": "appkey",
-                "name": "APP Key",
-                "description": "Your Datadog APP key. This key is created by your Datadog organization.",
+                "name": "Application Key",
+                "description": "Your Datadog application key. This key is created by your [Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/).",
                 "inputMode": "textbox",
                 "isConfidential": true,
                 "validation": {
