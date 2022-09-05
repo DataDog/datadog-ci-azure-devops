@@ -1,6 +1,7 @@
-# Disable the pipeline for individual commits.
+# Disable the pipeline for individual commits except on `main` merges.
 # The pipeline requires a Pull Request to run.
-trigger: none
+trigger:
+  - main
 
 parameters:
   - name: performRelease
