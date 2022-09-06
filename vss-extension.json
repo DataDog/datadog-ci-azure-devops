@@ -1,8 +1,8 @@
 {
   "manifestVersion": 1,
-  "id": "datadog-ci-devops-temporary",
+  "id": "datadog-ci",
   "publisher": "Datadog",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "name": "Datadog CI",
   "description": "Use Datadog CI as part of your Azure pipelines",
   "public": false,
@@ -44,13 +44,17 @@
       "uri": "https://www.datadoghq.com/legal/msa"
     }
   },
+  "repository": {
+    "type": "git",
+    "uri": "https://github.com/DataDog/datadog-ci-azure-devops"
+  },
   "contributions": [
     {
-      "id": "synthetics-application-testing-temporary",
+      "id": "synthetics-application-testing",
       "type": "ms.vss-distributed-task.task",
       "targets": ["ms.vss-distributed-task.tasks"],
       "properties": {
-        "name": "SyntheticsRunTestsTask"
+        "name": "SyntheticsRunTests"
       }
     },
     {
