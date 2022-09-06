@@ -12,7 +12,7 @@ Use [Datadog CI][2] as part of your Azure pipelines. You can run [`SyntheticsRun
 
 ### Prerequisites
 
-In order to connect to your Datadog account, [create a Datadog CI service connection][5] in your Azure pipelines project. Once created, all you need is the name of the service connection in the tasks.
+To connect to your Datadog account, [create a Datadog CI service connection][5] in your Azure pipelines project. Once created, all you need is the name of the service connection in the tasks.
 
 To get started:
 
