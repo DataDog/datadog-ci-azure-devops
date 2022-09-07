@@ -1,5 +1,8 @@
 # Global Code Owners
-* @DataDog/synthetics-worker
+* @DataDog/datadog-ci
 
 # Documentation
 *README.md @DataDog/documentation @DataDog/synthetics-worker
+
+# Synthetics
+SyntheticsRunTestsTask @DataDog/synthetics-worker
