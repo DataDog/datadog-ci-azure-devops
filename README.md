@@ -6,27 +6,31 @@
 
 ## Overview
 
-With the Datadog CI Azure DevOps Extension, you can run Synthetic tests within your Azure Pipeline configuration, and ensure all your teams using Azure DevOps can benefit from Synthetic tests at every stage of the software lifecycle. You can run [`SyntheticsRunTests`](#syntheticsruntests-task) as a task. Run Datadog Synthetic tests as part of your Azure pipelines with the [Datadog CI `synthetics` command][3].
-
+With the Datadog CI Azure DevOps Extension, you can run Synthetic tests within your Azure Pipeline configuration and ensure all your teams using Azure DevOps can benefit from Synthetic tests at every stage of the software lifecycle. You can run [`SyntheticsRunTests`](#available-tasks) as a task. Run Datadog Synthetic tests as part of your Azure pipelines with the [Datadog CI `synthetics` command][3].
 
 ## Authentication
 
 ### Service Connection
-You can set up a custom Service Connection in order to connect to your Datadog site. You will need to provide the following inputs:
-Datadog site: which Datadog site to connect to
-Custom subdomain (optional): The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`.
-API Key: Your Datadog API key. This key is created by your [Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/).
-Application key: Your Datadog application key. This key is created by your [Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/).
-We would recommend this approach when configuring the Synthetics Run Test task.
-Sample screenshots: https://a.cl.ly/QwudQKxo, https://a.cl.ly/YEuWv1jv  
+
+To connect to your Datadog site, Datadog recommends setting up a custom service connection when configuring the Synthetics Run Test task. 
+
+![Create a service connection in Azure DevOps Extension Settings][13]
+
+You need to provide the following inputs:
+
+- Datadog site: Which Datadog site to connect to.
+- Custom subdomain (optional): The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`.
+- API Key: Your Datadog API key. This key is created by your [Datadog organization][12].
+- Application key: Your Datadog application key. This key is created by your [Datadog organization][12].
+
+![Datadog CI service connection in Azure DevOps Extension Settings][14]
 
 ### API and Application Keys
 
-API Key: Your Datadog API key. This key is created by your [Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/) and will be accessed as an environment variable.
-Application key: Your Datadog application key. This key is created by your [Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/) and will be accessed as an environment variable.
-Datadog site: The [Datadog site](https://docs.datadoghq.com/getting_started/site/)
-Custom subdomain (optional): The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`.
-
+- API Key: Your Datadog API key. This key is created by your [Datadog organization][12] and is accessed as an environment variable.
+- Application key: Your Datadog application key. This key is created by your [Datadog organization][12] and is accessed as an environment variable.
+- Datadog site: The [Datadog site][11].
+- Custom subdomain (optional): The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`.
 
 ## Available Tasks
 
@@ -155,3 +159,6 @@ Additional helpful documentation, links, and articles:
 [9]: https://docs.datadoghq.com/synthetics/cicd_integrations/configuration/?tab=npm#setup-a-client
 [10]: https://docs.datadoghq.com/developers/guide/what-best-practices-are-recommended-for-naming-metrics-and-tags/#rules-and-best-practices-for-naming-tags
 [11]: https://docs.datadoghq.com/getting_started/site/
+[12]: https://docs.datadoghq.com/account_management/api-app-keys/
+[13]: https://user-images.githubusercontent.com/76412946/189001738-f043a004-9803-425c-9129-3de594eb5796.png
+[14]: https://user-images.githubusercontent.com/76412946/189001515-dbbe1c42-5f65-4b52-a2bc-824a171973cf.png
