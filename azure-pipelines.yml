@@ -132,7 +132,7 @@ stages:
                   fileType: 'vsix'
                   vsixFile: '$(Pipeline.Workspace)/$(ArtifactName)/datadog-ci.vsix'
                   updateTasksVersion: false
-                  extensionVisibility: 'private' # TODO: to change to public
+                  extensionVisibility: 'public'
                   extensionPricing: 'free'
                   extensionVersion: '$(queryVersion.Extension.Version)'
               - task: GitHubRelease@1
