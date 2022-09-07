@@ -22,4 +22,4 @@ Include any error message or stack trace if available.
 
 - Agent type and version
 - Extension and task version
-- an explanation of what might cause the bug and/or how it can be fixed
+- An explanation of what might cause the bug and/or how it can be fixed
