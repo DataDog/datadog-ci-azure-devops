@@ -6,29 +6,118 @@
 
 ## Overview
 
-Use [Datadog CI][2] as part of your Azure pipelines.
+With the Datadog CI Azure DevOps Extension, you can run Synthetic tests within your Azure Pipeline configuration, and ensure all your teams using Azure DevOps can benefit from Synthetic tests at every stage of the software lifecycle.
 
-### Available Tasks
+
+## Authentication
+
+### Service Connection
+You can set up a custom Service Connection in order to connect to your Datadog site. You will need to provide the following inputs:
+Datadog site: which Datadog site to connect to
+Custom subdomain (optional): The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`.
+API Key: Your Datadog API key. This key is created by your [Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/).
+Application key: Your Datadog application key. This key is created by your [Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/).
+We would recommend this approach when configuring the Synthetics Run Test task.
+Sample screenshots: https://a.cl.ly/QwudQKxo, https://a.cl.ly/YEuWv1jv  
+
+### API and Application Keys
+
+API Key: Your Datadog API key. This key is created by your [Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/) and will be accessed as an environment variable.
+Application key: Your Datadog application key. This key is created by your [Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/) and will be accessed as an environment variable.
+Datadog site: The [Datadog site](https://docs.datadoghq.com/getting_started/site/)
+Custom subdomain (optional): The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`.
+
+
+## Available Tasks
 
 - [`SyntheticsRunTests`](#syntheticsruntests-task)
 
-### Datadog CI Service Connection
-
-In order to connect to your Datadog account, you can [create a Datadog CI service connection][5] in your azure pipelines project. Once created, all you need is the name of the service connection in the tasks.
-
-## `SyntheticsRunTests` task
-
-Run Datadog Synthetic tests as part of your Azure pipelines with the [Datadog CI `synthetics` command][3].
 
 ### Setup
 
 To get started:
 
 1. Install the [Datadog CI Extension from the Visual Studio marketplace][1] in your Azure Organization.
-2. Add your Datadog API and Application Keys in the [Datadog CI Service Connection](#datadog-ci-service-connection), or as [secrets to your azure pipelines project][7]. For more information, see [API and Application Keys][1].
+2. Add your Datadog API and application keys in the [Datadog CI Service Connection](#authentication), or as [secrets to your Azure Pipelines project][7].
 3. In your Azure DevOps pipeline, use the `SyntheticsRunTests` task.
 
-Your workflow can be [simple](#simple-usage) or [complex](#complex-usag).
+Your task can be [simple](#simple-usage) or [complex](#complex-usage).
+
+## Simple usage
+
+### Example task using public IDs
+
+```yaml
+- task: SyntheticsRunTests@0
+  displayName: Run Datadog Synthetics tests
+  inputs:
+    authenticationType: 'connectedService'
+    connectedService: 'my-datadog-ci-connected-service'
+    publicIds: |
+      abc-d3f-ghi
+      jkl-mn0-pqr
+```
+
+### Example task using existing `synthetics.json` files
+
+```yaml
+- task: SyntheticsRunTests@0
+  displayName: Run Datadog Synthetics tests
+  inputs:
+    authenticationType: 'connectedService'
+    connectedService: 'my-datadog-ci-connected-service'
+    files: 'e2e-tests/*.synthetics.json'
+```
+
+### Example task using pipeline secrets for authentication
+
+```yaml
+- task: SyntheticsRunTests@0
+  inputs:
+    authenticationType: 'apiAppKeys'
+    apiKey: '$(DatadogApiKey)'
+    appKey: '$(DatadogAppKey)'
+    subdomain: 'myorg'
+    datadogSite: 'datadoghq.eu'
+```
+
+## Complex usage
+
+### Example task using the `testSearchQuery`
+
+```yaml
+- task: SyntheticsRunTests@0
+  displayName: Run Datadog Synthetics tests
+  inputs:
+    authenticationType: 'connectedService'
+    connectedService: 'my-datadog-ci-connected-service'
+    testSearchQuery: 'tag:e2e-tests'
+    variables: |
+      START_URL=https://staging.website.com
+      PASSWORD=$(StagingPassword)
+```
+
+### Example task using the `testSearchQuery` and variable overrides
+
+```yaml
+- task: SyntheticsRunTests@0
+  displayName: Run Datadog Synthetics tests
+  inputs:
+    authenticationType: 'connectedService'
+    connectedService: 'my-datadog-ci-connected-service'
+    testSearchQuery: 'tag:e2e-tests'
+```
+
+### Example task using a global configuration override with `configPath`
+
+```yaml
+- task: SyntheticsRunTests@0
+  displayName: Run Datadog Synthetics tests
+  inputs:
+    authenticationType: 'connectedService'
+    connectedService: 'my-datadog-ci-connected-service'
+    configPath: './synthetics-config.json'
+```
 
 ### Inputs
 
@@ -45,82 +134,6 @@ Your workflow can be [simple](#simple-usage) or [complex](#complex-usag).
 | `files`              | _optional_  | Glob pattern to detect Synthetic tests config files. **Default:** `{,!(node_modules)/**/}*.synthetics.json`.                                                                                                                                    |
 | `configPath`         | _optional_  | The global JSON configuration is used when launching tests. See the [example configuration][9] for more details. **Default:** `datadog-ci.json`.                                                                                                |
 | `variables`          | _optional_  | List of global variables to use for Synthetic tests separated by new lines or commas. For example: `START_URL=https://example.org,MY_VARIABLE=My title`. **Default:** `[]`.                                                                     |
-
-### Simple usage
-
-#### Example task using public IDs
-
-```yaml
-- task: SyntheticsRunTests@0
-  displayName: Run Datadog Synthetics tests
-  inputs:
-    authenticationType: 'connectedService'
-    connectedService: 'my-datadog-ci-connected-service'
-    publicIds: |
-      abc-d3f-ghi
-      jkl-mn0-pqr
-```
-
-#### Example task using existing `synthetics.json` files
-
-```yaml
-- task: SyntheticsRunTests@0
-  displayName: Run Datadog Synthetics tests
-  inputs:
-    authenticationType: 'connectedService'
-    connectedService: 'my-datadog-ci-connected-service'
-    files: 'e2e-tests/*.synthetics.json'
-```
-
-#### Example task using pipeline secrets for authentication
-
-```yaml
-- task: SyntheticsRunTests@0
-  inputs:
-    authenticationType: 'apiAppKeys'
-    apiKey: '$(DatadogApiKey)'
-    appKey: '$(DatadogAppKey)'
-    subdomain: 'myorg'
-    datadogSite: 'datadoghq.eu'
-```
-
-### Complex usage
-
-#### Example task using the `testSearchQuery`
-
-```yaml
-- task: SyntheticsRunTests@0
-  displayName: Run Datadog Synthetics tests
-  inputs:
-    authenticationType: 'connectedService'
-    connectedService: 'my-datadog-ci-connected-service'
-    testSearchQuery: 'tag:e2e-tests'
-    variables: |
-      START_URL=https://staging.website.com
-      PASSWORD=$(StagingPassword)
-```
-
-#### Example task using the `testSearchQuery` and variable overrides
-
-```yaml
-- task: SyntheticsRunTests@0
-  displayName: Run Datadog Synthetics tests
-  inputs:
-    authenticationType: 'connectedService'
-    connectedService: 'my-datadog-ci-connected-service'
-    testSearchQuery: 'tag:e2e-tests'
-```
-
-#### Example task using a global configuration override with `configPath`
-
-```yaml
-- task: SyntheticsRunTests@0
-  displayName: Run Datadog Synthetics tests
-  inputs:
-    authenticationType: 'connectedService'
-    connectedService: 'my-datadog-ci-connected-service'
-    configPath: './synthetics-config.json'
-```
 
 ## Further Reading
 
