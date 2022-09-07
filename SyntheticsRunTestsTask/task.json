@@ -1,6 +1,6 @@
 {
-  "id": "bf418475-6eb8-4d3b-bc46-8c6f6394d313",
-  "name": "SyntheticsRunTestsTaskTemporary",
+  "id": "60b18503-c6d6-4e4b-a6b2-52fc6fb3d525",
+  "name": "SyntheticsRunTests",
   "author": "Datadog",
   "friendlyName": "Datadog Synthetic Tests",
   "description": "Run Datadog Synthetic tests as part of your Azure pipelines",

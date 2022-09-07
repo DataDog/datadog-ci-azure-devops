@@ -121,18 +121,18 @@ stages:
                   connectTo: 'VsTeam'
                   connectedServiceName: 'marketplace-service-connection'
                   publisherId: 'Datadog'
-                  extensionId: 'datadog-ci-devops-temporary'
+                  extensionId: 'datadog-ci'
                   versionAction: '${{ parameters.releaseSemver }}'
                   setBuildNumber: 'false'
               - task: PublishAzureDevOpsExtension@3
-                displayName: Publish Extnesion
+                displayName: Publish Extension
                 inputs:
                   connectTo: 'VsTeam'
                   connectedServiceName: 'marketplace-service-connection'
                   fileType: 'vsix'
                   vsixFile: '$(Pipeline.Workspace)/$(ArtifactName)/datadog-ci.vsix'
                   updateTasksVersion: false
-                  extensionVisibility: 'private' # TODO: to change to public
+                  extensionVisibility: 'public'
                   extensionPricing: 'free'
                   extensionVersion: '$(queryVersion.Extension.Version)'
               - task: GitHubRelease@1
@@ -144,7 +144,6 @@ stages:
                   target: '$(Build.SourceVersion)'
                   tagSource: 'userSpecifiedTag'
                   assets: '$(Pipeline.Workspace)/$(ArtifactName)/datadog-ci.vsix'
-                  isDraft: true
                   tag: 'v$(queryVersion.Extension.Version)'
                   title: 'v$(queryVersion.Extension.Version)'
                   releaseNotesSource: 'inline'
