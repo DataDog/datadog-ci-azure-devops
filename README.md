@@ -25,7 +25,7 @@ You need to provide the following inputs:
 
 ![Datadog CI service connection in Azure DevOps Extension Settings][14]
 
-### API and application Keys
+### API and application keys
 
 - API Key: Your Datadog API key. This key is created by your [Datadog organization][12] and is accessed as an environment variable.
 - Application key: Your Datadog application key. This key is created by your [Datadog organization][12] and is accessed as an environment variable.
