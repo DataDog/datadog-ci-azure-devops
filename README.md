@@ -25,21 +25,14 @@ You need to provide the following inputs:
 
 ![Datadog CI service connection in Azure DevOps Extension Settings][14]
 
-### API and Application Keys
+### API and application Keys
 
 - API Key: Your Datadog API key. This key is created by your [Datadog organization][12] and is accessed as an environment variable.
 - Application key: Your Datadog application key. This key is created by your [Datadog organization][12] and is accessed as an environment variable.
 - Datadog site: The [Datadog site][11].
 - Custom subdomain (optional): The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`.
 
-## Available Tasks
-
-- [`SyntheticsRunTests`](#syntheticsruntests-task)
-
-
-### Setup
-
-To get started:
+## Setup
 
 To connect to your Datadog account, [create a Datadog CI service connection][5] in your Azure pipelines project. Once created, all you need is the name of the service connection in the tasks.
 
