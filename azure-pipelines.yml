@@ -22,6 +22,20 @@ pool:
 
 variables:
   - group: ci-variables
+  - name: artifactPath
+    value: vsix
+  - name: packagedTask
+    value: datadog-ci.vsix
+  - name: publisherId
+    value: Datadog
+  - name: extensionName
+    value: 'Datadog CI'
+  - name: extensionId
+    value: datadog-ci
+  - name: devExtensionTag
+    value: -dev
+  - name: syntheticsTaskId
+    value: synthetics-application-testing
 
 stages:
   # Build and package .vsix extension file
@@ -33,10 +47,12 @@ stages:
             displayName: Install TFX CLI
             inputs:
               version: 'v0.12.x'
+
           - task: NodeTool@0
             displayName: Install Node.js
             inputs:
               versionSpec: '10.21.0'
+
           - task: Bash@3
             displayName: Compile the Synthetics task
             inputs:
@@ -46,57 +62,98 @@ stages:
                 yarn install --immutable
                 yarn build
                 yarn install --production --immutable
+
           - task: PackageAzureDevOpsExtension@3
             displayName: Package Datadog CI extension
             name: 'packageStep'
             inputs:
               rootFolder: '$(Build.SourcesDirectory)'
-              outputPath: '$(Build.ArtifactStagingDirectory)/datadog-ci.vsix'
+              outputPath: '$(Build.ArtifactStagingDirectory)/$(packagedTask)'
               updateTasksVersion: false
               extensionVisibility: 'private'
               extensionPricing: 'free'
+
           - publish: '$(packageStep.Extension.OutputPath)'
             displayName: Publish VSIX artifact
-            artifact: $(ArtifactName)
+            artifact: $(artifactPath)
 
   - ${{ if eq(parameters.performRelease, false) }}:
       - stage: Test
         displayName: E2E tests
         dependsOn: 'Build'
         jobs:
-          - job: E2E
-            displayName: Cross-platform
-            strategy:
-              matrix:
-                Linux:
-                  imageName: 'ubuntu-latest'
-                Windows:
-                  imageName: 'windows-latest'
-            pool:
-              vmImage: $(imageName)
+          - job: PublishDev
+            displayName: Publish DEV version
             steps:
               - download: current
                 displayName: Download VSIX artifact
-                artifact: $(ArtifactName)
-              # Extract the extension then run the task directly with node by providing
-              # the inputs through environment variables
-              - task: ExtractFiles@1
-                displayName: Extract VSIX
+                artifact: $(artifactPath)
+
+              - task: TfxInstaller@3
+                displayName: Install TFX CLI
                 inputs:
-                  archiveFilePatterns: '$(Pipeline.Workspace)/$(ArtifactName)/datadog-ci.vsix'
-                  destinationFolder: 'extracted'
+                  version: 'v0.12.x'
+
+              - task: QueryAzureDevOpsExtensionVersion@3
+                displayName: Query existing DEV extension version
+                name: 'queryDevVersion'
+                inputs:
+                  connectTo: 'VsTeam'
+                  connectedServiceName: 'marketplace-service-connection'
+                  publisherId: '$(publisherId)'
+                  extensionId: '$(extensionId)'
+                  extensionTag: '$(devExtensionTag)'
+                  versionAction: 'Patch'
+
+              - task: PublishAzureDevOpsExtension@3
+                displayName: Pubish new DEV extension version
+                inputs:
+                  connectTo: 'VsTeam'
+                  connectedServiceName: 'marketplace-service-connection'
+                  fileType: 'vsix'
+                  vsixFile: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
+                  extensionTag: '$(devExtensionTag)'
+                  extensionName: '$(extensionName) DEV'
+                  extensionVersion: '$(queryDevVersion.Extension.Version)'
+                  updateTasksId: true
+                  extensionVisibility: 'private'
+                  extensionPricing: 'free'
+                  shareWith: 'datadog-ci'
+
               - task: Bash@3
-                displayName: Run the task
+                displayName: Wait for DEV extension availibility
                 inputs:
-                  workingDirectory: 'extracted/SyntheticsRunTestsTask'
-                  targetType: 'inline'
-                  script: |
-                    export INPUT_AUTHENTICATIONTYPE='apiAppKeys'
-                    export INPUT_APIKEY='$(API_KEY)'
-                    export INPUT_APPKEY='$(APP_KEY)'
-                    export INPUT_CONFIGPATH='../../ci/e2e.config.json'
-                    export INPUT_PUBLICIDS='2r9-q7u-4nn,pwd-mwg-3p5'
-                    node task.js
+                  filePath: 'ci/poll-extension-availlibity.sh'
+                  arguments: |
+                    -s "$(SERVICE_URL)" \
+                    -t "$(SERVICE_TOKEN)" \
+                    -c "$(publisherId).$(extensionId)$(devExtensionTag).$(syntheticsTaskId)" \
+                    -v "$(queryDevVersion.Extension.Version)"
+
+              # - publish: 'NOTICE'
+              #   displayName: Test artefact
+              #   artifact: test
+
+          # - job: E2E
+          #   displayName: Cross-platform end-to-end testing
+          #   dependsOn: PublishDev
+          #   strategy:
+          #     matrix:
+          #       Linux:
+          #         imageName: 'ubuntu-latest'
+          #       Windows:
+          #         imageName: 'windows-latest'
+          #   pool:
+          #     vmImage: $(imageName)
+          #   steps:
+          #     - task: Datadog.datadog-ci-dev.synthetics-application-testing.SyntheticsRunTests@0.0.13
+          #       displayName: Run the DEV task
+          #       inputs:
+          #         authenticationType: 'apiAppKeys'
+          #         apiKey: '$(API_KEY)'
+          #         appKey: '$(APP_KEY)'
+          #         publicIds: '2r9-q7u-4nn,pwd-mwg-3p5'
+          #         configPath: 'ci/e2e.config.json'
 
   # Extension public release, only performed on manual runs
   - ${{ if eq(parameters.performRelease, true) }}:
@@ -109,32 +166,36 @@ stages:
             steps:
               - download: current
                 displayName: Download VSIX
-                artifact: $(ArtifactName)
+                artifact: $(artifactPath)
+
               - task: TfxInstaller@3
                 displayName: Install TFX CLI
                 inputs:
                   version: 'v0.12.x'
+
               - task: QueryAzureDevOpsExtensionVersion@3
                 displayName: Query existing extension version
                 name: 'queryVersion'
                 inputs:
                   connectTo: 'VsTeam'
                   connectedServiceName: 'marketplace-service-connection'
-                  publisherId: 'Datadog'
-                  extensionId: 'datadog-ci'
+                  publisherId: '$(publisher)'
+                  extensionId: '$(extensionId)'
                   versionAction: '${{ parameters.releaseSemver }}'
                   setBuildNumber: 'false'
+
               - task: PublishAzureDevOpsExtension@3
                 displayName: Publish Extension
                 inputs:
                   connectTo: 'VsTeam'
                   connectedServiceName: 'marketplace-service-connection'
                   fileType: 'vsix'
-                  vsixFile: '$(Pipeline.Workspace)/$(ArtifactName)/datadog-ci.vsix'
+                  vsixFile: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
                   updateTasksVersion: false
                   extensionVisibility: 'public'
                   extensionPricing: 'free'
                   extensionVersion: '$(queryVersion.Extension.Version)'
+
               - task: GitHubRelease@1
                 displayName: Create Github Release
                 inputs:
@@ -143,7 +204,7 @@ stages:
                   action: 'create'
                   target: '$(Build.SourceVersion)'
                   tagSource: 'userSpecifiedTag'
-                  assets: '$(Pipeline.Workspace)/$(ArtifactName)/datadog-ci.vsix'
+                  assets: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
                   tag: 'v$(queryVersion.Extension.Version)'
                   title: 'v$(queryVersion.Extension.Version)'
                   releaseNotesSource: 'inline'
