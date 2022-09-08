@@ -64,7 +64,7 @@
       "name": "subdomain",
       "type": "string",
       "label": "Custom subdomain",
-      "defaultValue": "",
+      "defaultValue": "app",
       "helpMarkDown": "The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`.",
       "visibleRule": "authenticationType = apiAppKeys"
     },
