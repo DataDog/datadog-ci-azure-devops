@@ -3,6 +3,8 @@ import {join} from 'path'
 import {synthetics} from '@datadog/datadog-ci'
 import {MockTestRunner} from 'azure-pipelines-task-lib/mock-test'
 
+import * as fs from 'fs'
+
 export const BASE_CONFIG: synthetics.CommandConfig = {
   apiKey: '',
   appKey: '',
@@ -44,6 +46,11 @@ export const CUSTOM_PUBLIC_IDS = ['public_id1', 'public_id2', 'public_id3']
 
 const runMockedTask = (mockName: string): MockTestRunner => {
   const file = join(__dirname, 'mocks', `${mockName}.js`)
+
+  if (!fs.existsSync(file)) {
+    throw Error(`The mocked task file does not exist: mocks/${mockName}.js\n` + 'Did you forget to run `yarn build`?')
+  }
+
   const task = new MockTestRunner(file)
   task.run()
   // Warnings usually come from `mockery`, and can be useful to spot mocking issues.
