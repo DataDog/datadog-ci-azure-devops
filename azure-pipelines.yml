@@ -152,7 +152,7 @@ stages:
                   versionAction: 'Patch'
 
               - task: PublishAzureDevOpsExtension@3
-                displayName: Pubish new DEV extension version
+                displayName: Publish new DEV extension version
                 inputs:
                   connectTo: 'VsTeam'
                   connectedServiceName: 'marketplace-service-connection'
