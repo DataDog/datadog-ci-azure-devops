@@ -81,7 +81,7 @@ stages:
             displayName: Publish VSIX artifact
             artifact: $(artifactPath)
 
-  - ${{ if eq(parameters.performRelease, false) }}:
+  - ${{ if and(eq(parameters.performRelease, false), eq(parameters.performDevRelease, false)) }}:
       - stage: Test
         displayName: E2E tests
         dependsOn: 'Build'
