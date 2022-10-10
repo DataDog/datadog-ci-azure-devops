@@ -84,7 +84,7 @@ function resolveDatadogEndpoint(): {datadogSite?: string; subdomain?: string} {
   return {datadogSite, subdomain}
 }
 
-export const resolveConfig = async (): Promise<synthetics.CommandConfig> => {
+export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<synthetics.CommandConfig> => {
   const {apiKey, appKey} = resolveKeys()
   const {datadogSite, subdomain} = resolveDatadogEndpoint()
 
@@ -118,7 +118,12 @@ export const resolveConfig = async (): Promise<synthetics.CommandConfig> => {
       publicIds,
       subdomain,
       testSearchQuery,
-      variableStrings,
+      global: deepExtend(
+        config.global,
+        removeUndefinedValues({
+          variables: synthetics.utils.parseVariablesFromCli(variableStrings, reporter.log.bind(reporter)),
+        })
+      ),
     })
   )
 

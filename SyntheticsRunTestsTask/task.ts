@@ -21,7 +21,7 @@ async function run(): Promise<void> {
 
   synthetics.utils.setCiTriggerApp('azure_devops_task')
   const reporter = synthetics.utils.getReporter([new synthetics.DefaultReporter({context})])
-  const config = await resolveConfig()
+  const config = await resolveConfig(reporter)
 
   try {
     const startTime = Date.now()

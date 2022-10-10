@@ -21,6 +21,7 @@ const mockRunner = new TaskMockRunner(join(__dirname, '../..', 'task.js'))
 mockRunner.setInput('authenticationType', 'connectedService')
 mockRunner.setInput('connectedService', 'my service connection')
 mockRunner.setInput('publicIds', CUSTOM_PUBLIC_IDS.join(', '))
+mockRunner.setInput('variables', 'FOO=bar')
 
 const taskMock: typeof task = Object.assign({}, require('azure-pipelines-task-lib/mock-task'))
 taskMock.getEndpointUrlRequired = () => `https://app.${CUSTOM_SITE}/`
