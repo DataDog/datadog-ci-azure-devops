@@ -52,6 +52,11 @@ describe('Test suite', () => {
       publicIds: CUSTOM_PUBLIC_IDS,
       datadogSite: CUSTOM_SITE,
       subdomain: CUSTOM_SUBDOMAIN,
+      global: {
+        variables: {
+          FOO: 'bar',
+        },
+      },
     })
 
     expect(task.succeeded).toBe(true)
