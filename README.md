@@ -19,14 +19,14 @@ You need to provide the following inputs:
 
 - Datadog site: Which Datadog site to connect to.
 - Custom subdomain (default: `app`): The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`.
-- API Key: Your Datadog API key. This key is created by your [Datadog organization][12].
-- Application key: Your Datadog application key. This key is created by your [Datadog organization][12].
+- API Key: Your Datadog API key. This key is created by your [Datadog organization][6].
+- Application key: Your Datadog application key. This key is created by your [Datadog organization][6].
 
 
 ### API and Application keys
 
-- API Key: Your Datadog API key. This key is created by your [Datadog organization][12] and is accessed as an environment variable.
-- Application key: Your Datadog application key. This key is created by your [Datadog organization][12] and is accessed as an environment variable.
+- API Key: Your Datadog API key. This key is created by your [Datadog organization][6] and is accessed as an environment variable.
+- Application key: Your Datadog application key. This key is created by your [Datadog organization][6] and is accessed as an environment variable.
 - Datadog site: The [Datadog site][11].
 - Custom subdomain (optional): The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`.
 
@@ -133,21 +133,20 @@ Your task can be [simple](#simple-usage) or [complex](#complex-usage).
 | `variables`          | _optional_  | A list of global variables to use for Synthetic tests, separated by new lines or commas. For example: `START_URL=https://example.org,MY_VARIABLE=My title`. **Default:** `[]`.                                                                     |
 
 
-## Further Reading
+## Further reading
 
 Additional helpful documentation, links, and articles:
 
-- [Synthetics CI/CD Integrations Configuration][4]
+- [Continuous Testing and CI/CD Configuration][4]
 
 [1]: https://marketplace.visualstudio.com/items?itemName=Datadog.datadog-ci
 [2]: https://github.com/DataDog/datadog-ci
 [3]: https://github.com/DataDog/datadog-ci/tree/master/src/commands/synthetics
-[4]: https://docs.datadoghq.com/synthetics/cicd_integrations/configuration
+[4]: https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration
 [5]: https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints
 [6]: https://docs.datadoghq.com/account_management/api-app-keys/
 [7]: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables
 [8]: https://docs.datadoghq.com/synthetics/search/#search
-[9]: https://docs.datadoghq.com/synthetics/cicd_integrations/configuration/?tab=npm#setup-a-client
+[9]: https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#setup-a-client
 [10]: https://docs.datadoghq.com/developers/guide/what-best-practices-are-recommended-for-naming-metrics-and-tags/#rules-and-best-practices-for-naming-tags
 [11]: https://docs.datadoghq.com/getting_started/site/
-[12]: https://docs.datadoghq.com/account_management/api-app-keys/
