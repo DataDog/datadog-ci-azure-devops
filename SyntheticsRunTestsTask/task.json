@@ -105,6 +105,9 @@
     }
   ],
   "execution": {
+    "Node10": {
+      "target": "task.node10.js"
+    },
     "Node16": {
       "target": "task.js"
     }
