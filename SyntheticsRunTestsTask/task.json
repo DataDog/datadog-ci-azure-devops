@@ -8,8 +8,8 @@
   "category": "Test",
   "version": {
     "Major": 0,
-    "Minor": 0,
-    "Patch": 1
+    "Minor": 1,
+    "Patch": 0
   },
   "preview": true,
   "instanceNameFormat": "Run Datadog Synthetics CI tests",
@@ -106,6 +106,9 @@
   ],
   "execution": {
     "Node10": {
+      "target": "task.node10.js"
+    },
+    "Node16": {
       "target": "task.js"
     }
   }

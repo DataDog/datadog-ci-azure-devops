@@ -22,7 +22,7 @@
     "test"
   ],
   "engines": {
-    "node": "10.21.0"
+    "node": "16.15.0"
   },
   "dependencies": {
     "@datadog/datadog-ci": "^1.16.0",
