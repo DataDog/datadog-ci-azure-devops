@@ -190,7 +190,7 @@ stages:
                 inputs:
                   connectTo: 'VsTeam'
                   connectedServiceName: 'marketplace-service-connection'
-                  publisherId: '$(publisher)'
+                  publisherId: '$(publisherId)'
                   extensionId: '$(extensionId)'
                   versionAction: '${{ parameters.releaseSemver }}'
                   setBuildNumber: 'false'
