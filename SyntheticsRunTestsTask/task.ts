@@ -23,6 +23,10 @@ async function run(): Promise<void> {
   const reporter = synthetics.utils.getReporter([new synthetics.DefaultReporter({context})])
   const config = await resolveConfig(reporter)
 
+  reporter.log(`ENV INPUT_VARIABLES: ${process.env.INPUT_VARIABLES}`)
+  reporter.log(`config variableStrings: ${JSON.stringify(config.variableStrings)}`)
+  reporter.log(`config variables: ${JSON.stringify(config.global.variables)}`)
+
   try {
     const startTime = Date.now()
     const {results, summary} = await synthetics.executeTests(reporter, config)
