@@ -25,8 +25,9 @@ stages:
               authenticationType: 'apiAppKeys'
               apiKey: '$(API_KEY)'
               appKey: '$(APP_KEY)'
-              publicIds: '2r9-q7u-4nn,pwd-mwg-3p5'
+              publicIds: '2r9-q7u-4nn,pwd-mwg-3p5,etj-7xi-mzr'
               configPath: 'ci/e2e.config.json'
+              variables: 'VAR=overridden'
 
           - task: Datadog.datadog-ci-dev.synthetics-application-testing.SyntheticsRunTests@0
             displayName: Run DEV task - connectedService
@@ -36,4 +37,7 @@ stages:
               publicIds: |
                 2r9-q7u-4nn
                 pwd-mwg-3p5
+                etj-7xi-mzr
               configPath: 'ci/e2e.config.json'
+              variables: |
+                VAR=overridden

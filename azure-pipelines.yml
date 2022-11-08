@@ -119,7 +119,8 @@ stages:
                     export INPUT_APIKEY='$(API_KEY)'
                     export INPUT_APPKEY='$(APP_KEY)'
                     export INPUT_CONFIGPATH='../../ci/e2e.config.json'
-                    export INPUT_PUBLICIDS='2r9-q7u-4nn,pwd-mwg-3p5'
+                    export INPUT_PUBLICIDS='2r9-q7u-4nn,pwd-mwg-3p5,etj-7xi-mzr'
+                    export INPUT_VARIABLES='VAR=overridden'
                     node task.js
 
   # Release DEV extension on `performDevRelease` or automatically on `main` push
