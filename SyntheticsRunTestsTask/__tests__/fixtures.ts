@@ -44,6 +44,7 @@ export const EMPTY_SUMMARY: synthetics.Summary = {
 export const CUSTOM_SUBDOMAIN = 'myorg'
 export const CUSTOM_SITE = 'datadoghq.eu'
 export const CUSTOM_PUBLIC_IDS = ['public_id1', 'public_id2', 'public_id3']
+export const CUSTOM_VARIABLES = {VAR1: 'value1', VAR2: 'value2'}
 
 const runMockedTask = (mockName: string): MockTestRunner => {
   const file = join(__dirname, 'mocks', `${mockName}.js`)
@@ -67,6 +68,9 @@ const runMockedTask = (mockName: string): MockTestRunner => {
 
 export const runMockTaskApiKeys = (): MockTestRunner => {
   return runMockedTask('api-keys')
+}
+export const runMockTaskApiKeysWithVariables = (): MockTestRunner => {
+  return runMockedTask('api-keys-with-variables')
 }
 export const runMockTaskServiceConnection = (): MockTestRunner => {
   return runMockedTask('service-connection')

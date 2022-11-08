@@ -6,8 +6,10 @@ import {
   CUSTOM_PUBLIC_IDS,
   CUSTOM_SITE,
   CUSTOM_SUBDOMAIN,
+  CUSTOM_VARIABLES,
   expectSpy,
   runMockTaskApiKeys,
+  runMockTaskApiKeysWithVariables,
   runMockTaskServiceConnection,
   runMockTaskServiceConnectionEnvVars,
   runMockTaskServiceConnectionMisconfigured,
@@ -73,6 +75,23 @@ describe('Test suite', () => {
       publicIds: CUSTOM_PUBLIC_IDS,
       datadogSite: CUSTOM_SITE,
       subdomain: CUSTOM_SUBDOMAIN,
+    })
+
+    expect(task.succeeded).toBe(true)
+    expect(task.warningIssues.length).toEqual(0)
+    expect(task.errorIssues.length).toEqual(0)
+  })
+
+  test('parse variables input', () => {
+    const task = runMockTaskApiKeysWithVariables()
+
+    expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
+      ...BASE_CONFIG,
+      ...BASE_INPUTS,
+      publicIds: CUSTOM_PUBLIC_IDS,
+      global: {
+        variables: CUSTOM_VARIABLES,
+      },
     })
 
     expect(task.succeeded).toBe(true)
