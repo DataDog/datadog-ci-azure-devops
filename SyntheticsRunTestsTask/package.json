@@ -25,7 +25,7 @@
     "node": "16.15.0"
   },
   "dependencies": {
-    "@datadog/datadog-ci": "^1.16.0",
+    "@datadog/datadog-ci": "2.0.0",
     "azure-pipelines-task-lib": "^3.1.1",
     "azure-pipelines-tasks-packaging-common": "^2.198.1",
     "chalk": "^4.1.2",
