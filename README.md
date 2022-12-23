@@ -138,6 +138,7 @@ Your task can be [simple](#simple-usage) or [complex](#complex-usage).
 Additional helpful documentation, links, and articles:
 
 - [Continuous Testing and CI/CD Configuration][4]
+- [Best practices for continuous testing with Datadog][12]
 
 [1]: https://marketplace.visualstudio.com/items?itemName=Datadog.datadog-ci
 [2]: https://github.com/DataDog/datadog-ci
@@ -150,3 +151,4 @@ Additional helpful documentation, links, and articles:
 [9]: https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#setup-a-client
 [10]: https://docs.datadoghq.com/developers/guide/what-best-practices-are-recommended-for-naming-metrics-and-tags/#rules-and-best-practices-for-naming-tags
 [11]: https://docs.datadoghq.com/getting_started/site/
+[12]: https://www.datadoghq.com/blog/best-practices-datadog-continuous-testing/
