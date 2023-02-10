@@ -1,5 +1,7 @@
 import {synthetics} from '@datadog/datadog-ci'
 
+import * as fs from 'fs'
+
 import {
   BASE_CONFIG,
   BASE_INPUTS,
@@ -8,6 +10,7 @@ import {
   CUSTOM_SUBDOMAIN,
   expectSpy,
   runMockTaskApiKeys,
+  runMockTaskJUnitReport,
   runMockTaskServiceConnection,
   runMockTaskServiceConnectionEnvVars,
   runMockTaskServiceConnectionMisconfigured,
@@ -78,5 +81,25 @@ describe('Test suite', () => {
     expect(task.succeeded).toBe(true)
     expect(task.warningIssues.length).toEqual(0)
     expect(task.errorIssues.length).toEqual(0)
+  })
+
+  test('succeeds and generates a jUnit report', () => {
+    const task = runMockTaskJUnitReport()
+
+    expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
+      ...BASE_CONFIG,
+      ...BASE_INPUTS,
+      publicIds: CUSTOM_PUBLIC_IDS,
+    })
+
+    expect(task.succeeded).toBe(true)
+    expect(task.warningIssues.length).toEqual(0)
+    expect(task.errorIssues.length).toEqual(0)
+
+    expect(fs.existsSync('./reports/TEST-1.xml')).toBe(true)
+
+    // Cleaning
+    fs.unlinkSync('./reports/TEST-1.xml')
+    fs.rmdirSync('./reports')
   })
 })

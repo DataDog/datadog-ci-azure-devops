@@ -84,6 +84,9 @@ export const runMockTaskServiceConnectionEnvVars = (): MockTestRunner => {
 export const runMockTaskServiceConnectionMisconfigured = (): MockTestRunner => {
   return runMockedTask('service-connection-misconfigured')
 }
+export const runMockTaskJUnitReport = (): MockTestRunner => {
+  return runMockedTask('junit-report')
+}
 
 // The MockTestRunner runs the task it's given in a separate process, so Jest spies cannot work.
 // As a workaround, we need to log from the task process with `spyLog()` in a mocked function,
