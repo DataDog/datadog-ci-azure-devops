@@ -102,6 +102,13 @@
       "label": "Variables",
       "defaultValue": "",
       "helpMarkDown": "Comma-separated list of global variables to use for Synthetic tests. For example: `START_URL=https://example.org,MY_VARIABLE=My title`."
+    },
+    {
+      "name": "jUnitReport",
+      "type": "string",
+      "label": "JUnit Report",
+      "defaultValue": "",
+      "helpMarkDown": "The filename for a JUnit report if you want to generate one."
     }
   ],
   "execution": {
