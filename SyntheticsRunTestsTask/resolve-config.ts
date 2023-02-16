@@ -1,9 +1,11 @@
+import {BaseContext} from 'clipanion'
 import * as task from 'azure-pipelines-task-lib/task'
 
 import {synthetics, utils} from '@datadog/datadog-ci'
 import deepExtend from 'deep-extend'
 
 import {parseMultiline, removeUndefinedValues} from './utils'
+import {Reporter} from '@datadog/datadog-ci/dist/commands/synthetics'
 
 const DEFAULT_CONFIG: synthetics.CommandConfig = {
   apiKey: '',
@@ -129,4 +131,21 @@ export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<
   )
 
   return config
+}
+
+export const getReporter = (): synthetics.MainReporter => {
+  const context: BaseContext = {
+    stdin: process.stdin,
+    stdout: process.stdout,
+    stderr: process.stderr,
+  }
+
+  const reporters: Reporter[] = [new synthetics.DefaultReporter({context})]
+
+  const jUnitReportFilename = task.getInput('jUnitReport')
+  if (jUnitReportFilename) {
+    reporters.push(new synthetics.JUnitReporter({context, jUnitReport: jUnitReportFilename}))
+  }
+
+  return synthetics.utils.getReporter(reporters)
 }

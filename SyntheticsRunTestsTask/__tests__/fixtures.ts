@@ -62,6 +62,13 @@ const runMockedTask = (mockName: string): MockTestRunner => {
   // This assertion needs `setupWarnSpy()` in the mocked task.
   expect(task.stdout).not.toMatch(/^##vso\[task\.warn\]/m)
 
+  if (
+    task.stderr.match(/Cannot find module/) &&
+    process.env.NODE_OPTIONS?.match(/ms-vscode.js-debug\/bootloader\.js/)
+  ) {
+    throw Error('Did you enable the Auto Attach feature in VS Code?\n\n' + task.stderr)
+  }
+
   return task
 }
 
@@ -76,6 +83,9 @@ export const runMockTaskServiceConnectionEnvVars = (): MockTestRunner => {
 }
 export const runMockTaskServiceConnectionMisconfigured = (): MockTestRunner => {
   return runMockedTask('service-connection-misconfigured')
+}
+export const runMockTaskJUnitReport = (): MockTestRunner => {
+  return runMockedTask('junit-report')
 }
 
 // The MockTestRunner runs the task it's given in a separate process, so Jest spies cannot work.

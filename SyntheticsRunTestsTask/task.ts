@@ -3,24 +3,17 @@ import * as path from 'path'
 import * as task from 'azure-pipelines-task-lib/task'
 import * as util from 'azure-pipelines-tasks-packaging-common/util'
 
-import {BaseContext} from 'clipanion'
 import {synthetics} from '@datadog/datadog-ci'
 
 import {renderResults} from './process-results'
 import {reportCiError} from './report-ci-error'
-import {resolveConfig} from './resolve-config'
+import {getReporter, resolveConfig} from './resolve-config'
 
 async function run(): Promise<void> {
   task.setResourcePath(path.join(__dirname, 'task.json'))
-
-  const context: BaseContext = {
-    stdin: process.stdin,
-    stdout: process.stdout,
-    stderr: process.stderr,
-  }
-
   synthetics.utils.setCiTriggerApp('azure_devops_task')
-  const reporter = synthetics.utils.getReporter([new synthetics.DefaultReporter({context})])
+
+  const reporter = getReporter()
   const config = await resolveConfig(reporter)
 
   try {
