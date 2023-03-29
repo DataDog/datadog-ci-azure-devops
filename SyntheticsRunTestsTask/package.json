@@ -7,7 +7,7 @@
   "main": "lib/task.js",
   "scripts": {
     "build": "tsc",
-    "lint": "eslint **/*.ts",
+    "lint": "eslint '**/*.ts'",
     "test": "jest"
   },
   "repository": {
