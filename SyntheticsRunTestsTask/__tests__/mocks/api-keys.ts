@@ -1,6 +1,6 @@
 import {join} from 'path'
 
-import {synthetics} from '@datadog/datadog-ci'
+import {synthetics, utils} from '@datadog/datadog-ci'
 import {TaskMockRunner} from 'azure-pipelines-task-lib/mock-run'
 
 import {BASE_INPUTS, CUSTOM_PUBLIC_IDS, EMPTY_SUMMARY, setupWarnSpy, spyLog} from '../fixtures'
@@ -15,6 +15,7 @@ mockRunner.setInput('appKey', BASE_INPUTS.appKey)
 mockRunner.setInput('publicIds', CUSTOM_PUBLIC_IDS.join(', '))
 
 mockRunner.registerMock('@datadog/datadog-ci', {
+  utils,
   synthetics: {
     ...synthetics,
     executeTests: async (
