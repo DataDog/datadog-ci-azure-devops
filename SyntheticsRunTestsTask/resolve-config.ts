@@ -1,4 +1,3 @@
-import {BaseContext} from 'clipanion'
 import * as task from 'azure-pipelines-task-lib/task'
 
 import {synthetics, utils} from '@datadog/datadog-ci'
@@ -134,7 +133,7 @@ export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<
 }
 
 export const getReporter = (): synthetics.MainReporter => {
-  const context: BaseContext = {
+  const context = {
     stdin: process.stdin,
     stdout: process.stdout,
     stderr: process.stderr,
