@@ -3,7 +3,7 @@ import * as task from 'azure-pipelines-task-lib/task'
 import {synthetics, utils} from '@datadog/datadog-ci'
 import deepExtend from 'deep-extend'
 
-import {parseMultiline, removeUndefinedValues} from './utils'
+import {parseMultiline} from './utils'
 import {Reporter} from '@datadog/datadog-ci/dist/commands/synthetics'
 
 const DEFAULT_CONFIG: synthetics.CommandConfig = {
@@ -95,6 +95,8 @@ export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<
   const files = parseMultiline(task.getInput('files'))
   const testSearchQuery = task.getInput('testSearchQuery')
   const variableStrings = parseMultiline(task.getInput('variables'))
+  const failOnCriticalErrors = task.getBoolInput('failOnCriticalErrors')
+  const failOnMissingTests = task.getBoolInput('failOnMissingTests')
 
   let config = JSON.parse(JSON.stringify(DEFAULT_CONFIG))
   // Override with file config variables
@@ -111,18 +113,20 @@ export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<
   // Override with the task's inputs
   config = deepExtend(
     config,
-    removeUndefinedValues({
+    utils.removeUndefinedValues({
       apiKey,
       appKey,
       configPath,
       datadogSite,
       files,
+      failOnCriticalErrors,
+      failOnMissingTests,
       publicIds,
       subdomain,
       testSearchQuery,
       global: deepExtend(
         config.global,
-        removeUndefinedValues({
+        utils.removeUndefinedValues({
           variables: synthetics.utils.parseVariablesFromCli(variableStrings, reporter.log.bind(reporter)),
         })
       ),
