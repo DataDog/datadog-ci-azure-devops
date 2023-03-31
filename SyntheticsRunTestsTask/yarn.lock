@@ -1065,6 +1065,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^16.18.0":
+  version: 16.18.23
+  resolution: "@types/node@npm:16.18.23"
+  checksum: 00e51db28fc7a182747f37215b3f25400b1c7a8525e09fa14e55be5798891a118ebf636a49d3197335a3580fcb8222fd4ecc20c2ccff69f1c0d233fc5697465d
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^8.0.0":
   version: 8.10.66
   resolution: "@types/node@npm:8.10.66"
@@ -6063,7 +6070,7 @@ __metadata:
     "@datadog/datadog-ci": ^2.4.1
     "@types/deep-extend": ^0.4.32
     "@types/jest": ^27.0.2
-    "@types/node": ^10.17.0
+    "@types/node": ^16.18.0
     "@typescript-eslint/eslint-plugin": ^4.33.0
     "@typescript-eslint/parser": ^4.33.0
     azure-pipelines-task-lib: ^3.1.1
