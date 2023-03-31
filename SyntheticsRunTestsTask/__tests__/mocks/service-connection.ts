@@ -1,6 +1,6 @@
 import {join} from 'path'
 
-import {synthetics} from '@datadog/datadog-ci'
+import {synthetics, utils} from '@datadog/datadog-ci'
 import {TaskMockRunner} from 'azure-pipelines-task-lib/mock-run'
 import type task from 'azure-pipelines-task-lib/task'
 
@@ -44,6 +44,7 @@ taskMock.getEndpointAuthorizationParameterRequired = (_id: string, key: string) 
 mockRunner.registerMock('azure-pipelines-task-lib/mock-task', taskMock)
 
 mockRunner.registerMock('@datadog/datadog-ci', {
+  utils,
   synthetics: {
     ...synthetics,
     executeTests: async (
