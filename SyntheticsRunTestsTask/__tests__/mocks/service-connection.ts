@@ -25,12 +25,13 @@ mockRunner.setInput('variables', 'FOO=bar')
 
 const taskMock: typeof task = Object.assign({}, require('azure-pipelines-task-lib/mock-task'))
 taskMock.getEndpointUrlRequired = () => `https://app.${CUSTOM_SITE}/`
-taskMock.getEndpointDataParameter = (_: string, key: string, __: boolean) => {
+
+taskMock.getEndpointDataParameter = (_id: string, key: string, _optional: boolean) => {
   if (key === 'subdomain') {
     return CUSTOM_SUBDOMAIN
   }
 }
-taskMock.getEndpointAuthorizationParameterRequired = (_: string, key: string) => {
+taskMock.getEndpointAuthorizationParameterRequired = (_id: string, key: string) => {
   switch (key) {
     case 'apitoken':
       return BASE_INPUTS.apiKey
