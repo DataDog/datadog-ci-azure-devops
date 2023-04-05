@@ -14,7 +14,6 @@
     "i18n-text/no-en": "off",
     "@typescript-eslint/no-unused-vars": ["error", {"args": "none"}],
     "@typescript-eslint/explicit-member-accessibility": ["error", {"accessibility": "no-public"}],
-    // "@typescript-eslint/no-require-imports": "error",
     "@typescript-eslint/array-type": "error",
     "@typescript-eslint/await-thenable": "error",
     "@typescript-eslint/ban-ts-comment": "error",
