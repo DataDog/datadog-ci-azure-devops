@@ -13,7 +13,6 @@ eslint,dev,MIT,Copyright OpenJS Foundation and other contributors
 eslint-plugin-jest,dev,MIT,Copyright (c) 2018 Jonathan Kim
 eslint-plugin-prettier,dev,MIT,Copyright © 2017 Andres Suarez and Teddy Katz
 jest,dev,MIT,"Copyright (c) Facebook, Inc. and its affiliates."
-node-gyp,dev,MIT,github.com/nodejs/node-gyp
 prettier,dev,MIT,Copyright © James Long and contributors
 ts-jest,dev,MIT,Copyright (c) 2016-2018
 typescript,dev,Apache-2.0,Copyright (c) Microsoft Corporation.
