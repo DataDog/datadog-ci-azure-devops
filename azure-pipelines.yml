@@ -65,7 +65,7 @@ stages:
                 cd SyntheticsRunTestsTask
                 yarn install --immutable
                 yarn build
-                yarn install --production --immutable
+                yarn workspaces focus --production
 
           - task: PackageAzureDevOpsExtension@3
             displayName: Package Datadog CI extension

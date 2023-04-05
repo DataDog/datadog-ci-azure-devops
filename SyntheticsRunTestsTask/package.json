@@ -24,6 +24,10 @@
   "engines": {
     "node": "16.15.0"
   },
+  "volta": {
+    "node": "16.15.0"
+  },
+  "packageManager": "yarn@3.4.1",
   "dependencies": {
     "@datadog/datadog-ci": "^2.4.1",
     "azure-pipelines-task-lib": "^3.1.1",
@@ -36,7 +40,7 @@
   "devDependencies": {
     "@types/deep-extend": "^0.4.32",
     "@types/jest": "^27.0.2",
-    "@types/node": "^10.17.0",
+    "@types/node": "^16.18.0",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "eslint": "^7.32.0",

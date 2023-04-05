@@ -1,5 +1,1 @@
-node_modules
 *.vsix
-.taskkey
-*.js
-!jest.config.js
