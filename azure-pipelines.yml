@@ -66,6 +66,7 @@ stages:
                 yarn install --immutable
                 yarn build
                 yarn workspaces focus --production
+                rm -rf .yarn/
 
           - task: PackageAzureDevOpsExtension@3
             displayName: Package Datadog CI extension
