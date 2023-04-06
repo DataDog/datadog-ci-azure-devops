@@ -5,7 +5,6 @@ import {synthetics, utils} from '@datadog/datadog-ci'
 import deepExtend from 'deep-extend'
 
 import {parseMultiline} from './utils'
-import {Reporter} from '@datadog/datadog-ci/dist/commands/synthetics'
 
 const DEFAULT_CONFIG: synthetics.CommandConfig = {
   apiKey: '',
@@ -100,7 +99,10 @@ export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<
   let config = JSON.parse(JSON.stringify(DEFAULT_CONFIG))
   // Override with file config variables
   try {
-    config = await utils.resolveConfigFromFile(config, {configPath, defaultConfigPath: DEFAULT_CONFIG.configPath})
+    config = await utils.resolveConfigFromFile(config, {
+      configPath,
+      defaultConfigPaths: [DEFAULT_CONFIG.configPath],
+    })
   } catch (error) {
     if (configPath) {
       task.setResult(task.TaskResult.Failed, `Unable to parse config file! Please verify config path : ${configPath}`)
@@ -140,7 +142,7 @@ export const getReporter = (): synthetics.MainReporter => {
     stderr: process.stderr,
   }
 
-  const reporters: Reporter[] = [new synthetics.DefaultReporter({context})]
+  const reporters: synthetics.Reporter[] = [new synthetics.DefaultReporter({context})]
 
   const jUnitReportFilename = task.getInput('jUnitReport')
   if (jUnitReportFilename) {
