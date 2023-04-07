@@ -54,19 +54,20 @@ const runMockedTask = (mockName: string): MockTestRunner => {
 
   const task = new MockTestRunner(file)
   task.run()
+
   // Warnings usually come from `mockery`, and can be useful to spot mocking issues.
   // For example, "Replacing existing mock for module: azure-pipelines-task-lib/task" means
   // that we tried to mock `azure-pipelines-task-lib/task`, which is already mocked
   // by `azure-pipelines-task-lib/mock-run`. So our mock would be overwritten.
   //
-  // This assertion needs `setupWarnSpy()` in the mocked task.
+  // This assertion requires `setupWarnSpy()` to be run in the mocked task.
   expect(task.stdout).not.toMatch(/^##vso\[task\.warn\]/m)
 
   if (
     task.stderr.match(/Cannot find module/) &&
     process.env.NODE_OPTIONS?.match(/ms-vscode.js-debug\/bootloader\.js/)
   ) {
-    throw Error('Did you enable the Auto Attach feature in VS Code?\n\n' + task.stderr)
+    throw Error('⚠️  You need to disable the Auto Attach feature in VS Code.\n\n' + task.stderr)
   }
 
   return task
@@ -109,13 +110,18 @@ export const expectSpy = <Fn extends typeof synthetics.executeTests>(
     const spyLogs = task.stdout.match(matcher) || []
     const logs: unknown[] = spyLogs.map(log => JSON.parse(log.replace(prefixMatcher, '')))
 
+    // NOTE:
+    // 💡 You may want to run `node __tests__/mocks/<mock-name>.js` to get more details.
     expect(logs).toContainEqual(args)
   },
 })
 
 export const setupWarnSpy = (): void => {
-  // If we don't do this, warnings are not prefixed with `##vso[task` and excluded from the `task.stdout`.
+  // If we don't do this, warnings are not prefixed with `##vso[task` and excluded from `task.stdout`.
   console.warn = (...data) => {
-    console.log(`##vso[task.warn]${data[0]}`)
+    console.log('##vso[task.warn]', ...data)
   }
+
+  // We can't do this for errors because it changes the behavior too much: `task.errorIssues` gets broken
+  // AND we actually expect errors in some tests.
 }

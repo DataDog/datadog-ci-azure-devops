@@ -1,6 +1,6 @@
 import {join} from 'path'
 
-import {synthetics} from '@datadog/datadog-ci'
+import {synthetics, utils} from '@datadog/datadog-ci'
 import {TaskMockRunner} from 'azure-pipelines-task-lib/mock-run'
 
 import {
@@ -29,6 +29,7 @@ process.env[`ENDPOINT_AUTH_PARAMETER_${CONNECTED_SERVICE_NAME.toLocaleUpperCase(
 process.env[`ENDPOINT_DATA_${CONNECTED_SERVICE_NAME}_SUBDOMAIN`] = CUSTOM_SUBDOMAIN
 
 mockRunner.registerMock('@datadog/datadog-ci', {
+  utils,
   synthetics: {
     ...synthetics,
     executeTests: async (
