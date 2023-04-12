@@ -12,12 +12,11 @@ With the Datadog CI Azure DevOps Extension, you can run Synthetic tests within y
 
 ### Service Connection
 
-To connect to your Datadog site, Datadog recommends setting up a custom service connection when configuring the Synthetics Run Test task. 
-
+To connect to your [Datadog site][11], Datadog recommends setting up a custom service connection when configuring the Synthetics Run Test task. 
 
 You need to provide the following inputs:
 
-- Datadog site: Which Datadog site to connect to.
+- Datadog site: Which Datadog site to connect to. Your Datadog site is {{< region-param key="dd_site" code="true" >}}.
 - Custom subdomain (default: `app`): The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`.
 - API Key: Your Datadog API key. This key is created by your [Datadog organization][6].
 - Application key: Your Datadog application key. This key is created by your [Datadog organization][6].
@@ -27,14 +26,14 @@ You need to provide the following inputs:
 
 - API Key: Your Datadog API key. This key is created by your [Datadog organization][6] and is accessed as an environment variable.
 - Application key: Your Datadog application key. This key is created by your [Datadog organization][6] and is accessed as an environment variable.
-- Datadog site: The [Datadog site][11].
+- Datadog site: The [Datadog site][11]. Your Datadog site is {{< region-param key="dd_site" code="true" >}}.
 - Custom subdomain (optional): The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`.
 
 ## Setup
 
 To connect to your Datadog account, [create a Datadog CI service connection][5] in your Azure pipelines project. Once created, all you need is the name of the service connection in the tasks.
 
-1. Install the [Datadog CI Extension from the Visual Studio marketplace][1] in your Azure Organization.
+1. Install the [Datadog CI Extension from the Visual Studio Marketplace][1] in your Azure Organization.
 2. Add your Datadog API and application keys in the [Datadog CI Service Connection](#authentication), or as [secrets to your Azure Pipelines project][7].
 3. In your Azure DevOps pipeline, use the `SyntheticsRunTests` task.
 
@@ -46,7 +45,7 @@ Your task can be [simple](#simple-usage) or [complex](#complex-usage).
 
 ```yaml
 - task: SyntheticsRunTests@0
-  displayName: Run Datadog Synthetics tests
+  displayName: Run Datadog Synthetic tests
   inputs:
     authenticationType: 'connectedService'
     connectedService: 'my-datadog-ci-connected-service'
@@ -59,7 +58,7 @@ Your task can be [simple](#simple-usage) or [complex](#complex-usage).
 
 ```yaml
 - task: SyntheticsRunTests@0
-  displayName: Run Datadog Synthetics tests
+  displayName: Run Datadog Synthetic tests
   inputs:
     authenticationType: 'connectedService'
     connectedService: 'my-datadog-ci-connected-service'
@@ -75,7 +74,7 @@ Your task can be [simple](#simple-usage) or [complex](#complex-usage).
     apiKey: '$(DatadogApiKey)'
     appKey: '$(DatadogAppKey)'
     subdomain: 'myorg'
-    datadogSite: 'datadoghq.eu'
+    datadogSite: '{{< region-param key="dd_site" code="true" >}}'
 ```
 
 ## Complex usage
@@ -84,7 +83,7 @@ Your task can be [simple](#simple-usage) or [complex](#complex-usage).
 
 ```yaml
 - task: SyntheticsRunTests@0
-  displayName: Run Datadog Synthetics tests
+  displayName: Run Datadog Synthetic tests
   inputs:
     authenticationType: 'connectedService'
     connectedService: 'my-datadog-ci-connected-service'
@@ -98,7 +97,7 @@ Your task can be [simple](#simple-usage) or [complex](#complex-usage).
 
 ```yaml
 - task: SyntheticsRunTests@0
-  displayName: Run Datadog Synthetics tests
+  displayName: Run Datadog Synthetic tests
   inputs:
     authenticationType: 'connectedService'
     connectedService: 'my-datadog-ci-connected-service'
@@ -109,7 +108,7 @@ Your task can be [simple](#simple-usage) or [complex](#complex-usage).
 
 ```yaml
 - task: SyntheticsRunTests@0
-  displayName: Run Datadog Synthetics tests
+  displayName: Run Datadog Synthetic tests
   inputs:
     authenticationType: 'connectedService'
     connectedService: 'my-datadog-ci-connected-service'
@@ -125,7 +124,7 @@ Your task can be [simple](#simple-usage) or [complex](#complex-usage).
 | `apiKey`             | _optional_  | Your Datadog API key when using the `apiAppKeys` authentication type. This key is created by your [Datadog organization][6] and should be stored as a [secret][7].                                                                              |
 | `appKey`             | _optional_  | Your Datadog application key when using the `apiAppKeys` authentication type. This key is created by your [Datadog organization][6] and should be stored as a [secret][7].                                                                      |
 | `subdomain`          | _optional_  | The name of the custom subdomain set to access your Datadog application when using the `apiAppKeys` authentication type. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`. **Default:** `app`. |
-| `datadogSite`        | _optional_  | The [Datadog site][11] when using the `apiAppKeys` authentication type. **Default:** `datadoghq.com`.                                                                                                                                           |
+| `datadogSite`        | _optional_  | The [Datadog site][11] when using the `apiAppKeys` authentication type. Your Datadog site is {{< region-param key="dd_site" code="true" >}}. **Default:** `datadoghq.com`.                                                                                                                                           |
 | `publicIds`          | _optional_  | A list of tests IDs for Synthetic tests you want to trigger, separated by new lines or commas. If no value is provided, the task looks for files named `synthetics.json`.                                                                       |
 | `testSearchQuery`    | _optional_  | Trigger tests corresponding to a [search][8] query. This can be useful if you are tagging your test configurations. For more information, see [rules and best practices for naming tags][10].                                                   |
 | `files`              | _optional_  | Glob pattern to detect Synthetic tests' config files. **Default:** `{,!(node_modules)/**/}*.synthetics.json`.                                                                                                                                   |
