@@ -16,7 +16,7 @@ To connect to your [Datadog site][11], Datadog recommends setting up a custom se
 
 You need to provide the following inputs:
 
-- Datadog site: Which Datadog site to connect to. Your Datadog site is {{< region-param key="dd_site" code="true" >}}.
+- Datadog site: Which [Datadog site][11] to connect and send data to. 
 - Custom subdomain (default: `app`): The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`.
 - API Key: Your Datadog API key. This key is created by your [Datadog organization][6].
 - Application key: Your Datadog application key. This key is created by your [Datadog organization][6].
@@ -26,7 +26,7 @@ You need to provide the following inputs:
 
 - API Key: Your Datadog API key. This key is created by your [Datadog organization][6] and is accessed as an environment variable.
 - Application key: Your Datadog application key. This key is created by your [Datadog organization][6] and is accessed as an environment variable.
-- Datadog site: The [Datadog site][11]. Your Datadog site is {{< region-param key="dd_site" code="true" >}}.
+- Datadog site: The [Datadog site][11] to connect and send data to. 
 - Custom subdomain (optional): The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`.
 
 ## Setup
@@ -124,7 +124,7 @@ Your task can be [simple](#simple-usage) or [complex](#complex-usage).
 | `apiKey`             | _optional_  | Your Datadog API key when using the `apiAppKeys` authentication type. This key is created by your [Datadog organization][6] and should be stored as a [secret][7].                                                                              |
 | `appKey`             | _optional_  | Your Datadog application key when using the `apiAppKeys` authentication type. This key is created by your [Datadog organization][6] and should be stored as a [secret][7].                                                                      |
 | `subdomain`          | _optional_  | The name of the custom subdomain set to access your Datadog application when using the `apiAppKeys` authentication type. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`. **Default:** `app`. |
-| `datadogSite`        | _optional_  | The [Datadog site][11] when using the `apiAppKeys` authentication type. Your Datadog site is {{< region-param key="dd_site" code="true" >}}. **Default:** `datadoghq.com`.                                                                                                                                           |
+| `datadogSite`        | _optional_  | The [Datadog site][11] when using the `apiAppKeys` authentication type. **Default:** `datadoghq.com`.                                                                                                                                           |
 | `publicIds`          | _optional_  | A list of tests IDs for Synthetic tests you want to trigger, separated by new lines or commas. If no value is provided, the task looks for files named `synthetics.json`.                                                                       |
 | `testSearchQuery`    | _optional_  | Trigger tests corresponding to a [search][8] query. This can be useful if you are tagging your test configurations. For more information, see [rules and best practices for naming tags][10].                                                   |
 | `files`              | _optional_  | Glob pattern to detect Synthetic tests' config files. **Default:** `{,!(node_modules)/**/}*.synthetics.json`.                                                                                                                                   |
