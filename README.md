@@ -74,7 +74,7 @@ Your task can be [simple](#simple-usage) or [complex](#complex-usage).
     apiKey: '$(DatadogApiKey)'
     appKey: '$(DatadogAppKey)'
     subdomain: 'myorg'
-    datadogSite: '{{< region-param key="dd_site" code="true" >}}'
+    datadogSite: '$(DatadogSite)'
 ```
 
 ## Complex usage
