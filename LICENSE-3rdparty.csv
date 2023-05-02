@@ -6,7 +6,6 @@
 @typescript-eslint/parser,dev,BSD 2-Clause License, Copyright JS Foundation and other contributors
 azure-pipelines-task-lib,import,MIT,Copyright (c) Microsoft Corporation
 azure-pipelines-tasks-packaging-common,import,MIT,Copyright (c) Microsoft Corporation
-chalk,import,MIT,Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
 clipanion,import,MIT,Copyright (c) 2019 Mael Nison
 deep-extend,import,MIT,"Copyright (c) 2013-2018, Viacheslav Lotsmanov"
 eslint,dev,MIT,Copyright OpenJS Foundation and other contributors
