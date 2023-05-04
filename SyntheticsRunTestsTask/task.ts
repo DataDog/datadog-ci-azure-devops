@@ -1,5 +1,5 @@
 import * as path from 'path'
-
+import * as fs from 'fs'
 import * as task from 'azure-pipelines-task-lib/task'
 
 import {getReporter, resolveConfig} from './resolve-config'
@@ -9,7 +9,16 @@ async function run(): Promise<void> {
   task.setResourcePath(path.join(__dirname, 'task.json'))
   synthetics.utils.setCiTriggerApp('azure_devops_task')
 
-  console.log('TEST: I AM THE LATEST TASK VERSION')
+  const taskJson = JSON.parse(fs.readFileSync(path.join(__dirname, 'task.json')).toString())
+
+  console.log(
+    'TEST: I AM THE LATEST TASK VERSION',
+    JSON.stringify({
+      hardcodedTaskId: '60b18503-c6d6-4e4b-a6b2-52fc6fb3d525',
+      actualTaskId: taskJson.id,
+      version: taskJson.version,
+    })
+  )
 
   const reporter = getReporter()
   const config = await resolveConfig(reporter)
