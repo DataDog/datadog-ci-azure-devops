@@ -168,6 +168,7 @@ stages:
                   shareWith: 'datadog-ci'
 
           - job: E2E
+            dependsOn: PublishDev
             displayName: Cross-platform end-to-end testing
             strategy:
               matrix:
