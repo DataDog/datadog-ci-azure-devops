@@ -7,7 +7,7 @@ parameters:
   - name: performRelease
     displayName: Release Production Extension
     type: boolean
-    default: false
+    default: 'False'
   - name: releaseSemver
     displayName: Release Production semver
     type: string
@@ -19,7 +19,7 @@ parameters:
   - name: performDevRelease
     displayName: Release DEV Extension
     type: boolean
-    default: false
+    default: 'True'
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -124,8 +124,7 @@ stages:
   #                   node task.js
 
   # Release DEV extension on `performDevRelease` or automatically on `main` push
-  # - ${{ if or(eq(parameters.performDevRelease, true), eq(variables['Build.SourceBranch'], 'refs/heads/main')) }}:
-  - ${{ if or(eq(parameters.performDevRelease, true), true) }}:
+  - ${{ if or(eq(parameters.performDevRelease, true), eq(variables['Build.SourceBranch'], 'refs/heads/main')) }}:
       - stage: ReleaseDev
         displayName: Release DEV
         dependsOn: 'Build'
