@@ -125,7 +125,7 @@ stages:
 
   # Release DEV extension on `performDevRelease` or automatically on `main` push
   # - ${{ if or(eq(parameters.performDevRelease, true), eq(variables['Build.SourceBranch'], 'refs/heads/main')) }}:
-  - ${{ if or(eq(parameters.performDevRelease, true), true }}:
+  - ${{ if or(eq(parameters.performDevRelease, true), true) }}:
       - stage: ReleaseDev
         displayName: Release DEV
         dependsOn: 'Build'
