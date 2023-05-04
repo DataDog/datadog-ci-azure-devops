@@ -82,46 +82,46 @@ stages:
             displayName: Publish VSIX artifact
             artifact: $(artifactPath)
 
-  - ${{ if and(eq(parameters.performRelease, false), eq(parameters.performDevRelease, false)) }}:
-      - stage: Test
-        displayName: E2E tests
-        dependsOn: 'Build'
-        jobs:
-          - job: E2E
-            displayName: Cross-platform
-            strategy:
-              matrix:
-                Linux:
-                  imageName: 'ubuntu-latest'
-                Windows:
-                  imageName: 'windows-latest'
-            pool:
-              vmImage: $(imageName)
-            steps:
-              - download: current
-                displayName: Download VSIX artifact
-                artifact: $(artifactPath)
+  # - ${{ if and(eq(parameters.performRelease, false), eq(parameters.performDevRelease, false)) }}:
+  #     - stage: Test
+  #       displayName: E2E tests
+  #       dependsOn: 'Build'
+  #       jobs:
+  #         - job: E2E
+  #           displayName: Cross-platform
+  #           strategy:
+  #             matrix:
+  #               Linux:
+  #                 imageName: 'ubuntu-latest'
+  #               Windows:
+  #                 imageName: 'windows-latest'
+  #           pool:
+  #             vmImage: $(imageName)
+  #           steps:
+  #             - download: current
+  #               displayName: Download VSIX artifact
+  #               artifact: $(artifactPath)
 
-              # Extract the extension then run the task directly with node by providing
-              # the inputs through environment variables
-              - task: ExtractFiles@1
-                displayName: Extract VSIX
-                inputs:
-                  archiveFilePatterns: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
-                  destinationFolder: 'extracted'
+  #             # Extract the extension then run the task directly with node by providing
+  #             # the inputs through environment variables
+  #             - task: ExtractFiles@1
+  #               displayName: Extract VSIX
+  #               inputs:
+  #                 archiveFilePatterns: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
+  #                 destinationFolder: 'extracted'
 
-              - task: Bash@3
-                displayName: Run the task
-                inputs:
-                  workingDirectory: 'extracted/SyntheticsRunTestsTask'
-                  targetType: 'inline'
-                  script: |
-                    export INPUT_AUTHENTICATIONTYPE='apiAppKeys'
-                    export INPUT_APIKEY='$(API_KEY)'
-                    export INPUT_APPKEY='$(APP_KEY)'
-                    export INPUT_CONFIGPATH='../../ci/e2e.config.json'
-                    export INPUT_PUBLICIDS='2r9-q7u-4nn,pwd-mwg-3p5'
-                    node task.js
+  #             - task: Bash@3
+  #               displayName: Run the task
+  #               inputs:
+  #                 workingDirectory: 'extracted/SyntheticsRunTestsTask'
+  #                 targetType: 'inline'
+  #                 script: |
+  #                   export INPUT_AUTHENTICATIONTYPE='apiAppKeys'
+  #                   export INPUT_APIKEY='$(API_KEY)'
+  #                   export INPUT_APPKEY='$(APP_KEY)'
+  #                   export INPUT_CONFIGPATH='../../ci/e2e.config.json'
+  #                   export INPUT_PUBLICIDS='2r9-q7u-4nn,pwd-mwg-3p5'
+  #                   node task.js
 
   # Release DEV extension on `performDevRelease` or automatically on `main` push
   - ${{ if or(eq(parameters.performDevRelease, true), eq(variables['Build.SourceBranch'], 'refs/heads/main')) }}:
@@ -167,58 +167,89 @@ stages:
                   extensionPricing: 'free'
                   shareWith: 'datadog-ci'
 
-  # Extension public release, only performed on manual runs
-  - ${{ if eq(parameters.performRelease, true) }}:
-      - stage: Release
-        displayName: Release
-        dependsOn: 'Build'
-        jobs:
-          - job: PublishPublic
-            displayName: Publish (public)
+          - job: E2E
+            displayName: Cross-platform end-to-end testing
+            strategy:
+              matrix:
+                # Linux:
+                #   imageName: 'ubuntu-latest'
+                Windows:
+                  imageName: 'windows-latest'
+            pool:
+              vmImage: $(imageName)
             steps:
-              - download: current
-                displayName: Download VSIX
-                artifact: $(artifactPath)
-
-              - task: TfxInstaller@3
-                displayName: Install TFX CLI
+              - task: Datadog.datadog-ci-dev.synthetics-application-testing.SyntheticsRunTests@0
+                displayName: Run DEV task - apiAppKeys
                 inputs:
-                  version: 'v0.12.x'
+                  authenticationType: 'apiAppKeys'
+                  apiKey: '$(API_KEY)'
+                  appKey: '$(APP_KEY)'
+                  publicIds: '2r9-q7u-4nn'
+                  # publicIds: '2r9-q7u-4nn,pwd-mwg-3p5'
+                  configPath: 'ci/e2e.config.json'
 
-              - task: QueryAzureDevOpsExtensionVersion@3
-                displayName: Query existing extension version
-                name: 'queryVersion'
-                inputs:
-                  connectTo: 'VsTeam'
-                  connectedServiceName: 'marketplace-service-connection'
-                  publisherId: '$(publisherId)'
-                  extensionId: '$(extensionId)'
-                  versionAction: '${{ parameters.releaseSemver }}'
-                  setBuildNumber: 'false'
+              # - task: Datadog.datadog-ci-dev.synthetics-application-testing.SyntheticsRunTests@0
+              #   displayName: Run DEV task - connectedService
+              #   inputs:
+              #     authenticationType: 'connectedService'
+              #     connectedService: 'synthetics-e2e-testing-org'
+              #     publicIds: |
+              #       2r9-q7u-4nn
+              #       pwd-mwg-3p5
+              #     configPath: 'ci/e2e.config.json'
 
-              - task: PublishAzureDevOpsExtension@3
-                displayName: Publish Extension
-                inputs:
-                  connectTo: 'VsTeam'
-                  connectedServiceName: 'marketplace-service-connection'
-                  fileType: 'vsix'
-                  vsixFile: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
-                  updateTasksVersion: false
-                  extensionVisibility: 'public'
-                  extensionPricing: 'free'
-                  extensionVersion: '$(queryVersion.Extension.Version)'
+  # # Extension public release, only performed on manual runs
+  # - ${{ if eq(parameters.performRelease, true) }}:
+  #     - stage: Release
+  #       displayName: Release
+  #       dependsOn: 'Build'
+  #       jobs:
+  #         - job: PublishPublic
+  #           displayName: Publish (public)
+  #           steps:
+  #             - download: current
+  #               displayName: Download VSIX
+  #               artifact: $(artifactPath)
 
-              - task: GitHubRelease@1
-                displayName: Create Github Release
-                inputs:
-                  gitHubConnection: 'github-service-connection-lefebvree'
-                  repositoryName: '$(Build.Repository.Name)'
-                  action: 'create'
-                  target: '$(Build.SourceVersion)'
-                  tagSource: 'userSpecifiedTag'
-                  assets: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
-                  tag: 'v$(queryVersion.Extension.Version)'
-                  title: 'v$(queryVersion.Extension.Version)'
-                  releaseNotesSource: 'inline'
-                  changeLogCompareToRelease: 'lastFullRelease'
-                  changeLogType: 'commitBased'
+  #             - task: TfxInstaller@3
+  #               displayName: Install TFX CLI
+  #               inputs:
+  #                 version: 'v0.12.x'
+
+  #             - task: QueryAzureDevOpsExtensionVersion@3
+  #               displayName: Query existing extension version
+  #               name: 'queryVersion'
+  #               inputs:
+  #                 connectTo: 'VsTeam'
+  #                 connectedServiceName: 'marketplace-service-connection'
+  #                 publisherId: '$(publisherId)'
+  #                 extensionId: '$(extensionId)'
+  #                 versionAction: '${{ parameters.releaseSemver }}'
+  #                 setBuildNumber: 'false'
+
+  #             - task: PublishAzureDevOpsExtension@3
+  #               displayName: Publish Extension
+  #               inputs:
+  #                 connectTo: 'VsTeam'
+  #                 connectedServiceName: 'marketplace-service-connection'
+  #                 fileType: 'vsix'
+  #                 vsixFile: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
+  #                 updateTasksVersion: false
+  #                 extensionVisibility: 'public'
+  #                 extensionPricing: 'free'
+  #                 extensionVersion: '$(queryVersion.Extension.Version)'
+
+  #             - task: GitHubRelease@1
+  #               displayName: Create Github Release
+  #               inputs:
+  #                 gitHubConnection: 'github-service-connection-lefebvree'
+  #                 repositoryName: '$(Build.Repository.Name)'
+  #                 action: 'create'
+  #                 target: '$(Build.SourceVersion)'
+  #                 tagSource: 'userSpecifiedTag'
+  #                 assets: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
+  #                 tag: 'v$(queryVersion.Extension.Version)'
+  #                 title: 'v$(queryVersion.Extension.Version)'
+  #                 releaseNotesSource: 'inline'
+  #                 changeLogCompareToRelease: 'lastFullRelease'
+  #                 changeLogType: 'commitBased'

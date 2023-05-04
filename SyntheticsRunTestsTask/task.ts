@@ -9,6 +9,8 @@ async function run(): Promise<void> {
   task.setResourcePath(path.join(__dirname, 'task.json'))
   synthetics.utils.setCiTriggerApp('azure_devops_task')
 
+  console.log('TEST: I AM THE LATEST TASK VERSION')
+
   const reporter = getReporter()
   const config = await resolveConfig(reporter)
   const startTime = Date.now()
