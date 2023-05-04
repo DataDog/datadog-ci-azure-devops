@@ -30,7 +30,9 @@ async function run(): Promise<void> {
 
     const exitReason = synthetics.utils.getExitReason(config, {results})
     if (exitReason !== 'passed') {
-      task.setResult(task.TaskResult.Failed, `Datadog Synthetics tests failed. ${printSummary(summary, config)}`)
+      task.setResult(task.TaskResult.Failed, `Datadog Synthetics tests failed: ${printSummary(summary, config)}`)
+    } else {
+      task.setResult(task.TaskResult.Succeeded, `Datadog Synthetics tests succeeded: ${printSummary(summary, config)}`)
     }
   } catch (error) {
     synthetics.utils.reportExitLogs(reporter, config, {error})
