@@ -47,7 +47,7 @@ stages:
     jobs:
       - job: Build
         steps:
-          - task: TfxInstaller@3
+          - task: TfxInstaller@4
             displayName: Install TFX CLI
             inputs:
               version: 'v0.12.x'
@@ -68,7 +68,7 @@ stages:
                 yarn workspaces focus --production
                 rm -rf .yarn/
 
-          - task: PackageAzureDevOpsExtension@3
+          - task: PackageAzureDevOpsExtension@4
             displayName: Package Datadog CI extension
             name: 'packageStep'
             inputs:
@@ -82,6 +82,7 @@ stages:
             displayName: Publish VSIX artifact
             artifact: $(artifactPath)
 
+  # TODO: remove this
   # - ${{ if and(eq(parameters.performRelease, false), eq(parameters.performDevRelease, false)) }}:
   #     - stage: Test
   #       displayName: E2E tests
@@ -136,12 +137,12 @@ stages:
                 displayName: Download VSIX artifact
                 artifact: $(artifactPath)
 
-              - task: TfxInstaller@3
+              - task: TfxInstaller@4
                 displayName: Install TFX CLI
                 inputs:
                   version: 'v0.12.x'
 
-              - task: QueryAzureDevOpsExtensionVersion@3
+              - task: QueryAzureDevOpsExtensionVersion@4
                 displayName: Query existing DEV extension version
                 name: 'queryDevVersion'
                 inputs:
@@ -152,7 +153,7 @@ stages:
                   extensionTag: '$(devExtensionTag)'
                   versionAction: 'Patch'
 
-              - task: PublishAzureDevOpsExtension@3
+              - task: PublishAzureDevOpsExtension@4
                 displayName: Publish new DEV extension version
                 inputs:
                   connectTo: 'VsTeam'
@@ -212,12 +213,12 @@ stages:
   #               displayName: Download VSIX
   #               artifact: $(artifactPath)
 
-  #             - task: TfxInstaller@3
+  #             - task: TfxInstaller@4
   #               displayName: Install TFX CLI
   #               inputs:
   #                 version: 'v0.12.x'
 
-  #             - task: QueryAzureDevOpsExtensionVersion@3
+  #             - task: QueryAzureDevOpsExtensionVersion@4
   #               displayName: Query existing extension version
   #               name: 'queryVersion'
   #               inputs:
@@ -228,7 +229,7 @@ stages:
   #                 versionAction: '${{ parameters.releaseSemver }}'
   #                 setBuildNumber: 'false'
 
-  #             - task: PublishAzureDevOpsExtension@3
+  #             - task: PublishAzureDevOpsExtension@4
   #               displayName: Publish Extension
   #               inputs:
   #                 connectTo: 'VsTeam'
@@ -239,18 +240,18 @@ stages:
   #                 extensionVisibility: 'public'
   #                 extensionPricing: 'free'
   #                 extensionVersion: '$(queryVersion.Extension.Version)'
-
-  #             - task: GitHubRelease@1
-  #               displayName: Create Github Release
-  #               inputs:
-  #                 gitHubConnection: 'github-service-connection-lefebvree'
-  #                 repositoryName: '$(Build.Repository.Name)'
-  #                 action: 'create'
-  #                 target: '$(Build.SourceVersion)'
-  #                 tagSource: 'userSpecifiedTag'
-  #                 assets: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
-  #                 tag: 'v$(queryVersion.Extension.Version)'
-  #                 title: 'v$(queryVersion.Extension.Version)'
-  #                 releaseNotesSource: 'inline'
-  #                 changeLogCompareToRelease: 'lastFullRelease'
-  #                 changeLogType: 'commitBased'
+# TODO: remove this
+#             - task: GitHubRelease@1
+#               displayName: Create Github Release
+#               inputs:
+#                 gitHubConnection: 'github-service-connection-lefebvree'
+#                 repositoryName: '$(Build.Repository.Name)'
+#                 action: 'create'
+#                 target: '$(Build.SourceVersion)'
+#                 tagSource: 'userSpecifiedTag'
+#                 assets: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
+#                 tag: 'v$(queryVersion.Extension.Version)'
+#                 title: 'v$(queryVersion.Extension.Version)'
+#                 releaseNotesSource: 'inline'
+#                 changeLogCompareToRelease: 'lastFullRelease'
+#                 changeLogType: 'commitBased'
