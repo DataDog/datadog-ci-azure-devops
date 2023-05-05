@@ -1,6 +1,12 @@
 trigger: none # Disable individual commit runs. https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/azure-repos-git?view=azure-devops&tabs=yaml#opting-out-of-ci
 pr: none # Disable PR runs. https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/azure-repos-git?view=azure-devops&tabs=yaml#pr-triggers
 
+resources:
+  pipelines:
+    - pipeline: e2e-tests-on-dev
+      source: DataDog.datadog-ci-azure-devops
+      trigger: true
+
 variables:
   - group: ci-variables
 
