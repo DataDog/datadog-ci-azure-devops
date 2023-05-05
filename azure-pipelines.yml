@@ -183,7 +183,7 @@ stages:
         pool:
           vmImage: $(imageName)
         steps:
-          - task: Datadog.datadog-ci-dev.synthetics-application-testing.SyntheticsRunTests@0
+          - task: Datadog.datadog-ci-dev.synthetics-application-testing.SyntheticsRunTests@$(queryDevVersion.Extension.Version)
             displayName: Run DEV task - apiAppKeys
             inputs:
               authenticationType: 'apiAppKeys'
