@@ -17,7 +17,7 @@ async function run(): Promise<void> {
       hardcodedTaskId: '60b18503-c6d6-4e4b-a6b2-52fc6fb3d525',
       actualTaskId: taskJson.id,
       version: taskJson.version,
-      manualSequence: 4,
+      manualSequence: 5,
     })
   )
 
