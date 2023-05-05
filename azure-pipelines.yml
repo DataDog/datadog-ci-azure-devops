@@ -43,7 +43,7 @@ variables:
 
 stages:
   # Build and package .vsix extension file
-  - stage: Build
+  - stage: BuildStage
     jobs:
       - job: Build
         steps:
@@ -128,7 +128,7 @@ stages:
   - ${{ if or(eq(parameters.performDevRelease, true), eq(variables['Build.SourceBranch'], 'refs/heads/main')) }}:
       - stage: ReleaseDev
         displayName: Release DEV
-        dependsOn: 'Build'
+        dependsOn: BuildStage
         jobs:
           - job: PublishDev
             displayName: Publish DEV version
@@ -173,7 +173,6 @@ stages:
     dependsOn: ReleaseDev
     jobs:
       - job: E2E
-        dependsOn: PublishDev
         displayName: Cross-platform end-to-end testing
         strategy:
           matrix:
@@ -208,7 +207,7 @@ stages:
   # - ${{ if eq(parameters.performRelease, true) }}:
   #     - stage: Release
   #       displayName: Release
-  #       dependsOn: 'Build'
+  #       dependsOn: BuildStage
   #       jobs:
   #         - job: PublishPublic
   #           displayName: Publish (public)
