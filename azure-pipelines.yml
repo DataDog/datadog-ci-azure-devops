@@ -16,10 +16,6 @@ parameters:
       - Patch
       - Minor
       - Major
-  - name: performDevRelease
-    displayName: Release DEV Extension
-    type: boolean
-    default: false
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -45,7 +41,8 @@ stages:
   # Build and package .vsix extension file
   - stage: Build
     jobs:
-      - job: Build
+      - job: BuildAndPackage
+        displayName: Build and package
         steps:
           - task: TfxInstaller@3
             displayName: Install TFX CLI
@@ -82,96 +79,53 @@ stages:
             displayName: Publish VSIX artifact
             artifact: $(artifactPath)
 
-  - ${{ if and(eq(parameters.performRelease, false), eq(parameters.performDevRelease, false)) }}:
-      - stage: Test
-        displayName: E2E tests
-        dependsOn: 'Build'
-        jobs:
-          - job: E2E
-            displayName: Cross-platform
-            strategy:
-              matrix:
-                Linux:
-                  imageName: 'ubuntu-latest'
-                Windows:
-                  imageName: 'windows-latest'
-            pool:
-              vmImage: $(imageName)
-            steps:
-              - download: current
-                displayName: Download VSIX artifact
-                artifact: $(artifactPath)
+  # Release a DEV extension. E2E tests will automatically run on it in `e2e.azure-pipelines.yml`
+  - stage: ReleaseDev
+    displayName: Release DEV
+    dependsOn: Build
+    jobs:
+      - job: PublishDev
+        displayName: Publish DEV version
+        steps:
+          - download: current
+            displayName: Download VSIX artifact
+            artifact: $(artifactPath)
 
-              # Extract the extension then run the task directly with node by providing
-              # the inputs through environment variables
-              - task: ExtractFiles@1
-                displayName: Extract VSIX
-                inputs:
-                  archiveFilePatterns: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
-                  destinationFolder: 'extracted'
+          - task: TfxInstaller@3
+            displayName: Install TFX CLI
+            inputs:
+              version: 'v0.12.x'
 
-              - task: Bash@3
-                displayName: Run the task
-                inputs:
-                  workingDirectory: 'extracted/SyntheticsRunTestsTask'
-                  targetType: 'inline'
-                  script: |
-                    export INPUT_AUTHENTICATIONTYPE='apiAppKeys'
-                    export INPUT_APIKEY='$(API_KEY)'
-                    export INPUT_APPKEY='$(APP_KEY)'
-                    export INPUT_CONFIGPATH='../../ci/e2e.config.json'
-                    export INPUT_PUBLICIDS='2r9-q7u-4nn,pwd-mwg-3p5'
-                    node task.js
+          - task: QueryAzureDevOpsExtensionVersion@3
+            displayName: Query existing DEV extension version
+            name: 'queryDevVersion'
+            inputs:
+              connectTo: 'VsTeam'
+              connectedServiceName: 'marketplace-service-connection'
+              publisherId: '$(publisherId)'
+              extensionId: '$(extensionId)'
+              extensionTag: '$(devExtensionTag)'
+              versionAction: 'Patch'
 
-  # Release DEV extension on `performDevRelease` or automatically on `main` push
-  - ${{ if or(eq(parameters.performDevRelease, true), eq(variables['Build.SourceBranch'], 'refs/heads/main')) }}:
-      - stage: ReleaseDev
-        displayName: Release DEV
-        dependsOn: 'Build'
-        jobs:
-          - job: PublishDev
-            displayName: Publish DEV version
-            steps:
-              - download: current
-                displayName: Download VSIX artifact
-                artifact: $(artifactPath)
-
-              - task: TfxInstaller@3
-                displayName: Install TFX CLI
-                inputs:
-                  version: 'v0.12.x'
-
-              - task: QueryAzureDevOpsExtensionVersion@3
-                displayName: Query existing DEV extension version
-                name: 'queryDevVersion'
-                inputs:
-                  connectTo: 'VsTeam'
-                  connectedServiceName: 'marketplace-service-connection'
-                  publisherId: '$(publisherId)'
-                  extensionId: '$(extensionId)'
-                  extensionTag: '$(devExtensionTag)'
-                  versionAction: 'Patch'
-
-              - task: PublishAzureDevOpsExtension@3
-                displayName: Publish new DEV extension version
-                inputs:
-                  connectTo: 'VsTeam'
-                  connectedServiceName: 'marketplace-service-connection'
-                  fileType: 'vsix'
-                  vsixFile: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
-                  extensionTag: '$(devExtensionTag)'
-                  extensionName: '$(extensionName) DEV'
-                  extensionVersion: '$(queryDevVersion.Extension.Version)'
-                  updateTasksId: true
-                  extensionVisibility: 'private'
-                  extensionPricing: 'free'
-                  shareWith: 'datadog-ci'
+          - task: PublishAzureDevOpsExtension@3
+            displayName: Publish new DEV extension version
+            inputs:
+              connectTo: 'VsTeam'
+              connectedServiceName: 'marketplace-service-connection'
+              fileType: 'vsix'
+              vsixFile: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
+              extensionTag: '$(devExtensionTag)'
+              extensionName: '$(extensionName) DEV'
+              extensionVersion: '$(queryDevVersion.Extension.Version)'
+              updateTasksId: true
+              extensionVisibility: 'private'
+              extensionPricing: 'free'
+              shareWith: 'datadog-ci'
 
   # Extension public release, only performed on manual runs
   - ${{ if eq(parameters.performRelease, true) }}:
       - stage: Release
-        displayName: Release
-        dependsOn: 'Build'
+        dependsOn: Build
         jobs:
           - job: PublishPublic
             displayName: Publish (public)
