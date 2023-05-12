@@ -3,7 +3,7 @@ import * as task from 'azure-pipelines-task-lib/task'
 import {synthetics, utils} from '@datadog/datadog-ci'
 import deepExtend from 'deep-extend'
 
-import {parseMultiline} from './utils'
+import {getDefinedInteger, parseMultiline} from './utils'
 
 const DEFAULT_CONFIG: synthetics.CommandConfig = {
   apiKey: '',
@@ -94,6 +94,7 @@ export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<
   const files = parseMultiline(task.getInput('files'))
   const testSearchQuery = task.getInput('testSearchQuery')
   const variableStrings = parseMultiline(task.getInput('variables'))
+  const pollingTimeout = getDefinedInteger(task.getInput('pollingTimeout'))
 
   let config = JSON.parse(JSON.stringify(DEFAULT_CONFIG))
   // Override with file config variables
@@ -104,7 +105,7 @@ export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<
     })
   } catch (error) {
     if (configPath) {
-      task.setResult(task.TaskResult.Failed, `Unable to parse config file! Please verify config path : ${configPath}`)
+      task.setResult(task.TaskResult.Failed, `Unable to parse config file! Please verify config path: ${configPath}`)
       throw error
     }
     // Here, if configPath is not present it means that default config file does not exist: in this case it's expected for the task to be silent.
@@ -119,6 +120,7 @@ export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<
       configPath,
       datadogSite,
       files,
+      pollingTimeout,
       publicIds,
       subdomain,
       testSearchQuery,

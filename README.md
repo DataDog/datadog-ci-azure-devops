@@ -131,6 +131,7 @@ Your task can be [simple](#simple-usage) or [complex](#complex-usage).
 | `configPath`         | _optional_  | The global JSON configuration used when launching tests. For more information, see the [example configuration][9]. **Default:** `datadog-ci.json`.                                                                                              |
 | `variables`          | _optional_  | A list of global variables to use for Synthetic tests, separated by new lines or commas. For example: `START_URL=https://example.org,MY_VARIABLE=My title`. **Default:** `[]`.                                                                  |
 | `jUnitReport`        | _optional_  | The filename for a JUnit report if you want to generate one.                                                                                                                                                                                    |
+| `pollingTimeout`     | _optional_  | The duration (in milliseconds) after which the task stops polling for test results. At the CI level, test results completed after this duration are considered failed. **Default:** 30 minutes.                                                 |
 
 
 ## Further reading
