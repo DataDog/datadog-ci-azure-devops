@@ -109,6 +109,13 @@
       "label": "JUnit Report",
       "defaultValue": "",
       "helpMarkDown": "The filename for a JUnit report if you want to generate one."
+    },
+    {
+      "name": "pollingTimeout",
+      "type": "int",
+      "label": "Polling Timeout",
+      "defaultValue": "",
+      "helpMarkDown": "The duration (in milliseconds) after which the task stops polling for test results."
     }
   ],
   "execution": {
