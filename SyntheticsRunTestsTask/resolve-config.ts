@@ -94,7 +94,7 @@ export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<
   const files = parseMultiline(task.getInput('files'))
   const testSearchQuery = task.getInput('testSearchQuery')
   const variableStrings = parseMultiline(task.getInput('variables'))
-  const pollingTimeout = getDefinedInteger(task.getInput('pollingTimeout'))
+  const pollingTimeout = getDefinedInteger(task.getInput('pollingTimeout'), {inputName: 'pollingTimeout'})
 
   let config = JSON.parse(JSON.stringify(DEFAULT_CONFIG))
   // Override with file config variables
