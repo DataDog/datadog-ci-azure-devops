@@ -115,7 +115,7 @@
       "type": "int",
       "label": "Polling Timeout",
       "defaultValue": "",
-      "helpMarkDown": "The duration (in milliseconds) after which the orb stops polling for test results."
+      "helpMarkDown": "The duration (in milliseconds) after which the task stops polling for test results."
     }
   ],
   "execution": {
