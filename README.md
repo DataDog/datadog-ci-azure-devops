@@ -160,4 +160,4 @@ Additional helpful documentation, links, and articles:
 [11]: https://docs.datadoghq.com/getting_started/site/
 [12]: https://www.datadoghq.com/blog/best-practices-datadog-continuous-testing/
 [13]: https://github.com/DataDog/datadog-ci/blob/master/.github/workflows/e2e/global.config.json
-[14]: https://github.com/DataDog/datadog-ci/blob/master/.github/workflows/e2e/test.synthetics.json
+[14]: https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#test-files
