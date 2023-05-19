@@ -6,7 +6,7 @@
 
 ## Overview
 
-With the Datadog CI Azure DevOps Extension, you can run Synthetic tests within your Azure Pipeline configuration and ensure all your teams using Azure DevOps can benefit from Synthetic tests at every stage of the software lifecycle. You can run [`SyntheticsRunTests`](#available-tasks) as a task.
+With the Datadog CI Azure DevOps Extension, you can run Synthetic tests within your Azure Pipeline configuration and ensure all your teams using Azure DevOps can benefit from Synthetic tests at every stage of the software lifecycle. You can run [`SyntheticsRunTests`][3] as a task.
 
 ## Authentication
 
@@ -65,6 +65,8 @@ Your task can be [simple](#simple-usage) or [complex](#complex-usage).
     files: 'e2e-tests/*.synthetics.json'
 ```
 
+For an example test file, see this [`test.synthetics.json` file][14].
+
 ### Example task using pipeline secrets for authentication
 
 ```yaml
@@ -106,6 +108,8 @@ Your task can be [simple](#simple-usage) or [complex](#complex-usage).
 
 ### Example task using a global configuration override with `configPath`
 
+This task overrides the path to the global `datadog-ci.config.json` file.
+
 ```yaml
 - task: SyntheticsRunTests@0
   displayName: Run Datadog Synthetic tests
@@ -114,6 +118,8 @@ Your task can be [simple](#simple-usage) or [complex](#complex-usage).
     connectedService: 'my-datadog-ci-connected-service'
     configPath: './synthetics-config.json'
 ```
+
+For an example configuration file, see this [`global.config.json` file][13].
 
 ## Inputs
 
@@ -143,13 +149,15 @@ Additional helpful documentation, links, and articles:
 
 [1]: https://marketplace.visualstudio.com/items?itemName=Datadog.datadog-ci
 [2]: https://github.com/DataDog/datadog-ci
-[3]: https://github.com/DataDog/datadog-ci/tree/master/src/commands/synthetics
+[3]: https://github.com/DataDog/datadog-ci-azure-devops/tree/main/SyntheticsRunTestsTask
 [4]: https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration
 [5]: https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints
 [6]: https://docs.datadoghq.com/account_management/api-app-keys/
 [7]: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables
 [8]: https://docs.datadoghq.com/synthetics/search/#search
-[9]: https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#setup-a-client
+[9]: https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#setup-the-client
 [10]: https://docs.datadoghq.com/developers/guide/what-best-practices-are-recommended-for-naming-metrics-and-tags/#rules-and-best-practices-for-naming-tags
 [11]: https://docs.datadoghq.com/getting_started/site/
 [12]: https://www.datadoghq.com/blog/best-practices-datadog-continuous-testing/
+[13]: https://github.com/DataDog/datadog-ci/blob/master/.github/workflows/e2e/global.config.json
+[14]: https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#test-files
