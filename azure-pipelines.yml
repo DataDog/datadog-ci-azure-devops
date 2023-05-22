@@ -116,11 +116,13 @@ stages:
               vsixFile: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
               extensionTag: '$(devExtensionTag)'
               extensionName: '$(extensionName) DEV'
-              extensionVersion: '$(queryDevVersion.Extension.Version)'
-              updateTasksId: true
               extensionVisibility: 'private'
               extensionPricing: 'free'
               shareWith: 'datadog-ci'
+              extensionVersion: '$(queryDevVersion.Extension.Version)'
+              updateTasksId: true # The DEV task ID is overridden to 99cf84cd-0117-58b7-b1dd-d95e5ae9baf8 (based on the `extensionTag`)
+              updateTasksVersion: true # Do not require updating the task version during development
+              updateTasksVersionType: patch
 
   # Extension public release, only performed on manual runs
   - ${{ if eq(parameters.performRelease, true) }}:
@@ -157,10 +159,11 @@ stages:
                   connectedServiceName: 'marketplace-service-connection'
                   fileType: 'vsix'
                   vsixFile: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
-                  updateTasksVersion: false
                   extensionVisibility: 'public'
                   extensionPricing: 'free'
                   extensionVersion: '$(queryVersion.Extension.Version)'
+                  updateTasksId: false # The task ID stays 60b18503-c6d6-4e4b-a6b2-52fc6fb3d525 (defined in task.json)
+                  updateTasksVersion: false # Bumped automatically by our Release Automation bot
 
               - task: GitHubRelease@1
                 displayName: Create Github Release
