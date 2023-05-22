@@ -124,6 +124,11 @@ stages:
               updateTasksVersion: true # Do not require updating the task version during development
               updateTasksVersionType: patch
 
+          - task: Delay@1
+            displayName: Try to wait
+            inputs:
+              delayForMinutes: '5'
+
   # Extension public release, only performed on manual runs
   - ${{ if eq(parameters.performRelease, true) }}:
       - stage: Release
