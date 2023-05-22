@@ -125,6 +125,7 @@ stages:
               updateTasksVersionType: patch
 
       - job: Sleep
+        dependsOn: PublishDev
         pool: server
         steps:
           - task: Delay@1
