@@ -124,10 +124,13 @@ stages:
               updateTasksVersion: true # Do not require updating the task version during development
               updateTasksVersionType: patch
 
+      - job: Sleep
+        pool: server
+        steps:
           - task: Delay@1
-            displayName: Try to wait
+            displayName: Delay for x minutes
             inputs:
-              delayForMinutes: '5'
+              delayForMinutes: 5
 
   # Extension public release, only performed on manual runs
   - ${{ if eq(parameters.performRelease, true) }}:
