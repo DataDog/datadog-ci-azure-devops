@@ -131,7 +131,7 @@ stages:
           - task: Delay@1
             displayName: Delay for x minutes
             inputs:
-              delayForMinutes: 5
+              delayForMinutes: 4
 
   # Extension public release, only performed on manual runs
   - ${{ if eq(parameters.performRelease, true) }}:
