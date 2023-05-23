@@ -54,30 +54,30 @@ stages:
             inputs:
               versionSpec: '16.15.0'
 
-          - task: Bash@3
-            displayName: Compile the Synthetics task
-            inputs:
-              targetType: 'inline'
-              script: |
-                cd SyntheticsRunTestsTask
-                yarn install --immutable
-                yarn build
-                yarn workspaces focus --production
-                rm -rf .yarn/
+          # - task: Bash@3
+          #   displayName: Compile the Synthetics task
+          #   inputs:
+          #     targetType: 'inline'
+          #     script: |
+          #       cd SyntheticsRunTestsTask
+          #       yarn install --immutable
+          #       yarn build
+          #       yarn workspaces focus --production
+          #       rm -rf .yarn/
 
-          - task: PackageAzureDevOpsExtension@4
-            displayName: Package Datadog CI extension
-            name: 'packageStep'
-            inputs:
-              rootFolder: '$(Build.SourcesDirectory)'
-              outputPath: '$(Build.ArtifactStagingDirectory)/$(packagedTask)'
-              updateTasksVersion: false
-              extensionVisibility: 'private'
-              extensionPricing: 'free'
+          # - task: PackageAzureDevOpsExtension@4
+          #   displayName: Package Datadog CI extension
+          #   name: 'packageStep'
+          #   inputs:
+          #     rootFolder: '$(Build.SourcesDirectory)'
+          #     outputPath: '$(Build.ArtifactStagingDirectory)/$(packagedTask)'
+          #     updateTasksVersion: false
+          #     extensionVisibility: 'private'
+          #     extensionPricing: 'free'
 
-          - publish: '$(packageStep.Extension.OutputPath)'
-            displayName: Publish VSIX artifact
-            artifact: $(artifactPath)
+          # - publish: '$(packageStep.Extension.OutputPath)'
+          #   displayName: Publish VSIX artifact
+          #   artifact: $(artifactPath)
 
   # Release a DEV extension. E2E tests will automatically run on it in `e2e.azure-pipelines.yml`
   - stage: ReleaseDev
@@ -96,42 +96,53 @@ stages:
             inputs:
               version: 'v0.12.x'
 
-          - task: QueryAzureDevOpsExtensionVersion@4
-            displayName: Query existing DEV extension version
-            name: 'queryDevVersion'
-            inputs:
-              connectTo: 'VsTeam'
-              connectedServiceName: 'marketplace-service-connection'
-              publisherId: '$(publisherId)'
-              extensionId: '$(extensionId)'
-              extensionTag: '$(devExtensionTag)'
-              versionAction: 'Patch'
+          # - task: QueryAzureDevOpsExtensionVersion@4
+          #   displayName: Query existing DEV extension version
+          #   name: 'queryDevVersion'
+          #   inputs:
+          #     connectTo: 'VsTeam'
+          #     connectedServiceName: 'marketplace-service-connection'
+          #     publisherId: '$(publisherId)'
+          #     extensionId: '$(extensionId)'
+          #     extensionTag: '$(devExtensionTag)'
+          #     versionAction: 'Patch'
 
-          - task: PublishAzureDevOpsExtension@4
-            displayName: Publish new DEV extension version
-            inputs:
-              connectTo: 'VsTeam'
-              connectedServiceName: 'marketplace-service-connection'
-              fileType: 'vsix'
-              vsixFile: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
-              extensionTag: '$(devExtensionTag)'
-              extensionName: '$(extensionName) DEV'
-              extensionVisibility: 'private'
-              extensionPricing: 'free'
-              shareWith: 'datadog-ci'
-              extensionVersion: '$(queryDevVersion.Extension.Version)'
-              updateTasksId: true # The DEV task ID is overridden to 99cf84cd-0117-58b7-b1dd-d95e5ae9baf8 (based on the `extensionTag`)
-              updateTasksVersion: true # Do not require updating the task version during development
-              updateTasksVersionType: patch
+          # - task: PublishAzureDevOpsExtension@4
+          #   displayName: Publish new DEV extension version
+          #   inputs:
+          #     connectTo: 'VsTeam'
+          #     connectedServiceName: 'marketplace-service-connection'
+          #     fileType: 'vsix'
+          #     vsixFile: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
+          #     extensionTag: '$(devExtensionTag)'
+          #     extensionName: '$(extensionName) DEV'
+          #     extensionVisibility: 'private'
+          #     extensionPricing: 'free'
+          #     shareWith: 'datadog-ci'
+          #     extensionVersion: '$(queryDevVersion.Extension.Version)'
+          #     updateTasksId: true # The DEV task ID is overridden to 99cf84cd-0117-58b7-b1dd-d95e5ae9baf8 (based on the `extensionTag`)
+          #     updateTasksVersion: true # Do not require updating the task version during development
+          #     updateTasksVersionType: patch
 
-      - job: Sleep
+      # - job: Sleep
+      #   dependsOn: PublishDev
+      #   pool: server
+      #   steps:
+      #     - task: Delay@1
+      #       displayName: Delay for x minutes
+      #       inputs:
+      #         delayForMinutes: 5
+      - job: Wait
         dependsOn: PublishDev
-        pool: server
+        pool: server # Agentless job
         steps:
-          - task: Delay@1
-            displayName: Delay for x minutes
+          - task: InvokeRESTAPI@1
             inputs:
-              delayForMinutes: 5
+              connectionType: 'connectedServiceNameARM'
+              method: 'POST'
+              urlSuffix: 'https://dev.azure.com/Datadog/$(system.TeamProjectId)/_apis/distributedtask/taskgroups/bf418475-6eb8-4d3b-bc46-8c6f6394d313'
+              waitForCompletion: 'true'
+              successCriteria: 'eq($.value.contributionVersion, "$(devPublishStep.)")'
 
   # Extension public release, only performed on manual runs
   - ${{ if eq(parameters.performRelease, true) }}:
