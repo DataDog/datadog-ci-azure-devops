@@ -125,6 +125,7 @@ stages:
               updateTasksVersionType: patch
 
           # Trying to redo https://github.com/DataDog/datadog-ci-azure-devops/pull/21
+          # Update: it works!
           - task: Bash@3
             displayName: Wait for DEV extension availability
             inputs:
@@ -134,6 +135,37 @@ stages:
                 -t "$(SERVICE_TOKEN)" \
                 -c "$(publisherId).$(extensionId)$(devExtensionTag).$(syntheticsTaskId)" \
                 -v "$(queryDevVersion.Extension.Version)"
+
+      # Now, what about moving the E2E tests here?
+      - job: E2E
+        displayName: Cross-platform end-to-end testing
+        strategy:
+          matrix:
+            Linux:
+              imageName: 'ubuntu-latest'
+            Windows:
+              imageName: 'windows-latest'
+        pool:
+          vmImage: $(imageName)
+        steps:
+          - task: Datadog.datadog-ci-dev.synthetics-application-testing.SyntheticsRunTests@0
+            displayName: Run DEV task - apiAppKeys
+            inputs:
+              authenticationType: 'apiAppKeys'
+              apiKey: '$(API_KEY)'
+              appKey: '$(APP_KEY)'
+              publicIds: '2r9-q7u-4nn,pwd-mwg-3p5'
+              configPath: 'ci/e2e.config.json'
+
+          - task: Datadog.datadog-ci-dev.synthetics-application-testing.SyntheticsRunTests@0
+            displayName: Run DEV task - connectedService
+            inputs:
+              authenticationType: 'connectedService'
+              connectedService: 'synthetics-e2e-testing-org'
+              publicIds: |
+                2r9-q7u-4nn
+                pwd-mwg-3p5
+              configPath: 'ci/e2e.config.json'
 
       # The only tasks that are supported in agentless jobs are:
       # https://learn.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=azure-devops&tabs=yaml#agentless-tasks

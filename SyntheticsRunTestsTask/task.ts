@@ -9,7 +9,7 @@ async function run(): Promise<void> {
   task.setResourcePath(path.join(__dirname, 'task.json'))
   synthetics.utils.setCiTriggerApp('azure_devops_task')
 
-  console.log('hello you! 0.1.96')
+  console.log('hello you! 0.1.97')
 
   const reporter = getReporter()
   const config = await resolveConfig(reporter)
