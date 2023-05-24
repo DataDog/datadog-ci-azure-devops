@@ -79,7 +79,7 @@ stages:
             displayName: Publish VSIX artifact
             artifact: $(artifactPath)
 
-  # Release a DEV extension. E2E tests will automatically run on it in `e2e.azure-pipelines.yml`
+  # Release a DEV extension.
   - stage: ReleaseDev
     displayName: Release DEV
     dependsOn: Build
@@ -121,11 +121,9 @@ stages:
               shareWith: 'datadog-ci'
               extensionVersion: '$(queryDevVersion.Extension.Version)'
               updateTasksId: true # The DEV task ID is overridden to 99cf84cd-0117-58b7-b1dd-d95e5ae9baf8 (based on the `extensionTag`)
-              updateTasksVersion: true # Do not require updating the task version during development
-              updateTasksVersionType: patch
+              # updateTasksVersion: true # Do not require updating the task version during development
+              # updateTasksVersionType: patch
 
-          # Trying to redo https://github.com/DataDog/datadog-ci-azure-devops/pull/21
-          # Update: it works!
           - task: Bash@3
             displayName: Wait for DEV extension availability
             inputs:
@@ -136,9 +134,8 @@ stages:
                 -c "$(publisherId).$(extensionId)$(devExtensionTag).$(syntheticsTaskId)" \
                 -v "$(queryDevVersion.Extension.Version)"
 
-  # It didn't work as a job. What about with a separate stage?
   - stage: E2EWithDev
-    displayName: Release DEV
+    displayName: E2E on DEV
     dependsOn: ReleaseDev
     jobs:
       - job: E2E
@@ -170,36 +167,6 @@ stages:
                 2r9-q7u-4nn
                 pwd-mwg-3p5
               configPath: 'ci/e2e.config.json'
-
-      # The only tasks that are supported in agentless jobs are:
-      # https://learn.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=azure-devops&tabs=yaml#agentless-tasks
-
-      # This does work, but 5 minutes is very long.
-      # I wonder if it's because it's because it's agentless that it works or not.
-      # - job: Sleep
-      #   dependsOn: PublishDev
-      #   pool: server # Agentless job
-      #   steps:
-      #     - task: Delay@1
-      #       displayName: Delay for x minutes
-      #       inputs:
-      #         delayForMinutes: 5
-
-      # Never managed to make it work
-      # - job: Wait
-      #   dependsOn: PublishDev
-      #   pool: server # Agentless job
-      #   steps:
-      #     - task: InvokeRESTAPI@1
-      #       inputs:
-      #         # connectionType: 'connectedServiceNameARM'
-      #         connectionType: 'connectedServiceName'
-      #         # serviceConnection: 'marketplace-service-connection'
-      #         method: 'GET'
-      #         urlSuffix: 'https://dev.azure.com/Datadog/$(system.TeamProjectId)/_apis/distributedtask/taskgroups/bf418475-6eb8-4d3b-bc46-8c6f6394d313'
-      #         # urlSuffix: https://datadog-ci.visualstudio.com/_apis/distributedtask/tasks/60b18503-c6d6-4e4b-a6b2-52fc6fb3d525
-      #         waitForCompletion: 'false'
-      #         successCriteria: 'eq($.value.contributionVersion, "$(devPublishStep.)")'
 
   # Extension public release, only performed on manual runs
   - ${{ if eq(parameters.performRelease, true) }}:
