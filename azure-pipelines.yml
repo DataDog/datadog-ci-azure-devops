@@ -136,7 +136,11 @@ stages:
                 -c "$(publisherId).$(extensionId)$(devExtensionTag).$(syntheticsTaskId)" \
                 -v "$(queryDevVersion.Extension.Version)"
 
-      # Now, what about moving the E2E tests here?
+  # It didn't work as a job. What about with a separate stage?
+  - stage: E2EWithDev
+    displayName: Release DEV
+    dependsOn: ReleaseDev
+    jobs:
       - job: E2E
         displayName: Cross-platform end-to-end testing
         strategy:
