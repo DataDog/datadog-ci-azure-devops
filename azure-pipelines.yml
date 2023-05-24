@@ -96,16 +96,16 @@ stages:
             inputs:
               version: 'v0.12.x'
 
-          # - task: QueryAzureDevOpsExtensionVersion@4
-          #   displayName: Query existing DEV extension version
-          #   name: 'queryDevVersion'
-          #   inputs:
-          #     connectTo: 'VsTeam'
-          #     connectedServiceName: 'marketplace-service-connection'
-          #     publisherId: '$(publisherId)'
-          #     extensionId: '$(extensionId)'
-          #     extensionTag: '$(devExtensionTag)'
-          #     versionAction: 'Patch'
+          - task: QueryAzureDevOpsExtensionVersion@4
+            displayName: Query existing DEV extension version
+            name: 'queryDevVersion'
+            inputs:
+              connectTo: 'VsTeam'
+              connectedServiceName: 'marketplace-service-connection'
+              publisherId: '$(publisherId)'
+              extensionId: '$(extensionId)'
+              extensionTag: '$(devExtensionTag)'
+              versionAction: 'Patch'
 
           # - task: PublishAzureDevOpsExtension@4
           #   displayName: Publish new DEV extension version
@@ -124,28 +124,46 @@ stages:
           #     updateTasksVersion: true # Do not require updating the task version during development
           #     updateTasksVersionType: patch
 
+          # Trying to redo https://github.com/DataDog/datadog-ci-azure-devops/pull/21
+          - task: Bash@3
+            displayName: Wait for DEV extension availability
+            inputs:
+              filePath: 'ci/poll-extension-availability.sh'
+              arguments: |
+                -s "$(SERVICE_URL)" \
+                -t "$(SERVICE_TOKEN)" \
+                -c "$(publisherId).$(extensionId)$(devExtensionTag).$(syntheticsTaskId)" \
+                -v "$(queryDevVersion.Extension.Version)"
+
+      # The only tasks that are supported in agentless jobs are:
+      # https://learn.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=azure-devops&tabs=yaml#agentless-tasks
+
+      # This does work, but 5 minutes is very long.
+      # I wonder if it's because it's because it's agentless that it works or not.
       # - job: Sleep
       #   dependsOn: PublishDev
-      #   pool: server
+      #   pool: server # Agentless job
       #   steps:
       #     - task: Delay@1
       #       displayName: Delay for x minutes
       #       inputs:
       #         delayForMinutes: 5
-      - job: Wait
-        dependsOn: PublishDev
-        pool: server # Agentless job
-        steps:
-          - task: InvokeRESTAPI@1
-            inputs:
-              # connectionType: 'connectedServiceNameARM'
-              connectionType: 'connectedServiceName'
-              # serviceConnection: 'marketplace-service-connection'
-              method: 'GET'
-              # urlSuffix: 'https://dev.azure.com/Datadog/$(system.TeamProjectId)/_apis/distributedtask/taskgroups/bf418475-6eb8-4d3b-bc46-8c6f6394d313'
-              urlSuffix: https://datadog-ci.visualstudio.com/_apis/distributedtask/tasks/60b18503-c6d6-4e4b-a6b2-52fc6fb3d525
-              waitForCompletion: 'false'
-              successCriteria: 'eq($.value.contributionVersion, "$(devPublishStep.)")'
+
+      # Never managed to make it work
+      # - job: Wait
+      #   dependsOn: PublishDev
+      #   pool: server # Agentless job
+      #   steps:
+      #     - task: InvokeRESTAPI@1
+      #       inputs:
+      #         # connectionType: 'connectedServiceNameARM'
+      #         connectionType: 'connectedServiceName'
+      #         # serviceConnection: 'marketplace-service-connection'
+      #         method: 'GET'
+      #         urlSuffix: 'https://dev.azure.com/Datadog/$(system.TeamProjectId)/_apis/distributedtask/taskgroups/bf418475-6eb8-4d3b-bc46-8c6f6394d313'
+      #         # urlSuffix: https://datadog-ci.visualstudio.com/_apis/distributedtask/tasks/60b18503-c6d6-4e4b-a6b2-52fc6fb3d525
+      #         waitForCompletion: 'false'
+      #         successCriteria: 'eq($.value.contributionVersion, "$(devPublishStep.)")'
 
   # Extension public release, only performed on manual runs
   - ${{ if eq(parameters.performRelease, true) }}:
