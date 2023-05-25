@@ -1,0 +1,47 @@
+trigger: none # Disable individual commit runs. https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/azure-repos-git?view=azure-devops&tabs=yaml#opting-out-of-ci
+pr: none # Disable PR runs. https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/azure-repos-git?view=azure-devops&tabs=yaml#pr-triggers
+
+# Automatically run this E2E pipeline when the main pipeline succeeds.
+# https://learn.microsoft.com/en-us/azure/devops/pipelines/process/resources?view=azure-devops&tabs=schema#define-a-pipelines-resource
+resources:
+  pipelines:
+    - pipeline: e2e-tests-on-dev-extension
+      source: DataDog.datadog-ci-azure-devops # Name of `azure-pipelines.yml` as shown in the Azure DevOps UI.
+      trigger: true
+
+variables:
+  - group: ci-variables
+
+stages:
+  - stage: Test
+    displayName: E2E tests DEV Extension
+    jobs:
+      - job: E2E
+        displayName: Cross-platform end-to-end testing
+        strategy:
+          matrix:
+            Linux:
+              imageName: 'ubuntu-latest'
+            Windows:
+              imageName: 'windows-latest'
+        pool:
+          vmImage: $(imageName)
+        steps:
+          - task: Datadog.datadog-ci-dev.synthetics-application-testing.SyntheticsRunTests@0
+            displayName: Run DEV task - apiAppKeys
+            inputs:
+              authenticationType: 'apiAppKeys'
+              apiKey: '$(API_KEY)'
+              appKey: '$(APP_KEY)'
+              publicIds: '2r9-q7u-4nn,pwd-mwg-3p5'
+              configPath: 'ci/e2e.config.json'
+
+          - task: Datadog.datadog-ci-dev.synthetics-application-testing.SyntheticsRunTests@0
+            displayName: Run DEV task - connectedService
+            inputs:
+              authenticationType: 'connectedService'
+              connectedService: 'synthetics-e2e-testing-org'
+              publicIds: |
+                2r9-q7u-4nn
+                pwd-mwg-3p5
+              configPath: 'ci/e2e.config.json'
