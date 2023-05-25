@@ -79,13 +79,13 @@ stages:
             displayName: Publish VSIX artifact
             artifact: $(artifactPath)
 
-  # Release a DEV extension. E2E tests will automatically run on it in `e2e.azure-pipelines.yml`
+  # Release a DEV extension. E2E tests will automatically run on it in `e2e-pipeline.yml`
   - stage: ReleaseDev
-    displayName: Release DEV
+    displayName: Release DEV extension
     dependsOn: Build
     jobs:
       - job: PublishDev
-        displayName: Publish DEV version
+        displayName: Publish DEV extension version
         steps:
           - download: current
             displayName: Download VSIX artifact
@@ -126,7 +126,7 @@ stages:
 
   # Extension public release, only performed on manual runs
   - ${{ if eq(parameters.performRelease, true) }}:
-      - stage: Release
+      - stage: Release public extension
         dependsOn: Build
         jobs:
           - job: PublishPublic
