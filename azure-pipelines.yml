@@ -79,7 +79,7 @@ stages:
             displayName: Publish VSIX artifact
             artifact: $(artifactPath)
 
-  # Release a DEV extension.
+  # Release a DEV extension
   - stage: ReleaseDev
     displayName: Release DEV
     dependsOn: Build
@@ -133,40 +133,6 @@ stages:
                 -t "$(SERVICE_TOKEN)" \
                 -c "$(publisherId).$(extensionId)$(devExtensionTag).$(syntheticsTaskId)" \
                 -v "$(queryDevVersion.Extension.Version)"
-
-  # - stage: E2EWithDev
-  #   displayName: E2E on DEV
-  #   dependsOn: ReleaseDev
-  #   jobs:
-  #     - job: E2E
-  #       displayName: Cross-platform end-to-end testing
-  #       strategy:
-  #         matrix:
-  #           Linux:
-  #             imageName: 'ubuntu-latest'
-  #           Windows:
-  #             imageName: 'windows-latest'
-  #       pool:
-  #         vmImage: $(imageName)
-  #       steps:
-  #         - task: Datadog.datadog-ci-dev.synthetics-application-testing.SyntheticsRunTests@0
-  #           displayName: Run DEV task - apiAppKeys
-  #           inputs:
-  #             authenticationType: 'apiAppKeys'
-  #             apiKey: '$(API_KEY)'
-  #             appKey: '$(APP_KEY)'
-  #             publicIds: '2r9-q7u-4nn,pwd-mwg-3p5'
-  #             configPath: 'ci/e2e.config.json'
-
-  #         - task: Datadog.datadog-ci-dev.synthetics-application-testing.SyntheticsRunTests@0
-  #           displayName: Run DEV task - connectedService
-  #           inputs:
-  #             authenticationType: 'connectedService'
-  #             connectedService: 'synthetics-e2e-testing-org'
-  #             publicIds: |
-  #               2r9-q7u-4nn
-  #               pwd-mwg-3p5
-  #             configPath: 'ci/e2e.config.json'
 
   # Extension public release, only performed on manual runs
   - ${{ if eq(parameters.performRelease, true) }}:
