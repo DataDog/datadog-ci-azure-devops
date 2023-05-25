@@ -121,8 +121,8 @@ stages:
               shareWith: 'datadog-ci'
               extensionVersion: '$(queryDevVersion.Extension.Version)'
               updateTasksId: true # The DEV task ID is overridden to 99cf84cd-0117-58b7-b1dd-d95e5ae9baf8 (based on the `extensionTag`)
-              # updateTasksVersion: true # Do not require updating the task version during development
-              # updateTasksVersionType: patch
+              updateTasksVersion: true # Do not require updating the task version during development
+              updateTasksVersionType: patch
 
           - task: Bash@3
             displayName: Wait for DEV extension availability
