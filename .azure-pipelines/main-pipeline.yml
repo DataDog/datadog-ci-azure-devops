@@ -124,6 +124,16 @@ stages:
               updateTasksVersion: true # Do not require updating the task version during development
               updateTasksVersionType: patch
 
+          - task: Bash@3
+            displayName: Wait for DEV extension availability
+            inputs:
+              filePath: 'ci/poll-extension-availability.sh'
+              arguments: |
+                -s "$(SERVICE_URL)" \
+                -t "$(SERVICE_TOKEN)" \
+                -c "$(publisherId).$(extensionId)$(devExtensionTag).$(syntheticsTaskId)" \
+                -v "$(queryDevVersion.Extension.Version)"
+
   # Extension public release, only performed on manual runs
   - ${{ if eq(parameters.performRelease, true) }}:
       - stage: Release public extension
