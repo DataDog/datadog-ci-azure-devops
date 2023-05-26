@@ -5,25 +5,6 @@ import {MockTestRunner} from 'azure-pipelines-task-lib/mock-test'
 
 import * as fs from 'fs'
 
-export const BASE_CONFIG: synthetics.CommandConfig = {
-  apiKey: '',
-  appKey: '',
-  configPath: 'datadog-ci.json',
-  datadogSite: 'datadoghq.com',
-  failOnCriticalErrors: false,
-  failOnMissingTests: false,
-  failOnTimeout: false,
-  files: ['{,!(node_modules)/**/}*.synthetics.json'],
-  global: {},
-  locations: [],
-  pollingTimeout: 2 * 60 * 1000,
-  proxy: {protocol: 'http'},
-  publicIds: [],
-  subdomain: 'app',
-  tunnel: false,
-  variableStrings: [],
-}
-
 export const BASE_INPUTS = {
   apiKey: 'xxx',
   appKey: 'yyy',
