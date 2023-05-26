@@ -3,7 +3,6 @@ import {synthetics} from '@datadog/datadog-ci'
 import * as fs from 'fs'
 
 import {
-  BASE_CONFIG,
   BASE_INPUTS,
   CUSTOM_PUBLIC_IDS,
   CUSTOM_SITE,
@@ -15,6 +14,8 @@ import {
   runMockTaskServiceConnectionEnvVars,
   runMockTaskServiceConnectionMisconfigured,
 } from './fixtures'
+
+const BASE_CONFIG = synthetics.DEFAULT_COMMAND_CONFIG
 
 describe('Test suite', () => {
   test('succeeds when app and api keys are given', () => {
