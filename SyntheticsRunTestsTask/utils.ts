@@ -18,3 +18,23 @@ export const getDefinedInteger = (value: string | undefined, {inputName}: {input
 
   return number
 }
+
+// Cannot use task.getBoolInput() because "If required is false and the value is not set, returns false."
+// We need to fallback to our defaults.
+export const getDefinedBoolean = (value: string | undefined, {inputName}: {inputName: string}): boolean | undefined => {
+  if (!value) {
+    return undefined
+  }
+
+  if (value.toUpperCase() === 'TRUE') {
+    return true
+  }
+
+  if (value.toUpperCase() === 'FALSE') {
+    return false
+  }
+
+  const error = Error(`Invalid value for ${inputName}: ${value} is not a valid YAML boolean`)
+  task.setResult(task.TaskResult.Failed, error.message)
+  throw error
+}
