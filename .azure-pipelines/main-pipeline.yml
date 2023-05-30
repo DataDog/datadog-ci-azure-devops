@@ -124,6 +124,7 @@ stages:
               updateTasksVersion: true # Do not require updating the task version during development
               updateTasksVersionType: patch
 
+          # We need to wait in this job (i.e. inside the main pipeline) to make sure the extension is available before the E2E pipeline's jobs are enqueued.
           - task: Bash@3
             displayName: Wait for DEV extension availability
             inputs:
