@@ -19,7 +19,7 @@ while getopts t:s:c:v: flag; do
     esac
 done
 
-attempts=0
+attempts=1
 max=25
 
 until [ $attempts -gt $max ];
@@ -39,8 +39,10 @@ do
         exit 0
     fi
 
-    echo "Installed version is $installed_version, waiting $(( ++attempts ))s for $TASK_VERSION to become available..."
+    echo "Installed version is $installed_version, waiting $attempts seconds for $TASK_VERSION to become available..."
     sleep $attempts
+
+    ((attempts++))
 done
 
 echo "Expected version was not found after $attempts attempts"
