@@ -34,7 +34,7 @@ variables:
     value: datadog-ci
   - name: devExtensionTag
     value: -dev
-  - name: syntheticsTaskId
+  - name: contributionId
     value: synthetics-application-testing
 
 stages:
@@ -120,7 +120,7 @@ stages:
               extensionPricing: 'free'
               shareWith: 'datadog-ci'
               extensionVersion: '$(queryDevVersion.Extension.Version)'
-              updateTasksId: true # The DEV task ID is overridden to 99cf84cd-0117-58b7-b1dd-d95e5ae9baf8 (based on the `extensionTag`)
+              updateTasksId: true # The DEV task ID is overridden to `99cf84cd-0117-58b7-b1dd-d95e5ae9baf8` (based on the `extensionTag`)
               updateTasksVersion: true # Do not require updating the task version during development
               updateTasksVersionType: patch
 
@@ -132,7 +132,7 @@ stages:
               arguments: |
                 -s "$(SERVICE_URL)" \
                 -t "$(SERVICE_TOKEN)" \
-                -c "$(publisherId).$(extensionId)$(devExtensionTag).$(syntheticsTaskId)" \
+                -i "$(publisherId).$(extensionId)$(devExtensionTag).$(contributionId)" \
                 -v "$(queryDevVersion.Extension.Version)"
 
   # Extension public release, only performed on manual runs
@@ -173,7 +173,7 @@ stages:
                   extensionVisibility: 'public'
                   extensionPricing: 'free'
                   extensionVersion: '$(queryVersion.Extension.Version)'
-                  updateTasksId: false # The task ID stays 60b18503-c6d6-4e4b-a6b2-52fc6fb3d525 (defined in task.json)
+                  updateTasksId: false # The task ID stays `60b18503-c6d6-4e4b-a6b2-52fc6fb3d525` (defined in task.json)
                   updateTasksVersion: false # Bumped automatically by our Release Automation bot
 
               - task: GitHubRelease@1
