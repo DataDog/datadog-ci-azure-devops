@@ -129,7 +129,7 @@
       "type": "boolean",
       "label": "Fail on missing tests",
       "defaultValue": "",
-      "helpMarkDown": "Fail the CI job if at least one test is missing in a run (for example, if it has been removed or deleted)."
+      "helpMarkDown": "Fail the CI job if at least one specified test with a public ID (a `--public-id` CLI argument or listed in a [test file](https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#test-files)) is missing in a run (for example, if it has been deleted programmatically or on the Datadog site)."
     },
     {
       "name": "failOnTimeout",
