@@ -101,13 +101,13 @@ export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<
       configPath,
       datadogSite,
       files,
-      pollingTimeout,
       publicIds,
       subdomain,
       testSearchQuery,
       global: deepExtend(
         config.global,
         utils.removeUndefinedValues({
+          pollingTimeout,
           variables: synthetics.utils.parseVariablesFromCli(variableStrings, reporter.log.bind(reporter)),
         })
       ),

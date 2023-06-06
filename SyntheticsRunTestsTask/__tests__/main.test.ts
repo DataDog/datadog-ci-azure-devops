@@ -10,6 +10,7 @@ import {
   expectSpy,
   runMockTaskApiKeys,
   runMockTaskJUnitReport,
+  runMockTaskPollingTimeout,
   runMockTaskServiceConnection,
   runMockTaskServiceConnectionEnvVars,
   runMockTaskServiceConnectionMisconfigured,
@@ -102,5 +103,20 @@ describe('Test suite', () => {
     // Cleaning
     fs.unlinkSync('./reports/TEST-1.xml')
     fs.rmdirSync('./reports')
+  })
+
+  test('pollingTimeout input overrides the default config', () => {
+    const task = runMockTaskPollingTimeout()
+
+    expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
+      ...BASE_CONFIG,
+      ...BASE_INPUTS,
+      publicIds: CUSTOM_PUBLIC_IDS,
+      global: {pollingTimeout: 3600000},
+    })
+
+    expect(task.succeeded).toBe(true)
+    expect(task.warningIssues.length).toEqual(0)
+    expect(task.errorIssues.length).toEqual(0)
   })
 })
