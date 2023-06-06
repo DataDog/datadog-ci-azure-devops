@@ -10,6 +10,7 @@ import {
   expectSpy,
   runMockTaskApiKeys,
   runMockTaskJUnitReport,
+  runMockTaskPollingTimeout,
   runMockTaskServiceConnection,
   runMockTaskServiceConnectionEnvVars,
   runMockTaskServiceConnectionMisconfigured,
@@ -24,6 +25,10 @@ describe('Test suite', () => {
     expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
       ...BASE_CONFIG,
       ...BASE_INPUTS,
+      global: {
+        ...BASE_CONFIG.global,
+        pollingTimeout: BASE_CONFIG.pollingTimeout,
+      },
       publicIds: CUSTOM_PUBLIC_IDS,
     })
 
@@ -57,6 +62,8 @@ describe('Test suite', () => {
       datadogSite: CUSTOM_SITE,
       subdomain: CUSTOM_SUBDOMAIN,
       global: {
+        ...BASE_CONFIG.global,
+        pollingTimeout: BASE_CONFIG.pollingTimeout,
         variables: {
           FOO: 'bar',
         },
@@ -74,8 +81,12 @@ describe('Test suite', () => {
     expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
       ...BASE_CONFIG,
       ...BASE_INPUTS,
-      publicIds: CUSTOM_PUBLIC_IDS,
+      global: {
+        ...BASE_CONFIG.global,
+        pollingTimeout: BASE_CONFIG.pollingTimeout,
+      },
       datadogSite: CUSTOM_SITE,
+      publicIds: CUSTOM_PUBLIC_IDS,
       subdomain: CUSTOM_SUBDOMAIN,
     })
 
@@ -90,6 +101,10 @@ describe('Test suite', () => {
     expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
       ...BASE_CONFIG,
       ...BASE_INPUTS,
+      global: {
+        ...BASE_CONFIG.global,
+        pollingTimeout: BASE_CONFIG.pollingTimeout,
+      },
       publicIds: CUSTOM_PUBLIC_IDS,
     })
 
@@ -102,5 +117,24 @@ describe('Test suite', () => {
     // Cleaning
     fs.unlinkSync('./reports/TEST-1.xml')
     fs.rmdirSync('./reports')
+  })
+
+  test('pollingTimeout input overrides the default config', () => {
+    const task = runMockTaskPollingTimeout()
+
+    expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
+      ...BASE_CONFIG,
+      ...BASE_INPUTS,
+      global: {
+        ...BASE_CONFIG.global,
+        pollingTimeout: 3600000,
+      },
+      pollingTimeout: 3600000,
+      publicIds: CUSTOM_PUBLIC_IDS,
+    })
+
+    expect(task.succeeded).toBe(true)
+    expect(task.warningIssues.length).toEqual(0)
+    expect(task.errorIssues.length).toEqual(0)
   })
 })
