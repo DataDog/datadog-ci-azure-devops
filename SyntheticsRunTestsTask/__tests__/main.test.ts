@@ -25,6 +25,10 @@ describe('Test suite', () => {
     expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
       ...BASE_CONFIG,
       ...BASE_INPUTS,
+      global: {
+        ...BASE_CONFIG.global,
+        pollingTimeout: BASE_CONFIG.pollingTimeout,
+      },
       publicIds: CUSTOM_PUBLIC_IDS,
     })
 
@@ -58,6 +62,8 @@ describe('Test suite', () => {
       datadogSite: CUSTOM_SITE,
       subdomain: CUSTOM_SUBDOMAIN,
       global: {
+        ...BASE_CONFIG.global,
+        pollingTimeout: BASE_CONFIG.pollingTimeout,
         variables: {
           FOO: 'bar',
         },
@@ -75,8 +81,12 @@ describe('Test suite', () => {
     expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
       ...BASE_CONFIG,
       ...BASE_INPUTS,
-      publicIds: CUSTOM_PUBLIC_IDS,
+      global: {
+        ...BASE_CONFIG.global,
+        pollingTimeout: BASE_CONFIG.pollingTimeout,
+      },
       datadogSite: CUSTOM_SITE,
+      publicIds: CUSTOM_PUBLIC_IDS,
       subdomain: CUSTOM_SUBDOMAIN,
     })
 
@@ -91,6 +101,10 @@ describe('Test suite', () => {
     expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
       ...BASE_CONFIG,
       ...BASE_INPUTS,
+      global: {
+        ...BASE_CONFIG.global,
+        pollingTimeout: BASE_CONFIG.pollingTimeout,
+      },
       publicIds: CUSTOM_PUBLIC_IDS,
     })
 
@@ -111,8 +125,12 @@ describe('Test suite', () => {
     expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
       ...BASE_CONFIG,
       ...BASE_INPUTS,
+      global: {
+        ...BASE_CONFIG.global,
+        pollingTimeout: 3600000,
+      },
+      pollingTimeout: 3600000,
       publicIds: CUSTOM_PUBLIC_IDS,
-      global: {pollingTimeout: 3600000},
     })
 
     expect(task.succeeded).toBe(true)
