@@ -108,11 +108,15 @@ export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<
       global: deepExtend(
         config.global,
         utils.removeUndefinedValues({
+          pollingTimeout,
           variables: synthetics.utils.parseVariablesFromCli(variableStrings, reporter.log.bind(reporter)),
         })
       ),
     })
   )
+
+  // Pass root polling timeout to global override to get it applied to all tests if not defined individually
+  config.global.pollingTimeout = config.global.pollingTimeout ?? config.pollingTimeout
 
   return config
 }
