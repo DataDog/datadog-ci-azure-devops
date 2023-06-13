@@ -27,7 +27,7 @@ stages:
         pool:
           vmImage: $(imageName)
         steps:
-          - task: Datadog.datadog-ci-dev.synthetics-application-testing.SyntheticsRunTests@0
+          - task: Datadog.datadog-ci-dev.synthetics-application-testing.SyntheticsRunTests@1
             displayName: Run DEV task - apiAppKeys
             inputs:
               authenticationType: 'apiAppKeys'
@@ -36,7 +36,7 @@ stages:
               publicIds: '2r9-q7u-4nn,pwd-mwg-3p5'
               configPath: 'ci/e2e.config.json'
 
-          - task: Datadog.datadog-ci-dev.synthetics-application-testing.SyntheticsRunTests@0
+          - task: Datadog.datadog-ci-dev.synthetics-application-testing.SyntheticsRunTests@1
             displayName: Run DEV task - connectedService
             inputs:
               authenticationType: 'connectedService'
