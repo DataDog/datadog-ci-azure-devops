@@ -29,7 +29,7 @@ variables:
   - name: publisherId
     value: Datadog
   - name: extensionName
-    value: 'Datadog CI'
+    value: 'Datadog Continuous Testing'
   - name: extensionId
     value: datadog-ci
   - name: devExtensionTag
