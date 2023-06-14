@@ -3,8 +3,8 @@
   "id": "datadog-ci",
   "publisher": "Datadog",
   "version": "1.4.0",
-  "name": "Datadog CI",
-  "description": "Use Datadog CI as part of your Azure pipelines",
+  "name": "Datadog Continuous Testing",
+  "description": "Use Browser and API tests in your Azure pipelines with Datadog Continuous Testing",
   "public": false,
   "targets": [
     {
@@ -20,14 +20,14 @@
       "path": "SyntheticsRunTestsTask"
     }
   ],
-  "tags": ["azure", "azure-devops", "datadog", "datadog-ci", "ci", "synthetics", "test"],
+  "tags": ["azure", "azure-devops", "datadog", "datadog-ci", "ci", "ct", "synthetics", "test", "continuous", "testing"],
   "content": {
     "details": {
       "path": "README.md"
     }
   },
   "branding": {
-    "color": "rgb(99, 44, 166)",
+    "color": "rgb(120, 71, 166)",
     "theme": "dark"
   },
   "links": {

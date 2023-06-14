@@ -1,4 +1,4 @@
-# Datadog CI for Azure DevOps
+# Datadog Continuous Testing for Azure DevOps
 
 [![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/Datadog.datadog-ci)][1]
 [![Build Status](https://dev.azure.com/datadog-ci/Datadog%20CI%20Azure%20DevOps%20Extension/_apis/build/status/DataDog.datadog-ci-azure-devops?branchName=main)](https://dev.azure.com/datadog-ci/Datadog%20CI%20Azure%20DevOps%20Extension/_build/latest?definitionId=4&branchName=main)
@@ -6,7 +6,7 @@
 
 ## Overview
 
-With the Datadog CI Azure DevOps Extension, you can run Synthetic tests within your Azure Pipeline configuration and ensure all your teams using Azure DevOps can benefit from Synthetic tests at every stage of the software lifecycle. You can run [`SyntheticsRunTests`][3] as a task.
+With the Datadog Continuous Testing Azure DevOps Extension, you can run Synthetic tests within your Azure Pipeline configuration and ensure all your teams using Azure DevOps can benefit from Synthetic tests at every stage of the software lifecycle. You can run [`SyntheticsRunTests`][3] as a task.
 
 ## Authentication
 
@@ -33,8 +33,8 @@ You need to provide the following inputs:
 
 To connect to your Datadog account, [create a Datadog CI service connection][5] in your Azure pipelines project. Once created, all you need is the name of the service connection in the tasks.
 
-1. Install the [Datadog CI Extension from the Visual Studio Marketplace][1] in your Azure Organization.
-2. Add your Datadog API and application keys in the [Datadog CI Service Connection](#authentication), or as [secrets to your Azure Pipelines project][7].
+1. Install the [Datadog Continuous Testing extension from the Visual Studio Marketplace][1] in your Azure Organization.
+2. Add your Datadog API and application keys in the [Datadog CI service connection](#authentication), or as [secrets to your Azure Pipelines project][7].
 3. In your Azure DevOps pipeline, use the `SyntheticsRunTests` task.
 
 Your task can be [simple](#simple-usage) or [complex](#complex-usage).
