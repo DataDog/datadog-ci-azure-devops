@@ -20,7 +20,7 @@ export const getDefinedInteger = (value: string | undefined, {inputName}: {input
 }
 
 // Cannot use task.getBoolInput() because "If required is false and the value is not set, returns false."
-// We need to fallback to our defaults.
+// This helper needs to return undefined if the input is not provided so that it's overwritten by the other parameter sources when building the config.
 export const getDefinedBoolean = (value: string | undefined, {inputName}: {inputName: string}): boolean | undefined => {
   if (!value) {
     return undefined

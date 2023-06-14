@@ -31,7 +31,7 @@ describe('getDefinedBoolean', () => {
     expect(() => getDefinedBoolean('not_a_bool', {inputName: ''})).toThrow('not_a_bool is not a valid YAML boolean')
   })
 
-  test('returns the value if input is an integer', async () => {
+  test('returns the value if input is a string', async () => {
     expect(getDefinedBoolean('true', {inputName: ''})).toBe(true)
     expect(getDefinedBoolean('false', {inputName: ''})).toBe(false)
     expect(getDefinedBoolean('TrUe', {inputName: ''})).toBe(true)
