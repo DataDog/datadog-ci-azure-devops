@@ -1,6 +1,5 @@
 {
   "name": "synthetics-test-automation",
-  "version": "0.1.0",
   "author": "Datadog",
   "license": "SEE LICENSE IN LICENSE",
   "description": "Run Datadog Synthetics CI tests as part of your Azure pipelines",
