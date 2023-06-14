@@ -18,3 +18,23 @@ export const getDefinedInteger = (value: string | undefined, {inputName}: {input
 
   return number
 }
+
+// Cannot use task.getBoolInput() because "If required is false and the value is not set, returns false."
+// This helper needs to return undefined if the input is not provided so that it's overwritten by the other parameter sources when building the config.
+export const getDefinedBoolean = (value: string | undefined, {inputName}: {inputName: string}): boolean | undefined => {
+  if (!value) {
+    return undefined
+  }
+
+  if (value.toUpperCase() === 'TRUE') {
+    return true
+  }
+
+  if (value.toUpperCase() === 'FALSE') {
+    return false
+  }
+
+  const error = Error(`Invalid value for ${inputName}: ${value} is not a valid YAML boolean`)
+  task.setResult(task.TaskResult.Failed, error.message)
+  throw error
+}
