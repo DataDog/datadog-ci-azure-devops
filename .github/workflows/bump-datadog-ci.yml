@@ -17,6 +17,11 @@ on:
 jobs:
   bump-datadog-ci:
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: SyntheticsRunTestsTask
+
     steps:
       # Do the changes
       - name: Get GitHub App token
@@ -32,8 +37,9 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v3
         with:
-          node-version: 'lts/*'
+          node-version-file: SyntheticsRunTestsTask/.node-version
           cache: 'yarn'
+          cache-dependency-path: SyntheticsRunTestsTask/yarn.lock
       - name: Create release branch
         run: git checkout -b local-branch
       - name: Set git user
