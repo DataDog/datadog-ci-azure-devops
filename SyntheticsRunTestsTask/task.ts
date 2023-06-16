@@ -10,7 +10,11 @@ async function run(): Promise<void> {
   task.setResourcePath(path.join(__dirname, 'task.json'))
   synthetics.utils.setCiTriggerApp('azure_devops_task')
 
-  logError('Hello this is a deprecation notice. Do I **support Markdown**?', LogType.warning)
+  logError(
+    'The `SyntheticsRunTests@0` task is deprecated, please use `SyntheticsRunTests@1` instead.\n' +
+      'This is NOT a breaking change: we decided to make the task version reflect the extension version.',
+    LogType.warning
+  )
 
   const reporter = getReporter()
   const config = await resolveConfig(reporter)
