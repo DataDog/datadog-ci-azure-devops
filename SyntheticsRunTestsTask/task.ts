@@ -4,10 +4,13 @@ import * as task from 'azure-pipelines-task-lib/task'
 
 import {getReporter, resolveConfig} from './resolve-config'
 import {synthetics} from '@datadog/datadog-ci'
+import {LogType, logError} from 'azure-pipelines-tasks-packaging-common/util'
 
 async function run(): Promise<void> {
   task.setResourcePath(path.join(__dirname, 'task.json'))
   synthetics.utils.setCiTriggerApp('azure_devops_task')
+
+  logError('Hello this is a deprecation notice. Do I **support Markdown**?', LogType.warning)
 
   const reporter = getReporter()
   const config = await resolveConfig(reporter)
