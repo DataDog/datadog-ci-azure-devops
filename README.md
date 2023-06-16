@@ -41,10 +41,14 @@ Your task can be [simple](#simple-usage) or [complex](#complex-usage).
 
 ## Simple usage
 
+> **Note**: We recently changed the major version of the task from `SyntheticsRunTests@0` to `SyntheticsRunTests@1`.
+>
+> This is **NOT a breaking change**, but an alignment between the task version and the extension version.
+
 ### Example task using public IDs
 
 ```yaml
-- task: SyntheticsRunTests@0
+- task: SyntheticsRunTests@1
   displayName: Run Datadog Synthetic tests
   inputs:
     authenticationType: 'connectedService'
@@ -57,7 +61,7 @@ Your task can be [simple](#simple-usage) or [complex](#complex-usage).
 ### Example task using existing `synthetics.json` files
 
 ```yaml
-- task: SyntheticsRunTests@0
+- task: SyntheticsRunTests@1
   displayName: Run Datadog Synthetic tests
   inputs:
     authenticationType: 'connectedService'
@@ -70,7 +74,7 @@ For an example test file, see this [`test.synthetics.json` file][14].
 ### Example task using pipeline secrets for authentication
 
 ```yaml
-- task: SyntheticsRunTests@0
+- task: SyntheticsRunTests@1
   inputs:
     authenticationType: 'apiAppKeys'
     apiKey: '$(DatadogApiKey)'
@@ -81,10 +85,14 @@ For an example test file, see this [`test.synthetics.json` file][14].
 
 ## Complex usage
 
+> **Note**: We recently changed the major version of the task from `SyntheticsRunTests@0` to `SyntheticsRunTests@1`.
+>
+> This is **NOT a breaking change**, but an alignment between the task version and the extension version.
+
 ### Example task using the `testSearchQuery`
 
 ```yaml
-- task: SyntheticsRunTests@0
+- task: SyntheticsRunTests@1
   displayName: Run Datadog Synthetic tests
   inputs:
     authenticationType: 'connectedService'
@@ -98,7 +106,7 @@ For an example test file, see this [`test.synthetics.json` file][14].
 ### Example task using the `testSearchQuery` and variable overrides
 
 ```yaml
-- task: SyntheticsRunTests@0
+- task: SyntheticsRunTests@1
   displayName: Run Datadog Synthetic tests
   inputs:
     authenticationType: 'connectedService'
@@ -111,7 +119,7 @@ For an example test file, see this [`test.synthetics.json` file][14].
 This task overrides the path to the global `datadog-ci.config.json` file.
 
 ```yaml
-- task: SyntheticsRunTests@0
+- task: SyntheticsRunTests@1
   displayName: Run Datadog Synthetic tests
   inputs:
     authenticationType: 'connectedService'
