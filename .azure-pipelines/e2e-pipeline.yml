@@ -1,5 +1,5 @@
-trigger: none # Disable individual commit runs. https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/azure-repos-git?view=azure-devops&tabs=yaml#opting-out-of-ci
-pr: none # Disable PR runs. https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/azure-repos-git?view=azure-devops&tabs=yaml#pr-triggers
+trigger: none # Disable individual commit runs. https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/github?view=azure-devops&tabs=yaml#opting-out-of-ci
+pr: none # Disable PR runs. https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/github?view=azure-devops&tabs=yaml#pr-triggers
 
 # Automatically run this E2E pipeline when the main pipeline succeeds.
 # https://learn.microsoft.com/en-us/azure/devops/pipelines/process/resources?view=azure-devops&tabs=schema#define-a-pipelines-resource

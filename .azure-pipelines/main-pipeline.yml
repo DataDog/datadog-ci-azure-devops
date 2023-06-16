@@ -1,21 +1,20 @@
-# Disable the pipeline for individual commits except on `main` merges.
-# The pipeline requires a Pull Request to run.
+# Disable the pipeline for individual commits except on `main` merges, and on version tags.
 trigger:
-  - main
+  branches:
+    include:
+      - main
+      - refs/tags/v* # Only version tags
+  tags:
+    exclude:
+      - '*' # Exclude all other tags
 
-parameters:
-  - name: performRelease
-    displayName: Release Production Extension
-    type: boolean
-    default: false
-  - name: releaseSemver
-    displayName: Release Production semver
-    type: string
-    default: Patch
-    values:
-      - Patch
-      - Minor
-      - Major
+# The pipeline requires a PR to run on branches.
+pr:
+  branches:
+    include:
+      - '*'
+    exclude:
+      - refs/tags/* # Exclude all other tags
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -80,65 +79,70 @@ stages:
             artifact: $(artifactPath)
 
   # Release a DEV extension. E2E tests will automatically run on it in `e2e-pipeline.yml`
-  - stage: ReleaseDev
-    displayName: Release DEV extension
-    dependsOn: Build
-    jobs:
-      - job: PublishDev
-        displayName: Publish DEV extension version
-        steps:
-          - download: current
-            displayName: Download VSIX artifact
-            artifact: $(artifactPath)
+  - ${{ if not(startsWith(variables['Build.SourceBranch'], 'refs/tags/')) }}:
+      - stage: ReleaseDev
+        displayName: Release DEV extension
+        dependsOn: Build
+        jobs:
+          - job: PublishDev
+            displayName: Publish (DEV)
+            steps:
+              - download: current
+                displayName: Download VSIX artifact
+                artifact: $(artifactPath)
 
-          - task: TfxInstaller@4
-            displayName: Install TFX CLI
-            inputs:
-              version: 'v0.15.0'
+              - task: TfxInstaller@4
+                displayName: Install TFX CLI
+                inputs:
+                  version: 'v0.15.0'
 
-          - task: QueryAzureDevOpsExtensionVersion@4
-            displayName: Query existing DEV extension version
-            name: 'queryDevVersion'
-            inputs:
-              connectTo: 'VsTeam'
-              connectedServiceName: 'marketplace-service-connection'
-              publisherId: '$(publisherId)'
-              extensionId: '$(extensionId)'
-              extensionTag: '$(devExtensionTag)'
-              versionAction: 'Patch'
+              - task: QueryAzureDevOpsExtensionVersion@4
+                displayName: Query existing DEV extension version
+                name: 'queryDevVersion'
+                inputs:
+                  connectTo: 'VsTeam'
+                  connectedServiceName: 'marketplace-service-connection'
+                  publisherId: '$(publisherId)'
+                  extensionId: '$(extensionId)'
+                  extensionTag: '$(devExtensionTag)'
+                  versionAction: 'Patch'
 
-          - task: PublishAzureDevOpsExtension@4
-            displayName: Publish new DEV extension version
-            inputs:
-              connectTo: 'VsTeam'
-              connectedServiceName: 'marketplace-service-connection'
-              fileType: 'vsix'
-              vsixFile: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
-              extensionTag: '$(devExtensionTag)'
-              extensionName: '$(extensionName) DEV'
-              extensionVisibility: 'private'
-              extensionPricing: 'free'
-              shareWith: 'datadog-ci'
-              extensionVersion: '$(queryDevVersion.Extension.Version)'
-              updateTasksId: true # The DEV task ID is overridden to `99cf84cd-0117-58b7-b1dd-d95e5ae9baf8` (based on the `extensionTag`)
-              updateTasksVersion: true # Do not require updating the task version during development
-              updateTasksVersionType: patch
+              - task: PublishAzureDevOpsExtension@4
+                displayName: Publish new DEV extension version
+                inputs:
+                  connectTo: 'VsTeam'
+                  connectedServiceName: 'marketplace-service-connection'
+                  fileType: 'vsix'
+                  vsixFile: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
+                  extensionTag: '$(devExtensionTag)'
+                  extensionName: '$(extensionName) DEV'
+                  extensionVisibility: 'private'
+                  extensionPricing: 'free'
+                  shareWith: 'datadog-ci'
+                  extensionVersion: '$(queryDevVersion.Extension.Version)'
+                  updateTasksId: true # The DEV task ID is overridden to `99cf84cd-0117-58b7-b1dd-d95e5ae9baf8` (based on the `extensionTag`)
+                  updateTasksVersion: true # Do not require updating the task version during development
+                  updateTasksVersionType: patch
 
-          # We need to wait in this job (i.e. inside the main pipeline) to make sure the extension is available before the E2E pipeline's jobs are enqueued.
-          - task: Bash@3
-            displayName: Wait for DEV extension availability
-            inputs:
-              filePath: 'ci/poll-dev-extension-availability.sh'
-              arguments: |
-                -s "$(SERVICE_URL)" \
-                -t "$(SERVICE_TOKEN)" \
-                -i "$(publisherId).$(extensionId)$(devExtensionTag).$(contributionId)" \
-                -v "$(queryDevVersion.Extension.Version)"
+              # We need to wait in this job (i.e. inside the main pipeline) to make sure the extension is available before the E2E pipeline's jobs are enqueued.
+              - task: Bash@3
+                displayName: Wait for DEV extension availability
+                inputs:
+                  filePath: 'ci/poll-dev-extension-availability.sh'
+                  arguments: |
+                    -s "$(SERVICE_URL)" \
+                    -t "$(SERVICE_TOKEN)" \
+                    -i "$(publisherId).$(extensionId)$(devExtensionTag).$(contributionId)" \
+                    -v "$(queryDevVersion.Extension.Version)"
 
-  # Extension public release, only performed on manual runs
-  - ${{ if eq(parameters.performRelease, true) }}:
+  # Extension public release, only performed on release tags
+  - ${{ if startsWith(variables['Build.SourceBranch'], 'refs/tags/v') }}:
       - stage: ReleasePublic
         displayName: Release public extension
+        dependsOn: Build
+        variables:
+          extensionVersion: $[replace(variables['Build.SourceBranch'], 'refs/tags/v', '')]
+
         jobs:
           - job: PublishPublic
             displayName: Publish (public)
@@ -152,17 +156,6 @@ stages:
                 inputs:
                   version: 'v0.15.0'
 
-              - task: QueryAzureDevOpsExtensionVersion@4
-                displayName: Query existing extension version
-                name: 'queryVersion'
-                inputs:
-                  connectTo: 'VsTeam'
-                  connectedServiceName: 'marketplace-service-connection'
-                  publisherId: '$(publisherId)'
-                  extensionId: '$(extensionId)'
-                  versionAction: '${{ parameters.releaseSemver }}'
-                  setBuildNumber: 'false'
-
               - task: PublishAzureDevOpsExtension@4
                 displayName: Publish Extension
                 inputs:
@@ -172,21 +165,6 @@ stages:
                   vsixFile: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
                   extensionVisibility: 'public'
                   extensionPricing: 'free'
-                  extensionVersion: '$(queryVersion.Extension.Version)'
+                  extensionVersion: $(extensionVersion)
                   updateTasksId: false # The task ID stays `60b18503-c6d6-4e4b-a6b2-52fc6fb3d525` (defined in task.json)
                   updateTasksVersion: false # Bumped automatically by our Release Automation bot
-
-              - task: GitHubRelease@1
-                displayName: Create Github Release
-                inputs:
-                  gitHubConnection: 'github-service-connection-lefebvree'
-                  repositoryName: '$(Build.Repository.Name)'
-                  action: 'create'
-                  target: '$(Build.SourceVersion)'
-                  tagSource: 'userSpecifiedTag'
-                  assets: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
-                  tag: 'v$(queryVersion.Extension.Version)'
-                  title: 'v$(queryVersion.Extension.Version)'
-                  releaseNotesSource: 'inline'
-                  changeLogCompareToRelease: 'lastFullRelease'
-                  changeLogType: 'commitBased'
