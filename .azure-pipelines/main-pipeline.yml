@@ -128,7 +128,7 @@ stages:
           - task: Bash@3
             displayName: Wait for DEV extension availability
             inputs:
-              filePath: 'ci/poll-extension-availability.sh'
+              filePath: 'ci/poll-dev-extension-availability.sh'
               arguments: |
                 -s "$(SERVICE_URL)" \
                 -t "$(SERVICE_TOKEN)" \
