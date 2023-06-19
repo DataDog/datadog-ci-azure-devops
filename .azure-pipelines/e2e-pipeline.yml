@@ -3,11 +3,11 @@ pr: none # Disable PR runs. https://learn.microsoft.com/en-us/azure/devops/pipel
 
 # Automatically run this E2E pipeline when the main pipeline succeeds.
 # https://learn.microsoft.com/en-us/azure/devops/pipelines/process/resources?view=azure-devops&tabs=schema#define-a-pipelines-resource
-resources:
-  pipelines:
-    - pipeline: e2e-tests-on-dev-extension
-      source: DataDog.datadog-ci-azure-devops # Name of `main-pipeline.yml` as shown in the Azure DevOps UI.
-      trigger: true
+# resources:
+#   pipelines:
+#     - pipeline: e2e-tests-on-dev-extension
+#       source: DataDog.datadog-ci-azure-devops # Name of `main-pipeline.yml` as shown in the Azure DevOps UI.
+#       trigger: true
 
 variables:
   - group: ci-variables
