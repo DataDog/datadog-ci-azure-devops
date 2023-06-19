@@ -27,7 +27,7 @@ attempts=1
 max=25
 
 # Installed by `TfxInstaller` in the main pipeline.
-tfx=/opt/hostedtoolcache/tfx/0.12.0/x64/bin/tfx
+tfx=/opt/hostedtoolcache/tfx/0.15.0/x64/bin/tfx
 
 # Build tasks are "contributed" (Microsoft term to say "made available") by Azure DevOps extensions.
 # The contributions of an extension are defined in the `contributions` section of `vss-extension.json`.
