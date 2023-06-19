@@ -12,7 +12,7 @@ async function run(): Promise<void> {
 
   logError(
     'The `SyntheticsRunTests@0` task is deprecated, please use `SyntheticsRunTests@1` instead.\n' +
-      'This is NOT a breaking change: we decided to make the task version reflect the extension version.',
+      'This is NOT a breaking change, but an alignment between the task version and the extension version.',
     LogType.warning
   )
 
