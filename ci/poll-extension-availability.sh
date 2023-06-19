@@ -24,7 +24,7 @@ while getopts t:s:i:v: flag; do
 done
 
 attempts=1
-max=25
+max=2
 
 # Build tasks are "contributed" (Microsoft term to say "made available") by Azure DevOps extensions.
 # The contributions of an extension are defined in the `contributions` section of `vss-extension.json`.

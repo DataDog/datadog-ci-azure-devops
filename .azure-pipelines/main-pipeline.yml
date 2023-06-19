@@ -164,30 +164,38 @@ stages:
                   versionAction: '${{ parameters.releaseSemver }}'
                   setBuildNumber: 'false'
 
-              - task: PublishAzureDevOpsExtension@4
-                displayName: Publish Extension
+              - task: Bash@3
+                displayName: Publish Extension (mock)
                 inputs:
-                  connectTo: 'VsTeam'
-                  connectedServiceName: 'marketplace-service-connection'
-                  fileType: 'vsix'
-                  vsixFile: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
-                  extensionVisibility: 'public'
-                  extensionPricing: 'free'
-                  extensionVersion: '$(queryVersion.Extension.Version)'
-                  updateTasksId: false # The task ID stays `60b18503-c6d6-4e4b-a6b2-52fc6fb3d525` (defined in task.json)
-                  updateTasksVersion: false # Bumped automatically by our Release Automation bot
+                  targetType: 'inline'
+                  script: |
+                    sleep 5
+                    echo "Published"
 
-              - task: GitHubRelease@1
-                displayName: Create Github Release
-                inputs:
-                  gitHubConnection: 'github-service-connection-lefebvree'
-                  repositoryName: '$(Build.Repository.Name)'
-                  action: 'create'
-                  target: '$(Build.SourceVersion)'
-                  tagSource: 'userSpecifiedTag'
-                  assets: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
-                  tag: 'v$(queryVersion.Extension.Version)'
-                  title: 'v$(queryVersion.Extension.Version)'
-                  releaseNotesSource: 'inline'
-                  changeLogCompareToRelease: 'lastFullRelease'
-                  changeLogType: 'commitBased'
+              # - task: PublishAzureDevOpsExtension@4
+              #   displayName: Publish Extension
+              #   inputs:
+              #     connectTo: 'VsTeam'
+              #     connectedServiceName: 'marketplace-service-connection'
+              #     fileType: 'vsix'
+              #     vsixFile: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
+              #     extensionVisibility: 'public'
+              #     extensionPricing: 'free'
+              #     extensionVersion: '$(queryVersion.Extension.Version)'
+              #     updateTasksId: false # The task ID stays `60b18503-c6d6-4e4b-a6b2-52fc6fb3d525` (defined in task.json)
+              #     updateTasksVersion: false # Bumped automatically by our Release Automation bot
+
+              # - task: GitHubRelease@1
+              #   displayName: Create Github Release
+              #   inputs:
+              #     gitHubConnection: 'github-service-connection-lefebvree'
+              #     repositoryName: '$(Build.Repository.Name)'
+              #     action: 'create'
+              #     target: '$(Build.SourceVersion)'
+              #     tagSource: 'userSpecifiedTag'
+              #     assets: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
+              #     tag: 'v$(queryVersion.Extension.Version)'
+              #     title: 'v$(queryVersion.Extension.Version)'
+              #     releaseNotesSource: 'inline'
+              #     changeLogCompareToRelease: 'lastFullRelease'
+              #     changeLogType: 'commitBased'
