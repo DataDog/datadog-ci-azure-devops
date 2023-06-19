@@ -137,8 +137,8 @@ stages:
 
   # Extension public release, only performed on manual runs
   - ${{ if eq(parameters.performRelease, true) }}:
-      - stage: Release public extension
-        dependsOn: Build
+      - stage: ReleasePublic
+        displayName: Release public extension
         jobs:
           - job: PublishPublic
             displayName: Publish (public)
