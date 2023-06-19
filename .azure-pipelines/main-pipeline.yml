@@ -1,7 +1,9 @@
 # Disable the pipeline for individual commits except on `main` merges.
 # The pipeline requires a Pull Request to run.
 trigger:
-  - main
+  branches:
+    include:
+      - '*'
 
 parameters:
   - name: performRelease
@@ -38,26 +40,8 @@ variables:
     value: synthetics-application-testing
 
 stages:
-  # Build and package .vsix extension file
-  - stage: Build
-    jobs:
-      - job: BuildAndPackage
-        displayName: Build and package
-        steps:
-          - task: TfxInstaller@4
-            displayName: Install TFX CLI
-            inputs:
-              version: 'v0.12.x'
-
-          - task: NodeTool@0
-            displayName: Install Node.js
-            inputs:
-              versionSpec: '16.15.0'
-
-  # Release a DEV extension. E2E tests will automatically run on it in `e2e-pipeline.yml`
   - stage: ReleaseDev
     displayName: Release DEV extension
-    dependsOn: Build
     jobs:
       - job: PublishDev
         displayName: Publish DEV extension version
