@@ -46,7 +46,7 @@ stages:
       - job: PublishDev
         displayName: Publish DEV extension version
         steps:
-          - task: Datadog.datadog-ci-dev.synthetics-application-testing.SyntheticsRunTests@0
+          - task: Datadog.datadog-ci-dev.synthetics-application-testing.SyntheticsRunTests@1
             displayName: Run deprecated task
             inputs:
               authenticationType: 'apiAppKeys'
