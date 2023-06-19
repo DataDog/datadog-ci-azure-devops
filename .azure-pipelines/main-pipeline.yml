@@ -139,6 +139,7 @@ stages:
   - ${{ if eq(parameters.performRelease, true) }}:
       - stage: ReleasePublic
         displayName: Release public extension
+        dependsOn: Build
         jobs:
           - job: PublishPublic
             displayName: Publish (public)
