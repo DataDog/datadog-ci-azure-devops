@@ -4,17 +4,10 @@ import * as task from 'azure-pipelines-task-lib/task'
 
 import {getReporter, resolveConfig} from './resolve-config'
 import {synthetics} from '@datadog/datadog-ci'
-import {LogType, logError} from 'azure-pipelines-tasks-packaging-common/util'
 
 async function run(): Promise<void> {
   task.setResourcePath(path.join(__dirname, 'task.json'))
   synthetics.utils.setCiTriggerApp('azure_devops_task')
-
-  logError(
-    'The `SyntheticsRunTests@0` task is deprecated, please use `SyntheticsRunTests@1` instead.\n' +
-      'This is NOT a breaking change, but an alignment between the task version and the extension version.',
-    LogType.warning
-  )
 
   const reporter = getReporter()
   const config = await resolveConfig(reporter)
