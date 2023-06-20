@@ -47,7 +47,7 @@ stages:
           - task: TfxInstaller@4
             displayName: Install TFX CLI
             inputs:
-              version: 'v0.12.x'
+              version: 'v0.15.0'
 
           - task: NodeTool@0
             displayName: Install Node.js
@@ -94,7 +94,7 @@ stages:
           - task: TfxInstaller@4
             displayName: Install TFX CLI
             inputs:
-              version: 'v0.12.x'
+              version: 'v0.15.0'
 
           - task: QueryAzureDevOpsExtensionVersion@4
             displayName: Query existing DEV extension version
@@ -128,7 +128,7 @@ stages:
           - task: Bash@3
             displayName: Wait for DEV extension availability
             inputs:
-              filePath: 'ci/poll-extension-availability.sh'
+              filePath: 'ci/poll-dev-extension-availability.sh'
               arguments: |
                 -s "$(SERVICE_URL)" \
                 -t "$(SERVICE_TOKEN)" \
@@ -150,7 +150,7 @@ stages:
               - task: TfxInstaller@4
                 displayName: Install TFX CLI
                 inputs:
-                  version: 'v0.12.x'
+                  version: 'v0.15.0'
 
               - task: QueryAzureDevOpsExtensionVersion@4
                 displayName: Query existing extension version

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Query the installed extension until the expected version is available.
+# Query the installed DEV extension until the expected version is available.
 # Inspired from: https://github.com/microsoft/azure-devops-extension-tasks/issues/189#issue-820340124
 
 set -e
@@ -26,6 +26,9 @@ done
 attempts=1
 max=25
 
+# Installed by `TfxInstaller` in the main pipeline.
+tfx=/opt/hostedtoolcache/tfx/0.15.0/x64/bin/tfx
+
 # Build tasks are "contributed" (Microsoft term to say "made available") by Azure DevOps extensions.
 # The contributions of an extension are defined in the `contributions` section of `vss-extension.json`.
 #
@@ -44,7 +47,7 @@ max=25
 # In the response, there also is a `version` field which is the version of the TASK, but it's an object (e.g. `{ major: 1, minor: 0, patch: 0 }`) which is hard to compare with a string.
 # Since [bumping both the extension and the task is required for an update to occur][1], polling on the extension version is the same as polling on the task version.
 #
-# Also, the extension version is the only one that we already know in our pipeline, thanks to the `QueryAzureDevOpsExtensionVersion` task.
+# The extension version is the only one that we already know in our pipeline, thanks to the `QueryAzureDevOpsExtensionVersion` task.
 # The task version is bumped automatically by `PublishAzureDevOpsExtension` (thanks to `updateTasksVersion: true`) so we can't easily find its new value.
 #
 # [1]: https://github.com/MicrosoftDocs/azure-devops-docs/blob/f39ae7a04f3e124361eee19a84d853ec22c31e99/docs/extend/develop/add-build-task.md?plain=1#L427
@@ -53,7 +56,7 @@ until [ $attempts -gt $max ];
 do
     # List all the build tasks that are available. (e.g. `TfxInstaller`, `Bash`, etc.)
     # Some of them are contributed by Azure DevOps extensions installed in the organization (e.g. `SyntheticsRunTests`).
-    tasks=$(npx tfx-cli build tasks list --authType pat --service-url $SERVICE_URL -t $SERVICE_TOKEN --no-color --json)
+    tasks=$($tfx build tasks list --authType pat --service-url $SERVICE_URL -t $SERVICE_TOKEN --no-color --json)
 
     # Get the current version for the contribution that we are polling.
     current_contribution_version=$(echo $tasks | jq -r ".[] | select(.contributionIdentifier == \"$CONTRIBUTION_IDENTIFIER\") | .contributionVersion")
