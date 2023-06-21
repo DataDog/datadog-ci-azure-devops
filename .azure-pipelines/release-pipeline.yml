@@ -5,9 +5,9 @@ trigger:
   branches:
     include:
       - refs/tags/v* # Only version tags
-  # tags:
-  #   exclude:
-  #     - '*' # Exclude all other tags
+  tags:
+    exclude:
+      - '*' # Exclude all other tags
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -87,22 +87,15 @@ stages:
             inputs:
               version: 'v0.15.0'
 
-          - task: Bash@3
-            displayName: Publish Extension (mock)
+          - task: PublishAzureDevOpsExtension@4
+            displayName: Publish Extension
             inputs:
-              targetType: 'inline'
-              script: |
-                echo "New version: $(extensionVersion)"
-
-          # - task: PublishAzureDevOpsExtension@4
-          #   displayName: Publish Extension
-          #   inputs:
-          #     connectTo: 'VsTeam'
-          #     connectedServiceName: 'marketplace-service-connection'
-          #     fileType: 'vsix'
-          #     vsixFile: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
-          #     extensionVisibility: 'public'
-          #     extensionPricing: 'free'
-          #     extensionVersion: $(extensionVersion)
-          #     updateTasksId: false # The task ID stays `60b18503-c6d6-4e4b-a6b2-52fc6fb3d525` (defined in task.json)
-          #     updateTasksVersion: false # Bumped automatically by our Release Automation bot
+              connectTo: 'VsTeam'
+              connectedServiceName: 'marketplace-service-connection'
+              fileType: 'vsix'
+              vsixFile: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
+              extensionVisibility: 'public'
+              extensionPricing: 'free'
+              extensionVersion: $(extensionVersion)
+              updateTasksId: false # The task ID stays `60b18503-c6d6-4e4b-a6b2-52fc6fb3d525` (defined in task.json)
+              updateTasksVersion: false # Bumped automatically by our Release Automation bot
