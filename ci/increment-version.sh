@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=$(git describe --abbrev=0 --tags)
+VERSION=$(jq -r '.version' vss-extension.json)
 
 MAJOR=$(echo $VERSION | cut -d. -f1 | sed 's/v//') 
 MINOR=$(echo $VERSION | cut -d. -f2)
