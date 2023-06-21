@@ -5,9 +5,9 @@ trigger:
   branches:
     include:
       - refs/tags/v* # Only version tags
-  tags:
-    exclude:
-      - '*' # Exclude all other tags
+  # tags:
+  #   exclude:
+  #     - '*' # Exclude all other tags
 
 pool:
   vmImage: 'ubuntu-latest'
