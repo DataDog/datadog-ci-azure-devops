@@ -1,12 +1,12 @@
 trigger: none # Disable individual commit runs. https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/github?view=azure-devops&tabs=yaml#opting-out-of-ci
 pr: none # Disable PR runs. https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/github?view=azure-devops&tabs=yaml#pr-triggers
 
-# Automatically run this E2E pipeline when the main pipeline succeeds.
+# Automatically run this E2E pipeline when the dev pipeline succeeds.
 # https://learn.microsoft.com/en-us/azure/devops/pipelines/process/resources?view=azure-devops&tabs=schema#define-a-pipelines-resource
 resources:
   pipelines:
     - pipeline: e2e-tests-on-dev-extension
-      source: DataDog.datadog-ci-azure-devops # Name of `main-pipeline.yml` as shown in the Azure DevOps UI.
+      source: DataDog.datadog-ci-azure-devops # Name of `dev-pipeline.yml` as shown in the Azure DevOps UI.
       trigger: true
 
 variables:

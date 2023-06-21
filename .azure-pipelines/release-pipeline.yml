@@ -1,0 +1,101 @@
+pr: none # Disable PR runs. https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/github?view=azure-devops&tabs=yaml#pr-triggers
+
+# Pipeline requires a version tag to run.
+trigger:
+  branches:
+    include:
+      - refs/tags/v* # Only version tags
+  tags:
+    exclude:
+      - '*' # Exclude all other tags
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - group: ci-variables
+  - name: artifactPath
+    value: vsix
+  - name: packagedTask
+    value: datadog-ci.vsix
+  - name: publisherId
+    value: Datadog
+  - name: extensionName
+    value: 'Datadog Continuous Testing'
+  - name: extensionId
+    value: datadog-ci
+
+stages:
+  # Build and package .vsix extension file
+  - stage: Build
+    jobs:
+      - job: BuildAndPackage
+        displayName: Build and package
+        steps:
+          - task: TfxInstaller@4
+            displayName: Install TFX CLI
+            inputs:
+              version: 'v0.15.0'
+
+          - task: NodeTool@0
+            displayName: Install Node.js
+            inputs:
+              versionSpec: '16.15.0'
+
+          - task: Bash@3
+            displayName: Compile the Synthetics task
+            inputs:
+              targetType: 'inline'
+              script: |
+                cd SyntheticsRunTestsTask
+                yarn install --immutable
+                yarn build
+                yarn workspaces focus --production
+                rm -rf .yarn/
+
+          - task: PackageAzureDevOpsExtension@4
+            displayName: Package Datadog CI extension
+            name: 'packageStep'
+            inputs:
+              rootFolder: '$(Build.SourcesDirectory)'
+              outputPath: '$(Build.ArtifactStagingDirectory)/$(packagedTask)'
+              updateTasksVersion: false
+              extensionVisibility: 'private'
+              extensionPricing: 'free'
+
+          - publish: '$(packageStep.Extension.OutputPath)'
+            displayName: Publish VSIX artifact
+            artifact: $(artifactPath)
+
+  # Extension public release, only performed on release tags
+  - stage: ReleasePublic
+    displayName: Release public extension
+    dependsOn: Build
+    variables:
+      extensionVersion: $[replace(variables['Build.SourceBranch'], 'refs/tags/v', '')]
+
+    jobs:
+      - job: PublishPublic
+        displayName: Publish (public)
+        steps:
+          - download: current
+            displayName: Download VSIX
+            artifact: $(artifactPath)
+
+          - task: TfxInstaller@4
+            displayName: Install TFX CLI
+            inputs:
+              version: 'v0.15.0'
+
+          - task: PublishAzureDevOpsExtension@4
+            displayName: Publish Extension
+            inputs:
+              connectTo: 'VsTeam'
+              connectedServiceName: 'marketplace-service-connection'
+              fileType: 'vsix'
+              vsixFile: '$(Pipeline.Workspace)/$(artifactPath)/$(packagedTask)'
+              extensionVisibility: 'public'
+              extensionPricing: 'free'
+              extensionVersion: $(extensionVersion)
+              updateTasksId: false # The task ID stays `60b18503-c6d6-4e4b-a6b2-52fc6fb3d525` (defined in task.json)
+              updateTasksVersion: false # Bumped automatically by our Release Automation bot
