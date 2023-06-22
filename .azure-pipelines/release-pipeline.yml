@@ -1,6 +1,6 @@
 pr: none # Disable PR runs. https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/github?view=azure-devops&tabs=yaml#pr-triggers
 
-# Pipeline requires a version tag to run.
+# Requires a version tag to run.
 trigger:
   branches:
     include:

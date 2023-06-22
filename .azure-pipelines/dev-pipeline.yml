@@ -1,6 +1,8 @@
-trigger: none # Disable individual commit runs. https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/github?view=azure-devops&tabs=yaml#opting-out-of-ci
+# Run on commits, only on `main`.
+trigger:
+  - main
 
-# The pipeline requires a PR to run on branches.
+# Require a PR to run on branches.
 pr:
   branches:
     include:
