@@ -44,7 +44,7 @@ async function run(): Promise<void> {
   }
 }
 
-export const printSummary = (summary: synthetics.Summary, config: synthetics.SyntheticsCIConfig): string => {
+export const printSummary = (summary: synthetics.Summary, config: synthetics.RunTestsCommandConfig): string => {
   const baseUrl = synthetics.utils.getAppBaseURL(config)
   const batchUrl = synthetics.utils.getBatchUrl(baseUrl, summary.batchId)
   return (
