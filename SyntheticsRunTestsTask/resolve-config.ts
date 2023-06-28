@@ -66,7 +66,7 @@ function resolveDatadogEndpoint(): {datadogSite?: string; subdomain?: string} {
   return {datadogSite, subdomain}
 }
 
-export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<synthetics.CommandConfig> => {
+export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<synthetics.RunTestsCommandConfig> => {
   const {apiKey, appKey} = resolveKeys()
   const {datadogSite, subdomain} = resolveDatadogEndpoint()
 
