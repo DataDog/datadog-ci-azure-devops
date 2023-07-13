@@ -1,4 +1,5 @@
-import {join} from 'path'
+import chalk from 'chalk'
+import {relative, join} from 'path'
 
 import {synthetics} from '@datadog/datadog-ci'
 import {MockTestRunner} from 'azure-pipelines-task-lib/mock-test'
@@ -94,9 +95,17 @@ export const expectSpy = <Fn extends typeof synthetics.executeTests>(
     const spyLogs = task.stdout.match(matcher) || []
     const logs: unknown[] = spyLogs.map(log => JSON.parse(log.replace(prefixMatcher, '')))
 
-    // NOTE:
-    // 💡 You may want to run `node __tests__/mocks/<mock-name>.js` to get more details.
-    expect(logs).toContainEqual(args)
+    try {
+      // NOTE:
+      // 💡 You can run `node __tests__/mocks/<mock-name>.js` to debug issues with a mocked task.
+      expect(logs).toContainEqual(args)
+    } catch (error) {
+      const mockedTaskPath = relative(process.cwd(), task['_testPath'])
+      const header = `The task ${chalk.red(mockedTaskPath)} finished with this \`stderr\`, which you may find helpful:`
+
+      process.stdout.write(`\n${chalk.bold.white(header)}\n\n${chalk.red(task.stderr)}\n`)
+      throw error
+    }
   },
 })
 
