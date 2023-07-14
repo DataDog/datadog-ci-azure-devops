@@ -34,8 +34,11 @@ const runMockedTask = (mockName: string): MockTestRunner => {
     throw Error(`The mocked task file does not exist: mocks/${mockName}.js\n` + 'Did you forget to run `yarn build`?')
   }
 
+  // See `16.15.0` in `.node-version`
+  const nodeVersion = 16
+
   const task = new MockTestRunner(file)
-  task.run()
+  task.run(nodeVersion)
 
   // Warnings usually come from `mockery`, and can be useful to spot mocking issues.
   // For example, "Replacing existing mock for module: azure-pipelines-task-lib/task" means
