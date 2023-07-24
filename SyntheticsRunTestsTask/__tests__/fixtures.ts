@@ -1,4 +1,5 @@
-import {join} from 'path'
+import chalk from 'chalk'
+import {relative, join} from 'path'
 
 import {synthetics} from '@datadog/datadog-ci'
 import {MockTestRunner} from 'azure-pipelines-task-lib/mock-test'
@@ -33,8 +34,11 @@ const runMockedTask = (mockName: string): MockTestRunner => {
     throw Error(`The mocked task file does not exist: mocks/${mockName}.js\n` + 'Did you forget to run `yarn build`?')
   }
 
+  // See `16.15.0` in `.node-version`
+  const nodeVersion = 16
+
   const task = new MockTestRunner(file)
-  task.run()
+  task.run(nodeVersion)
 
   // Warnings usually come from `mockery`, and can be useful to spot mocking issues.
   // For example, "Replacing existing mock for module: azure-pipelines-task-lib/task" means
@@ -94,9 +98,17 @@ export const expectSpy = <Fn extends typeof synthetics.executeTests>(
     const spyLogs = task.stdout.match(matcher) || []
     const logs: unknown[] = spyLogs.map(log => JSON.parse(log.replace(prefixMatcher, '')))
 
-    // NOTE:
-    // 💡 You may want to run `node __tests__/mocks/<mock-name>.js` to get more details.
-    expect(logs).toContainEqual(args)
+    try {
+      // NOTE:
+      // 💡 You can run `node __tests__/mocks/<mock-name>.js` to debug issues with a mocked task.
+      expect(logs).toContainEqual(args)
+    } catch (error) {
+      const mockedTaskPath = relative(process.cwd(), task['_testPath'])
+      const header = `The task ${chalk.red(mockedTaskPath)} finished with this \`stderr\`, which you may find helpful:`
+
+      process.stdout.write(`\n${chalk.bold.white(header)}\n\n${chalk.red(task.stderr)}\n`)
+      throw error
+    }
   },
 })
 
