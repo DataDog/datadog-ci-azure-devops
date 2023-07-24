@@ -2249,10 +2249,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^10.0.3, @types/node@npm:^10.17.0":
+"@types/node@npm:^10.0.3":
   version: 10.17.60
   resolution: "@types/node@npm:10.17.60"
   checksum: 2cdb3a77d071ba8513e5e8306fa64bf50e3c3302390feeaeff1fd325dd25c8441369715dfc8e3701011a72fed5958c7dfa94eb9239a81b3c286caa4d97db6eef
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^16.11.39":
+  version: 16.18.38
+  resolution: "@types/node@npm:16.18.38"
+  checksum: a3baa141e49ce94486f083eea1240cf38479a73ba663e1bf3f52f85b466125821b6e3ea85ded38fde3901530aca4601291395a50eefcea533a4f3b45171bda28
   languageName: node
   linkType: hard
 
@@ -2763,9 +2770,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"azure-pipelines-task-lib@npm:^3.1.0, azure-pipelines-task-lib@npm:^3.1.1, azure-pipelines-task-lib@npm:^3.1.10":
-  version: 3.4.0
-  resolution: "azure-pipelines-task-lib@npm:3.4.0"
+"azure-pipelines-task-lib@npm:^4.0.0-preview, azure-pipelines-task-lib@npm:^4.1.0, azure-pipelines-task-lib@npm:^4.4.0":
+  version: 4.4.0
+  resolution: "azure-pipelines-task-lib@npm:4.4.0"
   dependencies:
     minimatch: 3.0.5
     mockery: ^2.1.0
@@ -2774,46 +2781,46 @@ __metadata:
     shelljs: ^0.8.5
     sync-request: 6.1.0
     uuid: ^3.0.1
-  checksum: 904ff1025cec9276caed391f6a1991da94a3b2ee4bfcd8e0aac3b69d428a88fc4f1a60812dc896293c30eab668283c5ff6d35f0f36ff72c37798b3305a8a4f3e
+  checksum: 9e31ed28c86a738f2d8106769fc9887ff1cdd4ae193ae12d012ba2d2572231a6f659b0292f0877e8bc849bc9ae1cd09127aeafb58fd5a3b68702fb0f1f83c2c1
   languageName: node
   linkType: hard
 
-"azure-pipelines-tasks-packaging-common@npm:^2.198.1":
-  version: 2.198.1
-  resolution: "azure-pipelines-tasks-packaging-common@npm:2.198.1"
+"azure-pipelines-tasks-packaging-common@npm:^3.221.1":
+  version: 3.221.1
+  resolution: "azure-pipelines-tasks-packaging-common@npm:3.221.1"
   dependencies:
     "@types/ini": 1.3.30
     "@types/ltx": 2.8.0
     "@types/mocha": ^5.2.6
     "@types/mockery": 1.4.29
-    "@types/node": ^10.17.0
+    "@types/node": ^16.11.39
     "@types/q": 1.5.2
     adm-zip: ^0.4.11
     azure-devops-node-api: 10.2.2
-    azure-pipelines-task-lib: ^3.1.0
-    azure-pipelines-tool-lib: ^1.0.2
-    ini: ^1.3.4
+    azure-pipelines-task-lib: ^4.0.0-preview
+    azure-pipelines-tool-lib: ^2.0.0-preview
+    ini: ^1.3.8
     ip-address: ^5.8.9
     ltx: ^2.6.2
     q: ^1.5.0
     semver: ^5.5.0
     typed-rest-client: 1.8.4
-  checksum: 34caae9aa09532965cbdb112354a18896d524a5df078988c8ba1c7eb538f7776a79f1f66356d5f9a754272fcbd60d96689c10dacee24c975b746479ae14aaa2c
+  checksum: 64a8adc784abeeab5c0849fbd692e3bc19b92a6062868b0792ae980a9faf7ebd98fb3bcd14adb63aafb35023d9b569becef8ef644382c3122fbb7cb662a15186
   languageName: node
   linkType: hard
 
-"azure-pipelines-tool-lib@npm:^1.0.2":
-  version: 1.3.2
-  resolution: "azure-pipelines-tool-lib@npm:1.3.2"
+"azure-pipelines-tool-lib@npm:^2.0.0-preview":
+  version: 2.0.4
+  resolution: "azure-pipelines-tool-lib@npm:2.0.4"
   dependencies:
     "@types/semver": ^5.3.0
     "@types/uuid": ^3.4.5
-    azure-pipelines-task-lib: ^3.1.10
+    azure-pipelines-task-lib: ^4.1.0
     semver: ^5.7.0
     semver-compare: ^1.0.0
     typed-rest-client: ^1.8.6
     uuid: ^3.3.2
-  checksum: 5d7d88c29225abd6dda2176e343ba1447f3ac9d0de17924a93ff772d5570130537024c6bdb0bdfc88d69939c7d5c3b0ea0fe2e3ba7286af3d69dcde94ec4a96d
+  checksum: 9e7a6cb748e274433e22c136ed2a443f09158fa27c406d68ba04f2b4f2d8ae66d52be79e6ff97ae74363663dfe46ad582637344c14d1903bcfffcf3fd889e001
   languageName: node
   linkType: hard
 
@@ -4621,7 +4628,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ini@npm:^1.3.4, ini@npm:~1.3.0":
+"ini@npm:^1.3.8, ini@npm:~1.3.0":
   version: 1.3.8
   resolution: "ini@npm:1.3.8"
   checksum: dfd98b0ca3a4fc1e323e38a6c8eb8936e31a97a918d3b377649ea15bdb15d481207a0dda1021efbd86b464cae29a0d33c1d7dcaf6c5672bee17fa849bc50a1b3
@@ -7129,8 +7136,8 @@ __metadata:
     "@types/node": ^16.18.0
     "@typescript-eslint/eslint-plugin": ^4.33.0
     "@typescript-eslint/parser": ^4.33.0
-    azure-pipelines-task-lib: ^3.1.1
-    azure-pipelines-tasks-packaging-common: ^2.198.1
+    azure-pipelines-task-lib: ^4.4.0
+    azure-pipelines-tasks-packaging-common: ^3.221.1
     deep-extend: ^0.6.0
     eslint: ^7.32.0
     eslint-plugin-jest: ^24.4.2
