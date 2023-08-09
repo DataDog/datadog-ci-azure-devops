@@ -28,7 +28,7 @@
   },
   "packageManager": "yarn@3.4.1",
   "dependencies": {
-    "@datadog/datadog-ci": "^2.18.0",
+    "@datadog/datadog-ci": "^2.18.1",
     "azure-pipelines-task-lib": "^4.4.0",
     "azure-pipelines-tasks-packaging-common": "^3.221.1",
     "deep-extend": "^0.6.0",
