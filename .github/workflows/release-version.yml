@@ -92,8 +92,7 @@ jobs:
             The description of the release will exactly match this PR's description. Feel free to edit it.
 
             > [!WARNING]
-            > The \`Release\` pipeline (which publishes the **public** extension) won't be triggered because the creator of the tag is
-            > the [Release Automation](https://github.com/apps/ci-integrations-release-automation) github app, which is seen as a bot by Azure DevOps.
+            > The \`Release\` pipeline (which publishes the **public** extension) won't be triggered because the creator of the tag is the [Release Automation](https://github.com/apps/ci-integrations-release-automation) github app, which is seen as a bot by Azure DevOps.
             >
             > To trigger it manually, please \`Run the pipeline\` [here](https://datadog-ci.visualstudio.com/Datadog%20CI%20Azure%20DevOps%20Extension/_build?definitionId=8) on Azure DevOps.
             > You should change the \`Branch/tag\` to \`refs/tags/${{ steps.bump-version.outputs.NEW_VERSION_TAG }}\`.`
