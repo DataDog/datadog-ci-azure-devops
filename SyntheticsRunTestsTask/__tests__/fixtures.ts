@@ -27,7 +27,7 @@ export const CUSTOM_SUBDOMAIN = 'myorg'
 export const CUSTOM_SITE = 'datadoghq.eu'
 export const CUSTOM_PUBLIC_IDS = ['public_id1', 'public_id2', 'public_id3']
 
-const runMockedTask = (mockName: string): MockTestRunner => {
+const runMockedTask = async (mockName: string): Promise<MockTestRunner> => {
   const file = join(__dirname, 'mocks', `${mockName}.js`)
 
   if (!fs.existsSync(file)) {
@@ -37,10 +37,10 @@ const runMockedTask = (mockName: string): MockTestRunner => {
   // See `16.15.0` in `.node-version`
   const nodeVersion = 16
 
-  const task = new MockTestRunner(file)
-  task.run(nodeVersion)
+  const task = await new MockTestRunner().LoadAsync(file)
+  await task.runAsync(nodeVersion)
 
-  // Warnings usually come from `mockery`, and can be useful to spot mocking issues.
+  // Warnings can be useful to spot mocking issues.
   // For example, "Replacing existing mock for module: azure-pipelines-task-lib/task" means
   // that we tried to mock `azure-pipelines-task-lib/task`, which is already mocked
   // by `azure-pipelines-task-lib/mock-run`. So our mock would be overwritten.
@@ -58,22 +58,22 @@ const runMockedTask = (mockName: string): MockTestRunner => {
   return task
 }
 
-export const runMockTaskApiKeys = (): MockTestRunner => {
+export const runMockTaskApiKeys = async (): Promise<MockTestRunner> => {
   return runMockedTask('api-keys')
 }
-export const runMockTaskServiceConnection = (): MockTestRunner => {
+export const runMockTaskServiceConnection = async (): Promise<MockTestRunner> => {
   return runMockedTask('service-connection')
 }
-export const runMockTaskServiceConnectionEnvVars = (): MockTestRunner => {
+export const runMockTaskServiceConnectionEnvVars = async (): Promise<MockTestRunner> => {
   return runMockedTask('service-connection-env-vars')
 }
-export const runMockTaskServiceConnectionMisconfigured = (): MockTestRunner => {
+export const runMockTaskServiceConnectionMisconfigured = async (): Promise<MockTestRunner> => {
   return runMockedTask('service-connection-misconfigured')
 }
-export const runMockTaskJUnitReport = (): MockTestRunner => {
+export const runMockTaskJUnitReport = async (): Promise<MockTestRunner> => {
   return runMockedTask('junit-report')
 }
-export const runMockTaskPollingTimeout = (): MockTestRunner => {
+export const runMockTaskPollingTimeout = async (): Promise<MockTestRunner> => {
   return runMockedTask('polling-timeout')
 }
 
