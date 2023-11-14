@@ -144,7 +144,7 @@
       "target": "task.node10.js"
     },
     "Node16": {
-      "target": "task.node10.js"
+      "target": "task.js"
     }
   }
 }
