@@ -19,8 +19,8 @@ import {
 const BASE_CONFIG = synthetics.DEFAULT_COMMAND_CONFIG
 
 describe('Test suite', () => {
-  test('succeeds when app and api keys are given', () => {
-    const task = runMockTaskApiKeys()
+  test('succeeds when app and api keys are given', async () => {
+    const task = await runMockTaskApiKeys()
 
     expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
       ...BASE_CONFIG,
@@ -37,8 +37,8 @@ describe('Test suite', () => {
     expect(task.errorIssues.length).toEqual(0)
   })
 
-  test('fails when service connection has empty app or api keys', () => {
-    const task = runMockTaskServiceConnectionMisconfigured()
+  test('fails when service connection has empty app or api keys', async () => {
+    const task = await runMockTaskServiceConnectionMisconfigured()
 
     expect(task.succeeded).toBe(false)
     expect(task.warningIssues.length).toEqual(0)
@@ -52,8 +52,8 @@ describe('Test suite', () => {
     expect(task.stderr).toMatch('[UNCAUGHT_ERROR] Error: Endpoint auth data not present: my service connection')
   })
 
-  test('succeeds when service connection has app and api keys', () => {
-    const task = runMockTaskServiceConnection()
+  test('succeeds when service connection has app and api keys', async () => {
+    const task = await runMockTaskServiceConnection()
 
     expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
       ...BASE_CONFIG,
@@ -75,8 +75,8 @@ describe('Test suite', () => {
     expect(task.errorIssues.length).toEqual(0)
   })
 
-  test('succeeds with a service connection set up with env vars', () => {
-    const task = runMockTaskServiceConnectionEnvVars()
+  test('succeeds with a service connection set up with env vars', async () => {
+    const task = await runMockTaskServiceConnectionEnvVars()
 
     expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
       ...BASE_CONFIG,
@@ -95,8 +95,8 @@ describe('Test suite', () => {
     expect(task.errorIssues.length).toEqual(0)
   })
 
-  test('succeeds and generates a jUnit report', () => {
-    const task = runMockTaskJUnitReport()
+  test('succeeds and generates a jUnit report', async () => {
+    const task = await runMockTaskJUnitReport()
 
     expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
       ...BASE_CONFIG,
@@ -119,8 +119,8 @@ describe('Test suite', () => {
     fs.rmdirSync('./reports')
   })
 
-  test('pollingTimeout input overrides the default config', () => {
-    const task = runMockTaskPollingTimeout()
+  test('pollingTimeout input overrides the default config', async () => {
+    const task = await runMockTaskPollingTimeout()
 
     expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
       ...BASE_CONFIG,
