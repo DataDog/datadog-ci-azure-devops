@@ -36,8 +36,8 @@ const runMockedTask = async (mockName: string): Promise<MockTestRunner> => {
     throw Error(`The mocked task file does not exist: mocks/${mockName}.js\n` + 'Did you forget to run `yarn build`?')
   }
 
-  // See `16.15.0` in `.node-version`
-  const nodeVersion = 16
+  // See `20.11.0` in `.node-version`
+  const nodeVersion = 20
 
   const task = await new MockTestRunner().LoadAsync(file)
   await task.runAsync(nodeVersion)
