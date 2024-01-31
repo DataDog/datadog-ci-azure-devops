@@ -2873,10 +2873,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^16.18.0":
-  version: 16.18.23
-  resolution: "@types/node@npm:16.18.23"
-  checksum: 00e51db28fc7a182747f37215b3f25400b1c7a8525e09fa14e55be5798891a118ebf636a49d3197335a3580fcb8222fd4ecc20c2ccff69f1c0d233fc5697465d
+"@types/node@npm:^20.11.13":
+  version: 20.11.13
+  resolution: "@types/node@npm:20.11.13"
+  dependencies:
+    undici-types: ~5.26.4
+  checksum: 76fbe4dbcce9ecb602c1e0528124bb113e9ece58d417e96710b7ba96dd67cd0bb050272218dc796be36c0d8c29d7c55da44311be429daa4253c3a00f1b3840ff
   languageName: node
   linkType: hard
 
@@ -7620,7 +7622,7 @@ __metadata:
     "@datadog/datadog-ci": ^2.48.0
     "@types/deep-extend": ^0.4.32
     "@types/jest": ^29.5.8
-    "@types/node": ^16.18.0
+    "@types/node": ^20.11.13
     "@typescript-eslint/eslint-plugin": ^4.33.0
     "@typescript-eslint/parser": ^4.33.0
     azure-pipelines-task-lib: ^4.7.0
@@ -7891,6 +7893,13 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 3d1b04449662193544b81d055479d03b4c5dca95f1a82f8922596f089d894c9fefbe16639d1d9dfe26a7054419645530cef44001bc17aed1fe1eb3c237e9b3c7
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~5.26.4":
+  version: 5.26.5
+  resolution: "undici-types@npm:5.26.5"
+  checksum: 3192ef6f3fd5df652f2dc1cd782b49d6ff14dc98e5dced492aa8a8c65425227da5da6aafe22523c67f035a272c599bb89cfe803c1db6311e44bed3042fc25487
   languageName: node
   linkType: hard
 
