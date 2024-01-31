@@ -37,7 +37,7 @@ const runMockedTask = async (mockName: string): Promise<MockTestRunner> => {
   }
 
   // See `20.11.0` in `.node-version`
-  const nodeVersion = 20
+  const nodeVersion = 16
 
   const task = await new MockTestRunner().LoadAsync(file)
   await task.runAsync(nodeVersion)
