@@ -98,9 +98,6 @@ For an example test file, see this [`test.synthetics.json` file][14].
     authenticationType: 'connectedService'
     connectedService: 'my-datadog-ci-connected-service'
     testSearchQuery: 'tag:e2e-tests'
-    variables: |
-      START_URL=https://staging.website.com
-      PASSWORD=$(StagingPassword)
 ```
 
 ### Example task using the `testSearchQuery` and variable overrides
@@ -112,6 +109,9 @@ For an example test file, see this [`test.synthetics.json` file][14].
     authenticationType: 'connectedService'
     connectedService: 'my-datadog-ci-connected-service'
     testSearchQuery: 'tag:e2e-tests'
+    variables: |
+      START_URL=https://staging.website.com
+      PASSWORD=$(StagingPassword)
 ```
 
 ### Example task using a global configuration override with `configPath`
