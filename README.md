@@ -114,9 +114,9 @@ For an example test file, see this [`test.synthetics.json` file][14].
       PASSWORD=$(StagingPassword)
 ```
 
-### Example task using a global configuration override with `configPath`
+### Example task using a global configuration file with `configPath`
 
-This task overrides the path to the global `datadog-ci.config.json` file.
+By default, the path to the global configuration file is `datadog-ci.json`. You can override this path with the `config_path` input.
 
 ```yaml
 - task: SyntheticsRunTests@1
@@ -124,10 +124,10 @@ This task overrides the path to the global `datadog-ci.config.json` file.
   inputs:
     authenticationType: 'connectedService'
     connectedService: 'my-datadog-ci-connected-service'
-    configPath: './synthetics-config.json'
+    configPath: './global.config.json'
 ```
 
-For an example configuration file, see this [`global.config.json` file][13].
+For an example of global configuration file, see this [`global.config.json` file][13].
 
 ## Inputs
 
@@ -142,7 +142,7 @@ For an example configuration file, see this [`global.config.json` file][13].
 | `publicIds`            | _optional_  | A list of tests IDs for Synthetic tests you want to trigger, separated by new lines or commas. If no value is provided, the task looks for files named `synthetics.json`.                                                                       |
 | `testSearchQuery`      | _optional_  | Trigger tests corresponding to a [search][8] query. This can be useful if you are tagging your test configurations. For more information, see [rules and best practices for naming tags][10].                                                   |
 | `files`                | _optional_  | Glob pattern to detect Synthetic tests' config files. **Default:** `{,!(node_modules)/**/}*.synthetics.json`.                                                                                                                                   |
-| `configPath`           | _optional_  | The global JSON configuration used when launching tests. For more information, see the [example configuration][9]. **Default:** `datadog-ci.json`.                                                                                              |
+| `configPath`           | _optional_  | The [global JSON configuration][9] used when launching tests. For more information, see the [example configuration][9]. **Default:** `datadog-ci.json`.                                                                                         |
 | `variables`            | _optional_  | A list of global variables to use for Synthetic tests, separated by new lines or commas. For example: `START_URL=https://example.org,MY_VARIABLE=My title`. **Default:** `[]`.                                                                  |
 | `jUnitReport`          | _optional_  | The filename for a JUnit report if you want to generate one.                                                                                                                                                                                    |
 | `pollingTimeout`       | _optional_  | The duration (in milliseconds) after which the task stops polling for test results. At the CI level, test results completed after this duration are considered failed. **Default:** 30 minutes.                                                 |
