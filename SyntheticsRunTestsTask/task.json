@@ -94,7 +94,7 @@
       "type": "filePath",
       "label": "Global JSON configuration",
       "defaultValue": "",
-      "helpMarkDown": "The global JSON configuration is used when launching tests. See the [example configuration](https://docs.datadoghq.com/synthetics/cicd_integrations/configuration/?tabs=npm#setup-a-client) for more details."
+      "helpMarkDown": "The [global JSON configuration](https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#setup-the-client) is used when launching tests. See the [example configuration](https://docs.datadoghq.com/synthetics/cicd_integrations/configuration/?tabs=npm#setup-a-client) for more details."
     },
     {
       "name": "variables",
