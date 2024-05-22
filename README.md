@@ -127,7 +127,7 @@ By default, the path to the global configuration file is `datadog-ci.json`. You 
     configPath: './global.config.json'
 ```
 
-For an example of global configuration file, see this [`global.config.json` file][13].
+For an example of a global configuration file, see this [`global.config.json` file][13].
 
 ## Inputs
 
