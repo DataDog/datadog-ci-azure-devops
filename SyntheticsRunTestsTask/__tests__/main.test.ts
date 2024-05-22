@@ -25,8 +25,8 @@ describe('Test suite', () => {
     expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
       ...BASE_CONFIG,
       ...BASE_INPUTS,
-      global: {
-        ...BASE_CONFIG.global,
+      defaultTestOverrides: {
+        ...BASE_CONFIG.defaultTestOverrides,
         pollingTimeout: BASE_CONFIG.pollingTimeout,
       },
       publicIds: CUSTOM_PUBLIC_IDS,
@@ -61,8 +61,8 @@ describe('Test suite', () => {
       publicIds: CUSTOM_PUBLIC_IDS,
       datadogSite: CUSTOM_SITE,
       subdomain: CUSTOM_SUBDOMAIN,
-      global: {
-        ...BASE_CONFIG.global,
+      defaultTestOverrides: {
+        ...BASE_CONFIG.defaultTestOverrides,
         pollingTimeout: BASE_CONFIG.pollingTimeout,
         variables: {
           FOO: 'bar',
@@ -81,8 +81,8 @@ describe('Test suite', () => {
     expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
       ...BASE_CONFIG,
       ...BASE_INPUTS,
-      global: {
-        ...BASE_CONFIG.global,
+      defaultTestOverrides: {
+        ...BASE_CONFIG.defaultTestOverrides,
         pollingTimeout: BASE_CONFIG.pollingTimeout,
       },
       datadogSite: CUSTOM_SITE,
@@ -101,8 +101,8 @@ describe('Test suite', () => {
     expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
       ...BASE_CONFIG,
       ...BASE_INPUTS,
-      global: {
-        ...BASE_CONFIG.global,
+      defaultTestOverrides: {
+        ...BASE_CONFIG.defaultTestOverrides,
         pollingTimeout: BASE_CONFIG.pollingTimeout,
       },
       publicIds: CUSTOM_PUBLIC_IDS,
@@ -125,8 +125,8 @@ describe('Test suite', () => {
     expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
       ...BASE_CONFIG,
       ...BASE_INPUTS,
-      global: {
-        ...BASE_CONFIG.global,
+      defaultTestOverrides: {
+        ...BASE_CONFIG.defaultTestOverrides,
         pollingTimeout: 3600000,
       },
       pollingTimeout: 3600000,
