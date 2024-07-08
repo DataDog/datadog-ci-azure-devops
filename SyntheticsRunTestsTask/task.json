@@ -8,8 +8,8 @@
   "category": "Test",
   "version": {
     "Major": 1,
-    "Minor": 22,
-    "Patch": 1
+    "Minor": 23,
+    "Patch": 0
   },
   "preview": true,
   "instanceNameFormat": "Run Datadog Synthetics CI tests",
