@@ -79,8 +79,8 @@ For an example test file, see this [`test.synthetics.json` file][14].
     authenticationType: 'apiAppKeys'
     apiKey: '$(DatadogApiKey)'
     appKey: '$(DatadogAppKey)'
-    subdomain: 'myorg'
     datadogSite: '$(DatadogSite)'
+    subdomain: 'myorg'
 ```
 
 ## Complex usage
@@ -123,8 +123,8 @@ By default, the path to the global configuration file is `datadog-ci.json`. You 
   displayName: Run Datadog Synthetic tests
   inputs:
     authenticationType: 'connectedService'
-    connectedService: 'my-datadog-ci-connected-service'
     configPath: './global.config.json'
+    connectedService: 'my-datadog-ci-connected-service'
 ```
 
 For an example of a global configuration file, see this [`global.config.json` file][13].
@@ -133,22 +133,22 @@ For an example of a global configuration file, see this [`global.config.json` fi
 
 | Name                   | Requirement | Description                                                                                                                                                                                                                                     |
 | ---------------------- | :---------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apiKey`               | _required_  | Your Datadog API key when using the `apiAppKeys` authentication type. This key is created by your [Datadog organization][6] and should be stored as a [secret][7].                                                                              |
+| `appKey`               | _required_  | Your Datadog application key when using the `apiAppKeys` authentication type. This key is created by your [Datadog organization][6] and should be stored as a [secret][7].                                                                      |
 | `authenticationType`   | _required_  | The type of authentication you want Datadog to use, either `connectedService` or `apiAppKeys`.                                                                                                                                                  |
-| `connectedService`     | _optional_  | The name of the [Datadog CI service connection](#setup) to use when using the `connectedService` authentication type.                                                                                                                           |
-| `apiKey`               | _optional_  | Your Datadog API key when using the `apiAppKeys` authentication type. This key is created by your [Datadog organization][6] and should be stored as a [secret][7].                                                                              |
-| `appKey`               | _optional_  | Your Datadog application key when using the `apiAppKeys` authentication type. This key is created by your [Datadog organization][6] and should be stored as a [secret][7].                                                                      |
-| `subdomain`            | _optional_  | The name of the custom subdomain set to access your Datadog application when using the `apiAppKeys` authentication type. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`. **Default:** `app`. |
-| `datadogSite`          | _optional_  | The [Datadog site][11] when using the `apiAppKeys` authentication type. **Default:** `datadoghq.com`.                                                                                                                                           |
-| `publicIds`            | _optional_  | A list of tests IDs for Synthetic tests you want to trigger, separated by new lines or commas. If no value is provided, the task looks for files named `synthetics.json`.                                                                       |
-| `testSearchQuery`      | _optional_  | Trigger tests corresponding to a [search][8] query. This can be useful if you are tagging your test configurations. For more information, see [rules and best practices for naming tags][10].                                                   |
-| `files`                | _optional_  | Glob pattern to detect Synthetic tests' config files. **Default:** `{,!(node_modules)/**/}*.synthetics.json`.                                                                                                                                   |
+| `connectedService`     | _required_  | The name of the [Datadog CI service connection](#setup) to use when using the `connectedService` authentication type.                                                                                                                           |
 | `configPath`           | _optional_  | The [global JSON configuration][9] used when launching tests. For more information, see the [example configuration][9]. **Default:** `datadog-ci.json`.                                                                                         |
-| `variables`            | _optional_  | A list of global variables to use for Synthetic tests, separated by new lines or commas. For example: `START_URL=https://example.org,MY_VARIABLE=My title`. **Default:** `[]`.                                                                  |
-| `jUnitReport`          | _optional_  | The filename for a JUnit report if you want to generate one.                                                                                                                                                                                    |
-| `pollingTimeout`       | _optional_  | The duration (in milliseconds) after which the task stops polling for test results. At the CI level, test results completed after this duration are considered failed. **Default:** 30 minutes.                                                 |
+| `datadogSite`          | _optional_  | The [Datadog site][11] when using the `apiAppKeys` authentication type. **Default:** `datadoghq.com`.                                                                                                                                           |
 | `failOnCriticalErrors` | _optional_  | Fail the CI job if no tests were triggered, or results could not be fetched from Datadog. **Default:** `false`.                                                                                                                                 |
 | `failOnMissingTests`   | _optional_  | Fail the CI job if at least one specified test with a public ID (using `publicIds` or listed in a [test file][14]) is missing in a run (for example, if it has been deleted programmatically or on the Datadog site). **Default:** `false`.     |
 | `failOnTimeout`        | _optional_  | Fail the CI job if at least one test exceeds the default test timeout. **Default:** `true`.                                                                                                                                                     |
+| `files`                | _optional_  | Glob pattern to detect Synthetic tests' config files. **Default:** `{,!(node_modules)/**/}*.synthetics.json`.                                                                                                                                   |
+| `jUnitReport`          | _optional_  | The filename for a JUnit report if you want to generate one.                                                                                                                                                                                    |
+| `pollingTimeout`       | _optional_  | **DEPRECATED**: The duration (in milliseconds) after which the task stops polling for test results. At the CI level, test results completed after this duration are considered failed. **Default:** 30 minutes.                                                 |
+| `publicIds`            | _optional_  | A list of tests IDs for Synthetic tests you want to trigger, separated by new lines or commas. If no value is provided, the task looks for files named `synthetics.json`.                                                                       |
+| `subdomain`            | _optional_  | The name of the custom subdomain set to access your Datadog application when using the `apiAppKeys` authentication type. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`. **Default:** `app`. |
+| `testSearchQuery`      | _optional_  | Trigger tests corresponding to a [search][8] query. This can be useful if you are tagging your test configurations. For more information, see [rules and best practices for naming tags][10].                                                   |
+| `variables`            | _optional_  | A list of global variables to use for Synthetic tests, separated by new lines or commas. For example: `START_URL=https://example.org,MY_VARIABLE=My title`. **Default:** `[]`.                                                                  |
 
 ## Further reading
 
