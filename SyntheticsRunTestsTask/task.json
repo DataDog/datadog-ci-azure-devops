@@ -15,6 +15,17 @@
   "instanceNameFormat": "Run Datadog Synthetics CI tests",
   "inputs": [
     {
+      "name": "authenticationType",
+      "type": "radio",
+      "label": "Choose an authentication method",
+      "defaultValue": "apiAppKeys",
+      "required": true,
+      "options": {
+        "connectedService": "Use a Service Connection",
+        "apiAppKeys": "Use API & Application keys"
+      }
+    },
+    {
       "name": "apiKey",
       "type": "string",
       "label": "Datadog API key",
@@ -31,17 +42,6 @@
       "helpMarkDown": "Your Datadog application key. This key is created by your [Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/) and will be accessed as an environment variable.",
       "required": true,
       "visibleRule": "authenticationType = apiAppKeys"
-    },
-    {
-      "name": "authenticationType",
-      "type": "radio",
-      "label": "Choose an authentication method",
-      "defaultValue": "apiAppKeys",
-      "required": true,
-      "options": {
-        "connectedService": "Use a Service Connection",
-        "apiAppKeys": "Use API & Application keys"
-      }
     },
     {
       "name": "connectedService",
