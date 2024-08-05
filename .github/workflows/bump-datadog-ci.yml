@@ -88,6 +88,8 @@ jobs:
             const body = `This PR was automatically created because a new version of datadog-ci was published.
 
             > [!IMPORTANT]
+            > **Important:** Please comment \`/azp run\` on the PR to run the Azure pipelines.
+            > 
             > **You are not done!**
             > 
             > Once this PR is merged, please run the ["Create Release PR" workflow](../actions/workflows/release-version.yml).

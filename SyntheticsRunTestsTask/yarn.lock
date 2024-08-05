@@ -1410,9 +1410,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@datadog/datadog-ci@npm:^2.40.1":
-  version: 2.40.1
-  resolution: "@datadog/datadog-ci@npm:2.40.1"
+"@datadog/datadog-ci@npm:^2.41.0":
+  version: 2.41.0
+  resolution: "@datadog/datadog-ci@npm:2.41.0"
   dependencies:
     "@aws-sdk/client-cloudwatch-logs": ^3.537.0
     "@aws-sdk/client-iam": ^3.535.0
@@ -1436,11 +1436,11 @@ __metadata:
     datadog-metrics: 0.9.3
     deep-extend: 0.6.0
     deep-object-diff: ^1.1.9
-    fast-xml-parser: ^4.2.5
+    fast-xml-parser: ^4.4.1
     form-data: 4.0.0
     fuzzy: ^0.1.3
-    glob: 7.1.4
-    google-auth-library: ^8.9.0
+    glob: ^7.1.4
+    google-auth-library: ^9.12.0
     inquirer: ^8.2.5
     inquirer-checkbox-plus-prompt: ^1.4.2
     js-yaml: 3.13.1
@@ -1462,7 +1462,7 @@ __metadata:
     yamux-js: 0.1.2
   bin:
     datadog-ci: dist/cli.js
-  checksum: 9d6cd61fab283ea1f581eb7820fe71a9e041fb16b76021dff1b4265d0bc98bd4d96d04c2773d77af186c09e2569520cd98c14eb90862a9a7fbc66efcbc1da1c9
+  checksum: f22a9a99077fb79662734210627b0fdf79d45b887ec7f0424f962af0b7d991e051b3b73d9c4bb15f0df177cb59b4a51b97aed7b935b3b6746ac27889e40fc90f
   languageName: node
   linkType: hard
 
@@ -4487,14 +4487,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-text-encoding@npm:^1.0.0":
-  version: 1.0.6
-  resolution: "fast-text-encoding@npm:1.0.6"
-  checksum: 9d58f694314b3283e785bf61954902536da228607ad246905e30256f9ab8331f780ac987e7222c9f5eafd04168d07e12b8054c85cedb76a2c05af0e82387a903
-  languageName: node
-  linkType: hard
-
-"fast-xml-parser@npm:4.2.5, fast-xml-parser@npm:^4.2.5":
+"fast-xml-parser@npm:4.2.5":
   version: 4.2.5
   resolution: "fast-xml-parser@npm:4.2.5"
   dependencies:
@@ -4502,6 +4495,17 @@ __metadata:
   bin:
     fxparser: src/cli/cli.js
   checksum: d32b22005504eeb207249bf40dc82d0994b5bb9ca9dcc731d335a1f425e47fe085b3cace3cf9d32172dd1a5544193c49e8615ca95b4bf95a4a4920a226b06d80
+  languageName: node
+  linkType: hard
+
+"fast-xml-parser@npm:^4.4.1":
+  version: 4.4.1
+  resolution: "fast-xml-parser@npm:4.4.1"
+  dependencies:
+    strnum: ^1.0.5
+  bin:
+    fxparser: src/cli/cli.js
+  checksum: f440c01cd141b98789ae777503bcb6727393296094cc82924ae9f88a5b971baa4eec7e65306c7e07746534caa661fc83694ff437d9012dc84dee39dfbfaab947
   languageName: node
   linkType: hard
 
@@ -4702,18 +4706,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gaxios@npm:^5.0.0, gaxios@npm:^5.0.1":
-  version: 5.1.3
-  resolution: "gaxios@npm:5.1.3"
-  dependencies:
-    extend: ^3.0.2
-    https-proxy-agent: ^5.0.0
-    is-stream: ^2.0.0
-    node-fetch: ^2.6.9
-  checksum: 1cf72697715c64f6db1d6fa6e9243bb57ee14b0c758338a33790ecac2675d819a1fc0c51b2fab312d9bfe8201cc981c171b70ff60adcaaec881c5bc5610c42f1
-  languageName: node
-  linkType: hard
-
 "gaxios@npm:^6.0.0, gaxios@npm:^6.1.1":
   version: 6.1.1
   resolution: "gaxios@npm:6.1.1"
@@ -4723,16 +4715,6 @@ __metadata:
     is-stream: ^2.0.0
     node-fetch: ^2.6.9
   checksum: bb4a4e6c81847b690ee29e01294d2093eb9bb4f9e60bbf81fcc6cd3b274f3c551c50a9bc134e7e7019a9b116eac9d9df6af9f2519c695da7ddd785f36564da72
-  languageName: node
-  linkType: hard
-
-"gcp-metadata@npm:^5.3.0":
-  version: 5.3.0
-  resolution: "gcp-metadata@npm:5.3.0"
-  dependencies:
-    gaxios: ^5.0.0
-    json-bigint: ^1.0.0
-  checksum: 891ea0b902a17f33d7bae753830d23962b63af94ed071092c30496e7d26f8128ba9af43c3d38474bea29cb32a884b4bcb5720ce8b9de4a7e1108475d3d7ae219
   languageName: node
   linkType: hard
 
@@ -4804,20 +4786,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:7.1.4":
-  version: 7.1.4
-  resolution: "glob@npm:7.1.4"
-  dependencies:
-    fs.realpath: ^1.0.0
-    inflight: ^1.0.4
-    inherits: 2
-    minimatch: ^3.0.4
-    once: ^1.3.0
-    path-is-absolute: ^1.0.0
-  checksum: f52480fc82b1e66e52990f0f2e7306447d12294c83fbbee0395e761ad1178172012a7cc0673dbf4810baac400fc09bf34484c08b5778c216403fd823db281716
-  languageName: node
-  linkType: hard
-
 "glob@npm:^10.2.2, glob@npm:^10.3.10":
   version: 10.3.10
   resolution: "glob@npm:10.3.10"
@@ -4877,23 +4845,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"google-auth-library@npm:^8.9.0":
-  version: 8.9.0
-  resolution: "google-auth-library@npm:8.9.0"
-  dependencies:
-    arrify: ^2.0.0
-    base64-js: ^1.3.0
-    ecdsa-sig-formatter: ^1.0.11
-    fast-text-encoding: ^1.0.0
-    gaxios: ^5.0.0
-    gcp-metadata: ^5.3.0
-    gtoken: ^6.1.0
-    jws: ^4.0.0
-    lru-cache: ^6.0.0
-  checksum: 8e0bc5f1e91804523786413bf4358e4c5ad94b1e873c725ddd03d0f1c242e2b38e26352c0f375334fbc1d94110f761b304aa0429de49b4a27ebc3875a5b56644
-  languageName: node
-  linkType: hard
-
 "google-auth-library@npm:^9.0.0":
   version: 9.4.1
   resolution: "google-auth-library@npm:9.4.1"
@@ -4905,6 +4856,20 @@ __metadata:
     gtoken: ^7.0.0
     jws: ^4.0.0
   checksum: c7d2d40ab704e0412db71e505a50b8b149233b9714db20b75c522e43c2a02033de52d4fc37787a8907875c93ff895a0a9582ed1217a990dfbf7389b1d7e2b3d0
+  languageName: node
+  linkType: hard
+
+"google-auth-library@npm:^9.12.0":
+  version: 9.13.0
+  resolution: "google-auth-library@npm:9.13.0"
+  dependencies:
+    base64-js: ^1.3.0
+    ecdsa-sig-formatter: ^1.0.11
+    gaxios: ^6.1.1
+    gcp-metadata: ^6.1.0
+    gtoken: ^7.0.0
+    jws: ^4.0.0
+  checksum: 1ccedc9b6ef6a274e78256aa602b3fb6dd44b3df41d5514058518775f3990a95e7ab0ebad74fe8a3e4f10c23dc8e6a8074bf132f3cc338f335d0e9a6095f8fd4
   languageName: node
   linkType: hard
 
@@ -4927,17 +4892,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"google-p12-pem@npm:^4.0.0":
-  version: 4.0.1
-  resolution: "google-p12-pem@npm:4.0.1"
-  dependencies:
-    node-forge: ^1.3.1
-  bin:
-    gp12-pem: build/src/bin/gp12-pem.js
-  checksum: 59a5026331ea67455672e83770da29f09d979f02e06cb2227ea5916f8cca437887c2d3869f2602a686dc84437886ae9d2ac010780803cbe8e5f161c2d02d8efd
-  languageName: node
-  linkType: hard
-
 "graceful-fs@npm:^4.1.6, graceful-fs@npm:^4.2.0, graceful-fs@npm:^4.2.9":
   version: 4.2.10
   resolution: "graceful-fs@npm:4.2.10"
@@ -4949,17 +4903,6 @@ __metadata:
   version: 4.2.11
   resolution: "graceful-fs@npm:4.2.11"
   checksum: ac85f94da92d8eb6b7f5a8b20ce65e43d66761c55ce85ac96df6865308390da45a8d3f0296dd3a663de65d30ba497bd46c696cc1e248c72b13d6d567138a4fc7
-  languageName: node
-  linkType: hard
-
-"gtoken@npm:^6.1.0":
-  version: 6.1.2
-  resolution: "gtoken@npm:6.1.2"
-  dependencies:
-    gaxios: ^5.0.1
-    google-p12-pem: ^4.0.0
-    jws: ^4.0.0
-  checksum: cf3210afe2ccee8feaa06f0c7eb942e217244a8563a1d0a71aa3095eea545015896741c1d48654d8de35b7b07579f93e25e5dfe817f06b7e753646b67f7a4ecf
   languageName: node
   linkType: hard
 
@@ -6451,13 +6394,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-forge@npm:^1.3.1":
-  version: 1.3.1
-  resolution: "node-forge@npm:1.3.1"
-  checksum: 08fb072d3d670599c89a1704b3e9c649ff1b998256737f0e06fbd1a5bf41cae4457ccaee32d95052d80bbafd9ffe01284e078c8071f0267dc9744e51c5ed42a9
-  languageName: node
-  linkType: hard
-
 "node-gyp@npm:latest":
   version: 10.0.1
   resolution: "node-gyp@npm:10.0.1"
@@ -7644,7 +7580,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "synthetics-test-automation@workspace:."
   dependencies:
-    "@datadog/datadog-ci": ^2.40.1
+    "@datadog/datadog-ci": ^2.41.0
     "@types/deep-extend": ^0.4.32
     "@types/jest": ^29.5.8
     "@types/node": ^16.18.0
