@@ -1,8 +1,6 @@
 # Global Code Owners
-* @DataDog/datadog-ci
+* @DataDog/synthetics-ct
 
 # Documentation
 *README.md @DataDog/documentation @DataDog/synthetics-ct @alai97
 
-# Synthetics
-SyntheticsRunTestsTask @DataDog/synthetics-ct
