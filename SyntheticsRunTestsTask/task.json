@@ -9,7 +9,7 @@
   "version": {
     "Major": 1,
     "Minor": 30,
-    "Patch": 0
+    "Patch": 1
   },
   "preview": true,
   "instanceNameFormat": "Run Datadog Synthetics CI tests",
