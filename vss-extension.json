@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "datadog-ci",
   "publisher": "Datadog",
-  "version": "1.30.1",
+  "version": "1.31.0",
   "name": "Datadog Continuous Testing",
   "description": "Use Browser and API tests in your Azure pipelines with Datadog Continuous Testing",
   "public": false,
