@@ -3,7 +3,7 @@ import * as task from 'azure-pipelines-task-lib/task'
 import {synthetics, utils} from '@datadog/datadog-ci'
 import deepExtend from 'deep-extend'
 
-import {getDefinedBoolean, getDefinedInteger, parseMultiline} from './utils'
+import {getDefinedBoolean, getDefinedInteger, parseMultiline, parseVariableStrings} from './utils'
 
 const ENDPOINT_URL_TO_SITE = {
   'https://app.datadoghq.com/': 'datadoghq.com',
@@ -75,7 +75,7 @@ export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<
   const files = parseMultiline(task.getInput('files'))
   const testSearchQuery = task.getInput('testSearchQuery')
   const variableStrings = parseMultiline(task.getInput('variables'))
-  const pollingTimeout = getDefinedInteger(task.getInput('pollingTimeout'), {inputName: 'pollingTimeout'})
+  const batchTimeout = getDefinedInteger(task.getInput('pollingTimeout'), {inputName: 'pollingTimeout'})
   const failOnCriticalErrors = getDefinedBoolean(task.getInput('failOnCriticalErrors'), {
     inputName: 'failOnCriticalErrors',
   })
@@ -103,28 +103,24 @@ export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<
     utils.removeUndefinedValues({
       apiKey,
       appKey,
+      batchTimeout,
       configPath,
       datadogSite,
       failOnCriticalErrors,
       failOnMissingTests,
       failOnTimeout,
       files,
-      pollingTimeout,
       publicIds,
       subdomain,
       testSearchQuery,
       defaultTestOverrides: deepExtend(
         config.defaultTestOverrides,
         utils.removeUndefinedValues({
-          pollingTimeout,
-          variables: synthetics.utils.parseVariablesFromCli(variableStrings, reporter.log.bind(reporter)),
+          variables: parseVariableStrings(variableStrings, reporter.log.bind(reporter)),
         })
       ),
     })
   )
-
-  // Pass root polling timeout to default test overrides to get it applied to all tests if not defined individually
-  config.defaultTestOverrides.pollingTimeout = config.defaultTestOverrides.pollingTimeout ?? config.pollingTimeout
 
   return config
 }
