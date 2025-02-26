@@ -140,8 +140,11 @@
     }
   ],
   "execution": {
-    "Node16": {
+    "Node20": {
       "target": "task.js"
+    },
+    "Node16": {
+      "target": "task.node16.js"
     },
     "Node10": {
       "target": "task.node10.js"
