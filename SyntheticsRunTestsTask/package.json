@@ -21,21 +21,21 @@
     "test"
   ],
   "engines": {
-    "node": "16.15.0"
+    "node": "20.11.0"
   },
   "volta": {
-    "node": "16.15.0"
+    "node": "20.11.0"
   },
   "packageManager": "yarn@3.4.1",
   "dependencies": {
     "@datadog/datadog-ci": "^2.48.0",
-    "azure-pipelines-task-lib": "^4.7.0",
+    "azure-pipelines-task-lib": "^5.0.0",
     "deep-extend": "^0.6.0"
   },
   "devDependencies": {
     "@types/deep-extend": "^0.4.32",
     "@types/jest": "^29.5.8",
-    "@types/node": "^16.18.0",
+    "@types/node": "^20.11.13",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "eslint": "^7.32.0",
