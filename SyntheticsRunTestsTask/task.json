@@ -114,7 +114,7 @@
       "type": "multiLine",
       "label": "Synthetic test IDs",
       "defaultValue": "",
-      "helpMarkDown": "String of tests IDs separated by commas for Synthetic tests you want to trigger. If no value is provided, the task will look for files named with `synthetics.json`."
+      "helpMarkDown": "Public IDs of Synthetic tests to run, separated by new lines or commas. If no value is provided, tests are discovered in `*.synthetics.json` files."
     },
     {
       "name": "subdomain",
@@ -136,11 +136,11 @@
       "type": "multiLine",
       "label": "Variables",
       "defaultValue": "",
-      "helpMarkDown": "Comma-separated list of global variables to use for Synthetic tests. For example: `START_URL=https://example.org,MY_VARIABLE=My title`."
+      "helpMarkDown": "Key-value pairs for injecting variables into tests, separated by newlines or commas. For example: `START_URL=https://example.org,MY_VARIABLE=My title`."
     }
   ],
   "execution": {
-    "Node20": {
+    "Node20_1": {
       "target": "task.js"
     },
     "Node16": {
