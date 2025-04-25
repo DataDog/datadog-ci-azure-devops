@@ -113,6 +113,10 @@ export const setupMocks = (mockRunner: TaskMockRunner): void => {
     utils,
     synthetics: {
       ...synthetics,
+      utils: {
+        ...synthetics.utils,
+        getOrgSettings: async () => {},
+      },
       executeTests: async (
         ...args: Parameters<typeof synthetics.executeTests>
       ): ReturnType<typeof synthetics.executeTests> => {
