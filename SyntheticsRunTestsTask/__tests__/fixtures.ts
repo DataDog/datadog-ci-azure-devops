@@ -75,8 +75,8 @@ export const runMockTaskServiceConnectionMisconfigured = async (): Promise<MockT
 export const runMockTaskJUnitReport = async (): Promise<MockTestRunner> => {
   return runMockedTask('junit-report')
 }
-export const runMockTaskPollingTimeout = async (): Promise<MockTestRunner> => {
-  return runMockedTask('polling-timeout')
+export const runMockTaskBatchTimeout = async (): Promise<MockTestRunner> => {
+  return runMockedTask('batch-timeout')
 }
 
 // The MockTestRunner runs the task it's given in a separate process, so Jest spies cannot work.

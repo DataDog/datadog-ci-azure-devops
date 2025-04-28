@@ -44,6 +44,13 @@
       "visibleRule": "authenticationType = apiAppKeys"
     },
     {
+      "name": "batchTimeout",
+      "type": "int",
+      "label": "Batch timeout",
+      "defaultValue": "",
+      "helpMarkDown": "The duration (in milliseconds) after which the batch fails as timed out."
+    },
+    {
       "name": "connectedService",
       "type": "connectedService:datadog-ci",
       "label": "Datadog CI service connection",
@@ -101,13 +108,6 @@
       "label": "JUnit Report",
       "defaultValue": "",
       "helpMarkDown": "The filename for a JUnit report if you want to generate one."
-    },
-    {
-      "name": "pollingTimeout",
-      "type": "int",
-      "label": "Polling Timeout",
-      "defaultValue": "",
-      "helpMarkDown": "**DEPRECATED** The duration (in milliseconds) after which the task stops polling for test results."
     },
     {
       "name": "publicIds",

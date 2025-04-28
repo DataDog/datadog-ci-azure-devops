@@ -9,8 +9,8 @@ import {
   CUSTOM_SUBDOMAIN,
   expectSpy,
   runMockTaskApiKeys,
+  runMockTaskBatchTimeout,
   runMockTaskJUnitReport,
-  runMockTaskPollingTimeout,
   runMockTaskServiceConnection,
   runMockTaskServiceConnectionEnvVars,
   runMockTaskServiceConnectionMisconfigured,
@@ -106,8 +106,8 @@ describe('Test suite', () => {
     fs.rmdirSync('./reports')
   })
 
-  test('pollingTimeout input overrides the default config', async () => {
-    const task = await runMockTaskPollingTimeout()
+  test('batchTimeout input overrides the default config', async () => {
+    const task = await runMockTaskBatchTimeout()
 
     expectSpy(task, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
       ...BASE_CONFIG,

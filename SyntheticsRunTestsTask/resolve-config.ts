@@ -71,11 +71,11 @@ export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<
   const {datadogSite, subdomain} = resolveDatadogEndpoint()
 
   const publicIds = parseMultiline(task.getInput('publicIds'))
+  const batchTimeout = getDefinedInteger(task.getInput('batchTimeout'), {inputName: 'batchTimeout'})
   const configPath = task.getPathInput('configPath')
   const files = parseMultiline(task.getInput('files'))
   const testSearchQuery = task.getInput('testSearchQuery')
   const variableStrings = parseMultiline(task.getInput('variables'))
-  const batchTimeout = getDefinedInteger(task.getInput('pollingTimeout'), {inputName: 'pollingTimeout'})
   const failOnCriticalErrors = getDefinedBoolean(task.getInput('failOnCriticalErrors'), {
     inputName: 'failOnCriticalErrors',
   })
