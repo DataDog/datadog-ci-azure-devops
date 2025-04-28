@@ -29,12 +29,47 @@ stages:
         steps:
           - task: Datadog.datadog-ci-dev.synthetics-application-testing.SyntheticsRunTests@2
             displayName: Run DEV task - apiAppKeys
+            name: runSyntheticsTests
             inputs:
               authenticationType: 'apiAppKeys'
               apiKey: '$(API_KEY)'
               appKey: '$(APP_KEY)'
               publicIds: '2r9-q7u-4nn,pwd-mwg-3p5'
               configPath: 'ci/e2e.config.json'
+
+          # Example of using outputs
+          - script: |
+              echo 'Batch URL: $(runSyntheticsTests.batchUrl)'
+              echo 'Raw Results:'
+              echo '$(runSyntheticsTests.rawResults)' | jq '.'
+            displayName: Example of using outputs
+
+          # Example of parsing and using raw results with JS
+          - task: NodeTool@0
+            displayName: 'Install Node.js'
+            inputs:
+              versionSpec: '20.x'
+          # Linux only
+          - bash: |
+              cat > parse-results.js << 'EOF'
+                const rawResults = JSON.parse(process.env.RAW_RESULTS);
+                console.log('Parsed Raw Results:', rawResults);
+              EOF
+            displayName: Prepare script (Linux)
+            condition: eq(variables['Agent.OS'], 'Linux')
+          # Windows only
+          - powershell: |
+              @'
+                const rawResults = JSON.parse(process.env.RAW_RESULTS);
+                console.log('Parsed Raw Results:', rawResults);
+              '@ | Out-File -FilePath parse-results.js -Encoding utf8
+            displayName: Prepare script (Windows)
+            condition: eq(variables['Agent.OS'], 'Windows_NT')
+          # Run the script
+          - script: node parse-results.js
+            displayName: Example of parsing and using raw results with JS
+            env:
+              RAW_RESULTS: $(runSyntheticsTests.rawResults)
 
           - task: Datadog.datadog-ci-dev.synthetics-application-testing.SyntheticsRunTests@2
             displayName: Run DEV task - connectedService
