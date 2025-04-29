@@ -106,8 +106,24 @@ const setupWarnSpy = (): void => {
   // AND we actually expect errors in some tests.
 }
 
-export const setupMocks = (mockRunner: TaskMockRunner): void => {
+interface ExecuteTestsResult {
+  results: synthetics.Result[]
+  summary: synthetics.Summary
+}
+
+export const setupMocks = (
+  mockRunner: TaskMockRunner,
+  opts?: {
+    executeTestsResult?: ExecuteTestsResult
+    noOpRenderResults?: boolean
+  }
+): void => {
   setupWarnSpy()
+
+  const executeTestsResult = opts?.executeTestsResult ?? {
+    results: [],
+    summary: EMPTY_SUMMARY,
+  }
 
   mockRunner.registerMock('@datadog/datadog-ci', {
     utils,
@@ -116,15 +132,12 @@ export const setupMocks = (mockRunner: TaskMockRunner): void => {
       utils: {
         ...synthetics.utils,
         getOrgSettings: async () => {},
+        // Use this to remove side effects on the summary.
+        ...(opts?.noOpRenderResults ? {renderResults: () => {}} : {}),
       },
-      executeTests: async (
-        ...args: Parameters<typeof synthetics.executeTests>
-      ): ReturnType<typeof synthetics.executeTests> => {
+      executeTests: async (...args: Parameters<typeof synthetics.executeTests>): Promise<ExecuteTestsResult> => {
         spyLog(synthetics.executeTests, args)
-        return {
-          results: [],
-          summary: EMPTY_SUMMARY,
-        }
+        return executeTestsResult
       },
     },
   })

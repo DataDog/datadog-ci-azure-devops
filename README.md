@@ -150,6 +150,21 @@ For an example of a global configuration file, see this [`global.config.json` fi
 | `testSearchQuery`      | _optional_  | Trigger tests corresponding to a [search][8] query. This can be useful if you are tagging your test configurations. For more information, see [rules and best practices for naming tags][10].                                                   |
 | `variables`            | _optional_  | Key-value pairs for injecting variables into tests, separated by newlines or commas. For example: `START_URL=https://example.org,MY_VARIABLE=My title`. **Default:** `[]`.                                                                      |
 
+## Outputs
+
+| Name                     | Type   | Description                                |
+| ------------------------ | ------ | ------------------------------------------ |
+| `batchUrl`               | string | The URL of the batch.                      |
+| `criticalErrorsCount`    | number | The number of critical errors.             |
+| `failedCount`            | number | The number of failed results.              |
+| `failedNonBlockingCount` | number | The number of failed non-blocking results. |
+| `passedCount`            | number | The number of passed results.              |
+| `previouslyPassedCount`  | number | The number of previously passed results.   |
+| `testsNotFoundCount`     | number | The number of not found tests.             |
+| `testsSkippedCount`      | number | The number of skipped tests.               |
+| `timedOutCount`          | number | The number of timed out results.           |
+| `rawResults`             | string | The list of results, as a raw JSON string. |
+
 ## Further reading
 
 Additional helpful documentation, links, and articles:

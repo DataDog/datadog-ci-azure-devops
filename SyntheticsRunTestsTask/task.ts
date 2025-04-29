@@ -28,11 +28,19 @@ async function run(): Promise<void> {
 
     synthetics.utils.reportExitLogs(reporter, config, {results})
 
+    const baseUrl = synthetics.utils.getAppBaseURL(config)
+    const batchUrl = synthetics.utils.getBatchUrl(baseUrl, summary.batchId)
+
+    setOutputs(results, summary, batchUrl)
+
     const exitReason = synthetics.utils.getExitReason(config, {results})
     if (exitReason !== 'passed') {
-      task.setResult(task.TaskResult.Failed, `Datadog Synthetics tests failed: ${printSummary(summary, config)}`)
+      task.setResult(task.TaskResult.Failed, `Datadog Synthetics tests failed: ${getTextSummary(summary, batchUrl)}`)
     } else {
-      task.setResult(task.TaskResult.Succeeded, `Datadog Synthetics tests succeeded: ${printSummary(summary, config)}`)
+      task.setResult(
+        task.TaskResult.Succeeded,
+        `Datadog Synthetics tests succeeded: ${getTextSummary(summary, batchUrl)}`
+      )
     }
   } catch (error) {
     synthetics.utils.reportExitLogs(reporter, config, {error})
@@ -44,13 +52,21 @@ async function run(): Promise<void> {
   }
 }
 
-export const printSummary = (summary: synthetics.Summary, config: synthetics.RunTestsCommandConfig): string => {
-  const baseUrl = synthetics.utils.getAppBaseURL(config)
-  const batchUrl = synthetics.utils.getBatchUrl(baseUrl, summary.batchId)
-  return (
-    `criticalErrors: ${summary.criticalErrors}, passed: ${summary.passed}, failedNonBlocking: ${summary.failedNonBlocking}, failed: ${summary.failed}, skipped: ${summary.skipped}, notFound: ${summary.testsNotFound.size}, timedOut: ${summary.timedOut}\n` +
-    `Results URL: ${batchUrl}`
-  )
+const getTextSummary = (summary: synthetics.Summary, batchUrl: string): string =>
+  `criticalErrors: ${summary.criticalErrors}, passed: ${summary.passed}, previouslyPassed: ${summary.previouslyPassed}, failedNonBlocking: ${summary.failedNonBlocking}, failed: ${summary.failed}, skipped: ${summary.skipped}, notFound: ${summary.testsNotFound.size}, timedOut: ${summary.timedOut}\n` +
+  `Batch URL: ${batchUrl}`
+
+const setOutputs = (results: synthetics.Result[], summary: synthetics.Summary, batchUrl: string): void => {
+  task.setVariable('batchUrl', batchUrl, false, true)
+  task.setVariable('criticalErrorsCount', summary.criticalErrors.toString(), false, true)
+  task.setVariable('failedNonBlockingCount', summary.failedNonBlocking.toString(), false, true)
+  task.setVariable('failedCount', summary.failed.toString(), false, true)
+  task.setVariable('passedCount', summary.passed.toString(), false, true)
+  task.setVariable('previouslyPassedCount', summary.previouslyPassed.toString(), false, true)
+  task.setVariable('testsNotFoundCount', summary.testsNotFound.size.toString(), false, true)
+  task.setVariable('testsSkippedCount', summary.skipped.toString(), false, true)
+  task.setVariable('timedOutCount', summary.timedOut.toString(), false, true)
+  task.setVariable('rawResults', JSON.stringify(results), false, true)
 }
 
 void run().catch(e => {
