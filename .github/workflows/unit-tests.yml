@@ -5,7 +5,7 @@ name: Run unit tests
 on: push
 
 jobs:
-  build-and-test-synthetics:
+  build-and-test:
     name: Build and test SyntheticsRunTestsTask
     runs-on: ubuntu-latest
 
@@ -23,4 +23,4 @@ jobs:
       - run: yarn lint
       - run: yarn build && yarn test
         env:
-          FORCE_COLOR: '1'
+          FORCE_COLOR: 1
