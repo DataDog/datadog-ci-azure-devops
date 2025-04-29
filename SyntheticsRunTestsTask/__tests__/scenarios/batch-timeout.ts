@@ -11,7 +11,7 @@ setupMocks(mockRunner)
 mockRunner.setInput('authenticationType', 'apiAppKeys')
 mockRunner.setInput('apiKey', BASE_INPUTS.apiKey)
 mockRunner.setInput('appKey', BASE_INPUTS.appKey)
+mockRunner.setInput('batchTimeout', `${60 * 60 * 1000}`)
 mockRunner.setInput('publicIds', CUSTOM_PUBLIC_IDS.join(', '))
-mockRunner.setInput('pollingTimeout', `${60 * 60 * 1000}`)
 
 mockRunner.run()

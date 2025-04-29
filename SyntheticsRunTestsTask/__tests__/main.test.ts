@@ -115,8 +115,8 @@ describe('Test suite', () => {
     fs.rmdirSync('./reports')
   })
 
-  test('pollingTimeout input overrides the default config', async () => {
-    const result = await runScenario('polling-timeout')
+  test('batchTimeout input overrides the default config', async () => {
+    const result = await runScenario('batch-timeout')
 
     expectSpy(result, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
       ...BASE_CONFIG,
