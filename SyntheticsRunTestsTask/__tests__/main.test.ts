@@ -7,7 +7,7 @@ import {BASE_INPUTS, CUSTOM_PUBLIC_IDS, CUSTOM_SITE, CUSTOM_SUBDOMAIN, expectSpy
 const BASE_CONFIG = synthetics.DEFAULT_COMMAND_CONFIG
 
 describe('Test suite', () => {
-  test('succeeds when app and api keys are given', async () => {
+  test('succeeds when api and app keys are given', async () => {
     const result = await runScenario('api-keys')
 
     expectSpy(result, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
@@ -19,6 +19,27 @@ describe('Test suite', () => {
     expect(result.succeeded).toBe(true)
     expect(result.warningIssues.length).toEqual(0)
     expect(result.errorIssues.length).toEqual(0)
+
+    const output = result.stdout.split('\n').filter(line => line.includes('##vso[task.setvariable'))
+
+    const setVariableStr = (name: string, value: string): string =>
+      `##vso[task.setvariable variable=${name};isOutput=true;issecret=false;]${value}`
+
+    expect(output.length).toEqual(10)
+    expect(output[0]).toContain(
+      setVariableStr('batchUrl', 'https://app.datadoghq.com/synthetics/explorer/ci?batchResultId=batch-id')
+    )
+    expect(output[1]).toContain(setVariableStr('criticalErrorsCount', '1'))
+    expect(output[2]).toContain(setVariableStr('failedNonBlockingCount', '3'))
+    expect(output[3]).toContain(setVariableStr('failedCount', '2'))
+    expect(output[4]).toContain(setVariableStr('passedCount', '4'))
+    expect(output[5]).toContain(setVariableStr('previouslyPassedCount', '5'))
+    expect(output[6]).toContain(setVariableStr('testsNotFoundCount', '1'))
+    expect(output[7]).toContain(setVariableStr('testsSkippedCount', '6'))
+    expect(output[8]).toContain(setVariableStr('timedOutCount', '7'))
+    expect(output[9]).toContain(
+      setVariableStr('rawResults', JSON.stringify([{passed: true, result: {startUrl: 'https://example.org'}}]))
+    )
   })
 
   test('fails when service connection has empty app or api keys', async () => {

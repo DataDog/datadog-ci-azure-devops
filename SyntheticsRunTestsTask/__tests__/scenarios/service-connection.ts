@@ -1,22 +1,13 @@
 import {join} from 'path'
 
-import {synthetics, utils} from '@datadog/datadog-ci'
 import {TaskMockRunner} from 'azure-pipelines-task-lib/mock-run'
 import type task from 'azure-pipelines-task-lib/task'
 
-import {
-  BASE_INPUTS,
-  CUSTOM_PUBLIC_IDS,
-  CUSTOM_SITE,
-  CUSTOM_SUBDOMAIN,
-  EMPTY_SUMMARY,
-  setupWarnSpy,
-  spyLog,
-} from '../fixtures'
-
-setupWarnSpy()
+import {BASE_INPUTS, CUSTOM_PUBLIC_IDS, CUSTOM_SITE, CUSTOM_SUBDOMAIN, setupMocks} from '../fixtures'
 
 const mockRunner = new TaskMockRunner(join(__dirname, '../..', 'task.js'))
+
+setupMocks(mockRunner)
 
 mockRunner.setInput('authenticationType', 'connectedService')
 mockRunner.setInput('connectedService', 'my service connection')
@@ -42,21 +33,5 @@ taskMock.getEndpointAuthorizationParameterRequired = (_id: string, key: string) 
   }
 }
 mockRunner.registerMock('azure-pipelines-task-lib/mock-task', taskMock)
-
-mockRunner.registerMock('@datadog/datadog-ci', {
-  utils,
-  synthetics: {
-    ...synthetics,
-    executeTests: async (
-      ...args: Parameters<typeof synthetics.executeTests>
-    ): ReturnType<typeof synthetics.executeTests> => {
-      spyLog(synthetics.executeTests, args)
-      return {
-        results: [],
-        summary: EMPTY_SUMMARY,
-      }
-    },
-  },
-})
 
 mockRunner.run()

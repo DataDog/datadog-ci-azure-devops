@@ -28,4 +28,9 @@ sed -i -E "s/(\"version\"):.*/\1: \"$NEW_VERSION\",/" vss-extension.json
 # Update tasks versions to the same version
 sed -i -E -e "s/(\"Major\"):.*/\1: $MAJOR,/" -e "s/(\"Minor\"):.*/\1: $MINOR,/" -e "s/(\"Patch\"):.*/\1: $PATCH/" */task.json
 
+# Update major version in e2e-pipeline.yml if it's a major version bump
+if [ "$1" == "major" ]; then
+  sed -i -E "s/SyntheticsRunTests@[0-9]+/SyntheticsRunTests@$MAJOR/" .azure-pipelines/e2e-pipeline.yml
+fi
+
 echo $NEW_VERSION 

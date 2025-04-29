@@ -1,10 +1,11 @@
 import chalk from 'chalk'
 import {relative, join} from 'path'
+import {synthetics, utils} from '@datadog/datadog-ci'
 
-import {synthetics} from '@datadog/datadog-ci'
 import {MockTestRunner} from 'azure-pipelines-task-lib/mock-test'
 
 import * as fs from 'fs'
+import {TaskMockRunner} from 'azure-pipelines-task-lib/mock-run'
 
 export const BASE_INPUTS = {
   apiKey: 'xxx',
@@ -95,7 +96,7 @@ export const expectSpy = <Fn extends typeof synthetics.executeTests>(
   },
 })
 
-export const setupWarnSpy = (): void => {
+const setupWarnSpy = (): void => {
   // If we don't do this, warnings are not prefixed with `##vso[task` and excluded from `task.stdout`.
   console.warn = (...data) => {
     console.log('##vso[task.warn]', ...data)
@@ -103,4 +104,41 @@ export const setupWarnSpy = (): void => {
 
   // We can't do this for errors because it changes the behavior too much: `task.errorIssues` gets broken
   // AND we actually expect errors in some tests.
+}
+
+interface ExecuteTestsResult {
+  results: synthetics.Result[]
+  summary: synthetics.Summary
+}
+
+export const setupMocks = (
+  mockRunner: TaskMockRunner,
+  opts?: {
+    executeTestsResult?: ExecuteTestsResult
+    noOpRenderResults?: boolean
+  }
+): void => {
+  setupWarnSpy()
+
+  const executeTestsResult = opts?.executeTestsResult ?? {
+    results: [],
+    summary: EMPTY_SUMMARY,
+  }
+
+  mockRunner.registerMock('@datadog/datadog-ci', {
+    utils,
+    synthetics: {
+      ...synthetics,
+      utils: {
+        ...synthetics.utils,
+        getOrgSettings: async () => {},
+        // Use this to remove side effects on the summary.
+        ...(opts?.noOpRenderResults ? {renderResults: () => {}} : {}),
+      },
+      executeTests: async (...args: Parameters<typeof synthetics.executeTests>): Promise<ExecuteTestsResult> => {
+        spyLog(synthetics.executeTests, args)
+        return executeTestsResult
+      },
+    },
+  })
 }
