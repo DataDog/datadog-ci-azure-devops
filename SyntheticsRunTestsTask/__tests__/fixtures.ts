@@ -29,11 +29,11 @@ export const CUSTOM_SUBDOMAIN = 'myorg'
 export const CUSTOM_SITE = 'datadoghq.eu'
 export const CUSTOM_PUBLIC_IDS = ['public_id1', 'public_id2', 'public_id3']
 
-const runMockedTask = async (mockName: string): Promise<MockTestRunner> => {
-  const file = join(__dirname, 'mocks', `${mockName}.js`)
+export const runScenario = async (scenarioName: string): Promise<MockTestRunner> => {
+  const file = join(__dirname, 'scenarios', `${scenarioName}.js`)
 
   if (!fs.existsSync(file)) {
-    throw Error(`The mocked task file does not exist: mocks/${mockName}.js\n` + 'Did you forget to run `yarn build`?')
+    throw Error(`The scenario does not exist: scenarios/${scenarioName}.js\n` + 'Did you forget to run `yarn build`?')
   }
 
   // See `20.11.0` in `.node-version`
@@ -60,28 +60,9 @@ const runMockedTask = async (mockName: string): Promise<MockTestRunner> => {
   return task
 }
 
-export const runMockTaskApiKeys = async (): Promise<MockTestRunner> => {
-  return runMockedTask('api-keys')
-}
-export const runMockTaskServiceConnection = async (): Promise<MockTestRunner> => {
-  return runMockedTask('service-connection')
-}
-export const runMockTaskServiceConnectionEnvVars = async (): Promise<MockTestRunner> => {
-  return runMockedTask('service-connection-env-vars')
-}
-export const runMockTaskServiceConnectionMisconfigured = async (): Promise<MockTestRunner> => {
-  return runMockedTask('service-connection-misconfigured')
-}
-export const runMockTaskJUnitReport = async (): Promise<MockTestRunner> => {
-  return runMockedTask('junit-report')
-}
-export const runMockTaskBatchTimeout = async (): Promise<MockTestRunner> => {
-  return runMockedTask('batch-timeout')
-}
-
-// The MockTestRunner runs the task it's given in a separate process, so Jest spies cannot work.
-// As a workaround, we need to log from the task process with `spyLog()` in a mocked function,
-// and extract the spy logs from the task's `stdout`, in the runner process.
+// The MockTestRunner runs the scenario it's given in a separate process, so Jest spies cannot work.
+// As a workaround, we need to log from the scenario process with `spyLog()` in a mocked function,
+// and extract the spy logs from the scenario's `stdout`, in the runner process.
 export const spyLog = (fn: Function, value: unknown, spyId: string | number = 1): void => {
   console.log(`##vso[task.spy][${fn.name}.${spyId}]` + JSON.stringify(value))
 }
@@ -102,7 +83,7 @@ export const expectSpy = <Fn extends typeof synthetics.executeTests>(
 
     try {
       // NOTE:
-      // 💡 You can run `node __tests__/mocks/<mock-name>.js` to debug issues with a mocked task.
+      // 💡 You can run `node __tests__/scenarios/<scenario-name>.js` to debug issues with a scenario.
       expect(logs).toContainEqual(args)
     } catch (error) {
       const mockedTaskPath = relative(process.cwd(), task['_testPath'])

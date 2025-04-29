@@ -99,7 +99,7 @@
       "name": "files",
       "type": "multiLine",
       "label": "Synthetic test config files",
-      "defaultValue": "{,!(node_modules)/**/}*.synthetics.json",
+      "defaultValue": "",
       "helpMarkDown": "Glob pattern to detect Synthetic tests config files."
     },
     {
