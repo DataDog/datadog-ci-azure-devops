@@ -148,7 +148,7 @@ For an example of a global configuration file, see this [`global.config.json` fi
 | `publicIds`            | Public IDs of Synthetic tests to run, separated by newlines or commas. If no value is provided, tests are discovered in `*.synthetics.json` files.                                                                                              |
 | `subdomain`            | The name of the custom subdomain set to access your Datadog application when using the `apiAppKeys` authentication type. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`. **Default:** `app`. |
 | `testSearchQuery`      | Trigger tests corresponding to a [search][8] query. This can be useful if you are tagging your test configurations. For more information, see [rules and best practices for naming tags][10].                                                   |
-| `variables`            | Key-value pairs for injecting variables into tests, separated by newlines or commas. For example: `START_URL=https://example.org,MY_VARIABLE=My title`. **Default:** `[]`.                                                                      |
+| `variables`            | Key-value pairs for injecting variables into tests, separated by newlines or commas. For example: `START_URL=https://example.org,MY_VARIABLE=My title`. **Default:** none.                                                                      |
 
 ## Outputs
 
