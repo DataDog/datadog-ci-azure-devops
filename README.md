@@ -152,18 +152,18 @@ For an example of a global configuration file, see this [`global.config.json` fi
 
 ## Outputs
 
-| Name                     | Type   | Description                                |
-| ------------------------ | ------ | ------------------------------------------ |
-| `batchUrl`               | string | The URL of the batch.                      |
-| `criticalErrorsCount`    | number | The number of critical errors.             |
-| `failedCount`            | number | The number of failed results.              |
-| `failedNonBlockingCount` | number | The number of failed non-blocking results. |
-| `passedCount`            | number | The number of passed results.              |
-| `previouslyPassedCount`  | number | The number of previously passed results.   |
-| `testsNotFoundCount`     | number | The number of not found tests.             |
-| `testsSkippedCount`      | number | The number of skipped tests.               |
-| `timedOutCount`          | number | The number of timed out results.           |
-| `rawResults`             | string | The list of results, as a raw JSON string. |
+| Name                     | Description                                |
+| ------------------------ | ------------------------------------------ |
+| `batchUrl`               | The URL of the batch.                      |
+| `criticalErrorsCount`    | The number of critical errors.             |
+| `failedCount`            | The number of failed results.              |
+| `failedNonBlockingCount` | The number of failed non-blocking results. |
+| `passedCount`            | The number of passed results.              |
+| `previouslyPassedCount`  | The number of previously passed results.   |
+| `testsNotFoundCount`     | The number of not found tests.             |
+| `testsSkippedCount`      | The number of skipped tests.               |
+| `timedOutCount`          | The number of timed out results.           |
+| `rawResults`             | The list of results, as a raw JSON string. |
 
 ## Further reading
 
