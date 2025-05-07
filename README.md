@@ -131,39 +131,39 @@ For an example of a global configuration file, see this [`global.config.json` fi
 
 ## Inputs
 
-| Name                   | Requirement | Description                                                                                                                                                                                                                                     |
-| ---------------------- | :---------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `apiKey`               | _required_  | Your Datadog API key when using the `apiAppKeys` authentication type. This key is created by your [Datadog organization][6] and should be stored as a [secret][7].                                                                              |
-| `appKey`               | _required_  | Your Datadog application key when using the `apiAppKeys` authentication type. This key is created by your [Datadog organization][6] and should be stored as a [secret][7].                                                                      |
-| `authenticationType`   | _required_  | The type of authentication you want Datadog to use, either `connectedService` or `apiAppKeys`.                                                                                                                                                  |
-| `batchTimeout`         | _optional_  | The duration (in milliseconds) after which the batch fails as timed out. **Default:** 30 minutes.                                                                                                                                               |
-| `connectedService`     | _required_  | The name of the [Datadog CI service connection](#setup) to use when using the `connectedService` authentication type.                                                                                                                           |
-| `configPath`           | _optional_  | The [global JSON configuration][9] used when launching tests. For more information, see the [example configuration][9]. **Default:** `datadog-ci.json`.                                                                                         |
-| `datadogSite`          | _optional_  | The [Datadog site][11] when using the `apiAppKeys` authentication type. **Default:** `datadoghq.com`.                                                                                                                                           |
-| `failOnCriticalErrors` | _optional_  | Fail the CI job if no tests were triggered, or results could not be fetched from Datadog. **Default:** `false`.                                                                                                                                 |
-| `failOnMissingTests`   | _optional_  | Fail the CI job if at least one specified test with a public ID (using `publicIds` or listed in a [test file][14]) is missing in a run (for example, if it has been deleted programmatically or on the Datadog site). **Default:** `false`.     |
-| `failOnTimeout`        | _optional_  | Fail the CI job if at least one test exceeds the default test timeout. **Default:** `true`.                                                                                                                                                     |
-| `files`                | _optional_  | Glob pattern to detect Synthetic tests' config files. **Default:** `{,!(node_modules)/**/}*.synthetics.json`.                                                                                                                                   |
-| `jUnitReport`          | _optional_  | The filename for a JUnit report if you want to generate one.                                                                                                                                                                                    |
-| `publicIds`            | _optional_  | Public IDs of Synthetic tests to run, separated by newlines or commas. If no value is provided, tests are discovered in `*.synthetics.json` files.                                                                                              |
-| `subdomain`            | _optional_  | The name of the custom subdomain set to access your Datadog application when using the `apiAppKeys` authentication type. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`. **Default:** `app`. |
-| `testSearchQuery`      | _optional_  | Trigger tests corresponding to a [search][8] query. This can be useful if you are tagging your test configurations. For more information, see [rules and best practices for naming tags][10].                                                   |
-| `variables`            | _optional_  | Key-value pairs for injecting variables into tests, separated by newlines or commas. For example: `START_URL=https://example.org,MY_VARIABLE=My title`. **Default:** `[]`.                                                                      |
+| Name                   | Description                                                                                                                                                                                                                                                   |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apiKey`               | Your Datadog API key. This key is created by your [Datadog organization][6] and should be stored as a [secret][7]. <br><sub>**Required** when `authenticationType == apiAppKeys`</sub>                                                                        |
+| `appKey`               | Your Datadog application key. This key is created by your [Datadog organization][6] and should be stored as a [secret][7]. <br><sub>**Required** when `authenticationType == apiAppKeys`</sub>                                                                |
+| `authenticationType`   | (**Required**) How to store and retrieve credentials. <br><sub>Must be either `apiAppKeys` or `connectedService`</sub>                                                                                                                                        |
+| `batchTimeout`         | The duration (in milliseconds) after which the batch fails as timed out. <br><sub>**Default:** `1800000` (30 minutes)</sub>                                                                                                                                   |
+| `connectedService`     | The name of the [Datadog CI service connection](#setup). <br><sub>**Required** when `authenticationType == connectedService`</sub>                                                                                                                            |
+| `configPath`           | The [global JSON configuration][9] used when launching tests. For more information, see the [example configuration][9]. <br><sub>**Default:** `datadog-ci.json`</sub>                                                                                         |
+| `datadogSite`          | The [Datadog site][11]. <br><sub>**Default:** `datadoghq.com`</sub>                                                                                                                                                                                           |
+| `failOnCriticalErrors` | Fail the CI job if no tests were triggered, or results could not be fetched from Datadog. <br><sub>**Default:** `false`</sub>                                                                                                                                 |
+| `failOnMissingTests`   | Fail the CI job if at least one specified test with a public ID (using `publicIds` or listed in a [test file][14]) is missing in a run (for example, if it has been deleted programmatically or on the Datadog site). <br><sub>**Default:** `false`</sub>     |
+| `failOnTimeout`        | Fail the CI job if at least one test exceeds the default test timeout. <br><sub>**Default:** `true`</sub>                                                                                                                                                     |
+| `files`                | Glob pattern to detect Synthetic tests' config files. <br><sub>**Default:** `{,!(node_modules)/**/}*.synthetics.json`</sub>                                                                                                                                   |
+| `jUnitReport`          | The filename for a JUnit report if you want to generate one. <br><sub>**Default:** none</sub>                                                                                                                                                                 |
+| `publicIds`            | Public IDs of Synthetic tests to run, separated by newlines or commas. If no value is provided, tests are discovered in `*.synthetics.json` files. <br><sub>**Default:** none</sub>                                                                           |
+| `subdomain`            | The name of the custom subdomain set to access your Datadog application when using the `apiAppKeys` authentication type. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`. <br><sub>**Default:** `app`</sub> |
+| `testSearchQuery`      | Trigger tests corresponding to a [search][8] query. This can be useful if you are tagging your test configurations. For more information, see [rules and best practices for naming tags][10]. <br><sub>**Default:** none</sub>                                |
+| `variables`            | Key-value pairs for injecting variables into tests, separated by newlines or commas. For example: `START_URL=https://example.org,MY_VARIABLE=My title`. <br><sub>**Default:** none</sub>                                                                      |
 
 ## Outputs
 
-| Name                     | Type   | Description                                |
-| ------------------------ | ------ | ------------------------------------------ |
-| `batchUrl`               | string | The URL of the batch.                      |
-| `criticalErrorsCount`    | number | The number of critical errors.             |
-| `failedCount`            | number | The number of failed results.              |
-| `failedNonBlockingCount` | number | The number of failed non-blocking results. |
-| `passedCount`            | number | The number of passed results.              |
-| `previouslyPassedCount`  | number | The number of previously passed results.   |
-| `testsNotFoundCount`     | number | The number of not found tests.             |
-| `testsSkippedCount`      | number | The number of skipped tests.               |
-| `timedOutCount`          | number | The number of timed out results.           |
-| `rawResults`             | string | The list of results, as a raw JSON string. |
+| Name                     | Description                                |
+| ------------------------ | ------------------------------------------ |
+| `batchUrl`               | The URL of the batch.                      |
+| `criticalErrorsCount`    | The number of critical errors.             |
+| `failedCount`            | The number of failed results.              |
+| `failedNonBlockingCount` | The number of failed non-blocking results. |
+| `passedCount`            | The number of passed results.              |
+| `previouslyPassedCount`  | The number of previously passed results.   |
+| `testsNotFoundCount`     | The number of not found tests.             |
+| `testsSkippedCount`      | The number of skipped tests.               |
+| `timedOutCount`          | The number of timed out results.           |
+| `rawResults`             | The list of results, as a raw JSON string. |
 
 ## Further reading
 
