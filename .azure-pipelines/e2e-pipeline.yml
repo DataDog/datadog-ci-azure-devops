@@ -38,11 +38,20 @@ stages:
               configPath: 'ci/e2e.config.json'
 
           # Example of using outputs
-          - script: |
+          - bash: |
               echo 'Batch URL: $(runSyntheticsTests.batchUrl)'
               echo 'Raw Results:'
               echo '$(runSyntheticsTests.rawResults)' | jq '.'
-            displayName: Example of using outputs
+            displayName: Example of using outputs (Linux)
+            condition: eq(variables['Agent.OS'], 'Linux')
+          - powershell: |
+              echo "Batch URL: $(runSyntheticsTests.batchUrl)"
+              echo "Raw Results:"
+              echo $Env:RAW_RESULTS | jq '.'
+            displayName: Example of using outputs (Windows)
+            condition: eq(variables['Agent.OS'], 'Windows_NT')
+            env:
+              RAW_RESULTS: $(runSyntheticsTests.rawResults)
 
           # Example of parsing and using raw results with JS
           - task: NodeTool@0
