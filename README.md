@@ -133,24 +133,24 @@ By default, the path to the global configuration file is `datadog-ci.json`. You 
 
 For more information on the available configuration, see the [`datadog-ci run-tests` documentation][13].
 
-| Name                   | Description                                                                                                                                                                                                                    |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `apiKey`               | Your Datadog API key. This key is [created in your Datadog organization][6] and should be stored as a [secret][7]. <br><sub>**Required** when `authenticationType == apiAppKeys`</sub>                                         |
-| `appKey`               | Your Datadog application key. This key is [created in your Datadog organization][6] and should be stored as a [secret][7]. <br><sub>**Required** when `authenticationType == apiAppKeys`</sub>                                 |
-| `authenticationType`   | (**Required**) How to store and retrieve credentials. <br><sub>Must be either `apiAppKeys` or `connectedService`</sub>                                                                                                         |
-| `batchTimeout`         | The duration in milliseconds after which the CI batch fails as timed out. This does not affect the outcome of a test run that already started. <br><sub>**Default:** `1800000` (30 minutes)</sub>                              |
-| `connectedService`     | The name of the [Datadog CI service connection](#setup). <br><sub>**Required** when `authenticationType == connectedService`</sub>                                                                                             |
-| `configPath`           | The path to the [global configuration file][9] that configures datadog-ci. <br><sub>**Default:** `datadog-ci.json`</sub>                                                                                                       |
-| `datadogSite`          | Your Datadog site. The possible values are listed [in this table][11]. <br><sub>**Default:** `datadoghq.com`</sub>                                                                                                             |
-| `failOnCriticalErrors` | Fail the CI job if a critical error that is typically transient occurs, such as rate limits, authentication failures, or Datadog infrastructure issues. <br><sub>**Default:** `false`</sub>                                    |
-| `failOnMissingTests`   | Fail the CI job if the list of tests to run is empty or if some explicitly listed tests are missing. <br><sub>**Default:** `false`</sub>                                                                                       |
-| `failOnTimeout`        | Fail the CI job if the CI batch fails as timed out. <br><sub>**Default:** `true`</sub>                                                                                                                                         |
-| `files`                | Glob patterns to detect Synthetic [test configuration files][14]. <br><sub>**Default:** `{,!(node_modules)/**/}*.synthetics.json`</sub>                                                                                        |
-| `jUnitReport`          | The filename for a JUnit report if you want to generate one. <br><sub>**Default:** none</sub>                                                                                                                                  |
-| `publicIds`            | Public IDs of Synthetic tests to run, separated by new lines or commas. If no value is provided, tests are discovered in Synthetic [test configuration files][14]. <br><sub>**Default:** none</sub>                            |
-| `subdomain`            | The custom subdomain to access your Datadog organization when `authenticationType == apiAppKeys`. If your URL is `myorg.datadoghq.com`, the custom subdomain is `myorg`. <br><sub>**Default:** `app`</sub>                     |
-| `testSearchQuery`      | Trigger tests corresponding to a [search][8] query. This can be useful if you are tagging your test configurations. For more information, see [rules and best practices for naming tags][10]. <br><sub>**Default:** none</sub> |
-| `variables`            | Key-value pairs for injecting variables into tests, separated by newlines or commas. For example: `START_URL=https://example.org,MY_VARIABLE=My title`. <br><sub>**Default:** none</sub>                                       |
+| Name                   | Description                                                                                                                                                                                                |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apiKey`               | Your Datadog API key. This key is [created in your Datadog organization][6] and should be stored as a [secret][7]. <br><sub>**Required** when `authenticationType == apiAppKeys`</sub>                     |
+| `appKey`               | Your Datadog application key. This key is [created in your Datadog organization][6] and should be stored as a [secret][7]. <br><sub>**Required** when `authenticationType == apiAppKeys`</sub>             |
+| `authenticationType`   | (**Required**) How to store and retrieve credentials. <br><sub>Must be either `apiAppKeys` or `connectedService`</sub>                                                                                     |
+| `batchTimeout`         | The duration in milliseconds after which the CI batch fails as timed out. This does not affect the outcome of a test run that already started. <br><sub>**Default:** `1800000` (30 minutes)</sub>          |
+| `connectedService`     | The name of the [Datadog CI service connection](#setup). <br><sub>**Required** when `authenticationType == connectedService`</sub>                                                                         |
+| `configPath`           | The path to the [global configuration file][9] that configures datadog-ci. <br><sub>**Default:** `datadog-ci.json`</sub>                                                                                   |
+| `datadogSite`          | Your Datadog site. The possible values are listed [in this table][11]. <br><sub>**Default:** `datadoghq.com`</sub>                                                                                         |
+| `failOnCriticalErrors` | Fail the CI job if a critical error that is typically transient occurs, such as rate limits, authentication failures, or Datadog infrastructure issues. <br><sub>**Default:** `false`</sub>                |
+| `failOnMissingTests`   | Fail the CI job if the list of tests to run is empty or if some explicitly listed tests are missing. <br><sub>**Default:** `false`</sub>                                                                   |
+| `failOnTimeout`        | Fail the CI job if the CI batch fails as timed out. <br><sub>**Default:** `true`</sub>                                                                                                                     |
+| `files`                | Glob patterns to detect Synthetic [test configuration files][14]. <br><sub>**Default:** `{,!(node_modules)/**/}*.synthetics.json`</sub>                                                                    |
+| `jUnitReport`          | The filename for a JUnit report if you want to generate one. <br><sub>**Default:** none</sub>                                                                                                              |
+| `publicIds`            | Public IDs of Synthetic tests to run, separated by new lines or commas. If no value is provided, tests are discovered in Synthetic [test configuration files][14]. <br><sub>**Default:** none</sub>        |
+| `subdomain`            | The custom subdomain to access your Datadog organization when `authenticationType == apiAppKeys`. If your URL is `myorg.datadoghq.com`, the custom subdomain is `myorg`. <br><sub>**Default:** `app`</sub> |
+| `testSearchQuery`      | Use a [search query][10] to select which Synthetic tests to run. Use the [Synthetic Tests list page's search bar][15] to craft your query, then copy and paste it. <br><sub>**Default:** none</sub>        |
+| `variables`            | Key-value pairs for injecting variables into tests, separated by newlines or commas. For example: `START_URL=https://example.org,MY_VARIABLE=My title`. <br><sub>**Default:** none</sub>                   |
 
 ## Outputs
 
@@ -183,8 +183,9 @@ Additional helpful documentation, links, and articles:
 [7]: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables
 [8]: https://docs.datadoghq.com/synthetics/search/#search
 [9]: https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#global-configuration-file
-[10]: https://docs.datadoghq.com/developers/guide/what-best-practices-are-recommended-for-naming-metrics-and-tags/#rules-and-best-practices-for-naming-tags
+[10]: https://docs.datadoghq.com/synthetics/explore/#search
 [11]: https://docs.datadoghq.com/getting_started/site/#access-the-datadog-site
 [12]: https://www.datadoghq.com/blog/best-practices-datadog-continuous-testing/
 [13]: https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#run-tests-command
 [14]: https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#test-files
+[15]: https://app.datadoghq.com/synthetics/tests
