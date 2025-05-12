@@ -8,7 +8,7 @@
 
 With the [`SyntheticsRunTests`][3] task, you can run Synthetic tests within your Azure Pipeline configuration and ensure all your teams using Azure DevOps can benefit from Synthetic tests at every stage of the software lifecycle.
 
-For more information on the available configuration, see the [`datadog-ci run-tests` documentation][13].
+For more information on the available configuration, see the [`datadog-ci synthetics run-tests` documentation][13].
 
 ## Authentication
 
@@ -123,7 +123,7 @@ By default, the path to the global configuration file is `datadog-ci.json`. You 
 
 ## Inputs
 
-For more information on the available configuration, see the [`datadog-ci run-tests` documentation][13].
+For more information on the available configuration, see the [`datadog-ci synthetics run-tests` documentation][13].
 
 | Name                   | Description                                                                                                                                                                                                                                  |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
