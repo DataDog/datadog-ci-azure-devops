@@ -78,9 +78,9 @@
     {
       "name": "failOnCriticalErrors",
       "type": "boolean",
-      "label": "Fail on critical errors",
+      "label": "Fail On Critical Errors",
       "defaultValue": "",
-      "helpMarkDown": "Fail the CI job if no tests were triggered, or results could not be fetched from Datadog."
+      "helpMarkDown": "Fail the CI job if a critical error that is typically transient occurs, such as rate limits, authentication failures, or Datadog infrastructure issues."
     },
     {
       "name": "failOnMissingTests",
