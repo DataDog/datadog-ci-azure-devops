@@ -17,8 +17,9 @@
     {
       "name": "authenticationType",
       "type": "radio",
-      "label": "Choose an authentication method",
+      "label": "Choose an authentication type",
       "defaultValue": "apiAppKeys",
+      "helpMarkDown": "How to store and retrieve credentials.",
       "required": true,
       "options": {
         "connectedService": "Use a Service Connection",
