@@ -113,9 +113,9 @@
     {
       "name": "publicIds",
       "type": "multiLine",
-      "label": "Synthetic test IDs",
+      "label": "Synthetic Test Public IDs",
       "defaultValue": "",
-      "helpMarkDown": "Public IDs of Synthetic tests to run, separated by new lines or commas. If no value is provided, tests are discovered in `*.synthetics.json` files."
+      "helpMarkDown": "Public IDs of Synthetic tests to run, separated by new lines or commas. If no value is provided, tests are discovered in Synthetic [test configuration files](https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#test-files)."
     },
     {
       "name": "subdomain",
