@@ -10,7 +10,7 @@ const mockRunner = new TaskMockRunner(join(__dirname, '../..', 'task.js'))
 setupMocks(mockRunner, {
   executeTestsResult: {
     results: [
-      {passed: true, result: {startUrl: 'https://example.org'} as synthetics.ServerResult} as synthetics.Result,
+      {passed: true, result: {start_url: 'https://example.org'} as synthetics.ServerResult} as synthetics.Result,
     ],
     summary: {
       ...EMPTY_SUMMARY,

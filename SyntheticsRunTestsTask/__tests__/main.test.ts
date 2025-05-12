@@ -38,7 +38,7 @@ describe('Test suite', () => {
     expect(output[7]).toContain(setVariableStr('testsSkippedCount', '6'))
     expect(output[8]).toContain(setVariableStr('timedOutCount', '7'))
     expect(output[9]).toContain(
-      setVariableStr('rawResults', JSON.stringify([{passed: true, result: {startUrl: 'https://example.org'}}]))
+      setVariableStr('rawResults', JSON.stringify([{passed: true, result: {start_url: 'https://example.org'}}]))
     )
   })
 
