@@ -43,10 +43,6 @@ Your task can be [simple](#simple-usage) or [complex](#complex-usage).
 
 ## Simple usage
 
-> **Note**: We recently changed the major version of the task from `SyntheticsRunTests@0` to `SyntheticsRunTests@1`.
->
-> This is **NOT a breaking change**, but an alignment between the task version and the extension version.
-
 ### Example task using public IDs
 
 ```yaml
@@ -86,10 +82,6 @@ For an example test file, see this [`test.synthetics.json` file][14].
 ```
 
 ## Complex usage
-
-> **Note**: We recently changed the major version of the task from `SyntheticsRunTests@0` to `SyntheticsRunTests@1`.
->
-> This is **NOT a breaking change**, but an alignment between the task version and the extension version.
 
 ### Example task using the `testSearchQuery`
 
