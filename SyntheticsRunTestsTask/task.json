@@ -63,9 +63,9 @@
     {
       "name": "configPath",
       "type": "filePath",
-      "label": "Global JSON configuration",
+      "label": "Global Configuration File",
       "defaultValue": "",
-      "helpMarkDown": "The [global JSON configuration](https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#setup-the-client) is used when launching tests. See the [example configuration](https://docs.datadoghq.com/synthetics/cicd_integrations/configuration/?tabs=npm#setup-a-client) for more details."
+      "helpMarkDown": "The path to the [global configuration file](https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#global-configuration-file) that configures datadog-ci."
     },
     {
       "name": "datadogSite",
@@ -120,7 +120,7 @@
     {
       "name": "subdomain",
       "type": "string",
-      "label": "Custom subdomain",
+      "label": "Custom Subdomain",
       "defaultValue": "app",
       "helpMarkDown": "The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`.",
       "visibleRule": "authenticationType = apiAppKeys"

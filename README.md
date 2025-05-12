@@ -6,28 +6,30 @@
 
 ## Overview
 
-With the Datadog Continuous Testing Azure DevOps Extension, you can run Synthetic tests within your Azure Pipeline configuration and ensure all your teams using Azure DevOps can benefit from Synthetic tests at every stage of the software lifecycle. You can run [`SyntheticsRunTests`][3] as a task.
+With the [`SyntheticsRunTests`][3] task, you can run Synthetic tests within your Azure Pipeline configuration and ensure all your teams using Azure DevOps can benefit from Synthetic tests at every stage of the software lifecycle.
+
+For more information on the available configuration, see the [`datadog-ci run-tests` documentation][13].
 
 ## Authentication
 
 ### Service Connection
 
-To connect to your [Datadog site][11], Datadog recommends setting up a custom service connection when configuring the Synthetics Run Test task. 
+To connect to your [Datadog site][11], Datadog recommends setting up a custom service connection when configuring the [`SyntheticsRunTests`][3] task. 
 
 You need to provide the following inputs:
 
-- Datadog site: Which [Datadog site][11] to connect and send data to. 
-- Custom subdomain (default: `app`): The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`.
-- API Key: Your Datadog API key. This key is created by your [Datadog organization][6].
-- Application key: Your Datadog application key. This key is created by your [Datadog organization][6].
+- Datadog site: Your Datadog site. The possible values are listed [in this table][11]. 
+- Custom subdomain (default: `app`): The custom subdomain to access your Datadog organization. If your URL is `myorg.datadoghq.com`, the custom subdomain is `myorg`.
+- API key: Your Datadog API key. This key is [created in your Datadog organization][6].
+- Application key: Your Datadog application key. This key is [created in your Datadog organization][6].
 
 
 ### API and Application keys
 
-- API Key: Your Datadog API key. This key is created by your [Datadog organization][6] and is accessed as an environment variable.
-- Application key: Your Datadog application key. This key is created by your [Datadog organization][6] and is accessed as an environment variable.
-- Datadog site: The [Datadog site][11] to connect and send data to. 
-- Custom subdomain (optional): The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`.
+- API key: Your Datadog API key. This key is [created in your Datadog organization][6] and should be stored as a [secret][7].
+- Application key: Your Datadog application key. This key is [created in your Datadog organization][6] and should be stored as a [secret][7].
+- Datadog site: Your Datadog site. The possible values are listed [in this table][11]. 
+- Custom subdomain (optional): The custom subdomain to access your Datadog organization. If your URL is `myorg.datadoghq.com`, the custom subdomain is `myorg`.
 
 ## Setup
 
@@ -35,7 +37,7 @@ To connect to your Datadog account, [create a Datadog CI service connection][5] 
 
 1. Install the [Datadog Continuous Testing extension from the Visual Studio Marketplace][1] in your Azure Organization.
 2. Add your Datadog API and application keys in the [Datadog CI service connection](#authentication), or as [secrets to your Azure Pipelines project][7].
-3. In your Azure DevOps pipeline, use the `SyntheticsRunTests` task.
+3. In your Azure DevOps pipeline, use the [`SyntheticsRunTests`][3] task.
 
 Your task can be [simple](#simple-usage) or [complex](#complex-usage).
 
@@ -127,9 +129,9 @@ By default, the path to the global configuration file is `datadog-ci.json`. You 
     connectedService: 'my-datadog-ci-connected-service'
 ```
 
-For an example of a global configuration file, see this [`global.config.json` file][13].
-
 ## Inputs
+
+For more information on the available configuration, see the [`datadog-ci run-tests` documentation][13].
 
 | Name                   | Description                                                                                                                                                                                                                                                   |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -138,7 +140,7 @@ For an example of a global configuration file, see this [`global.config.json` fi
 | `authenticationType`   | (**Required**) How to store and retrieve credentials. <br><sub>Must be either `apiAppKeys` or `connectedService`</sub>                                                                                                                                        |
 | `batchTimeout`         | The duration in milliseconds after which the CI batch fails as timed out. This does not affect the outcome of a test run that already started. <br><sub>**Default:** `1800000` (30 minutes)</sub>                                                             |
 | `connectedService`     | The name of the [Datadog CI service connection](#setup). <br><sub>**Required** when `authenticationType == connectedService`</sub>                                                                                                                            |
-| `configPath`           | The [global JSON configuration][9] used when launching tests. For more information, see the [example configuration][9]. <br><sub>**Default:** `datadog-ci.json`</sub>                                                                                         |
+| `configPath`           | The path to the [global configuration file][9] that configures datadog-ci. <br><sub>**Default:** `datadog-ci.json`</sub>                                                                                                                                      |
 | `datadogSite`          | The [Datadog site][11]. <br><sub>**Default:** `datadoghq.com`</sub>                                                                                                                                                                                           |
 | `failOnCriticalErrors` | Fail the CI job if no tests were triggered, or results could not be fetched from Datadog. <br><sub>**Default:** `false`</sub>                                                                                                                                 |
 | `failOnMissingTests`   | Fail the CI job if at least one specified test with a public ID (using `publicIds` or listed in a [test file][14]) is missing in a run (for example, if it has been deleted programmatically or on the Datadog site). <br><sub>**Default:** `false`</sub>     |
@@ -180,9 +182,9 @@ Additional helpful documentation, links, and articles:
 [6]: https://docs.datadoghq.com/account_management/api-app-keys/
 [7]: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables
 [8]: https://docs.datadoghq.com/synthetics/search/#search
-[9]: https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#setup-the-client
+[9]: https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#global-configuration-file
 [10]: https://docs.datadoghq.com/developers/guide/what-best-practices-are-recommended-for-naming-metrics-and-tags/#rules-and-best-practices-for-naming-tags
-[11]: https://docs.datadoghq.com/getting_started/site/
+[11]: https://docs.datadoghq.com/getting_started/site/#access-the-datadog-site
 [12]: https://www.datadoghq.com/blog/best-practices-datadog-continuous-testing/
-[13]: https://github.com/DataDog/datadog-ci/blob/master/.github/workflows/e2e/global.config.json
+[13]: https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#run-tests-command
 [14]: https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#test-files
