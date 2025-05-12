@@ -29,7 +29,7 @@
     {
       "name": "apiKey",
       "type": "string",
-      "label": "Datadog API key",
+      "label": "Datadog API Key",
       "defaultValue": "",
       "helpMarkDown": "Your Datadog API key. This key is [created in your Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/) and should be stored as a [secret](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables).",
       "required": true,
@@ -38,7 +38,7 @@
     {
       "name": "appKey",
       "type": "string",
-      "label": "Datadog Application key",
+      "label": "Datadog Application Key",
       "defaultValue": "",
       "helpMarkDown": "Your Datadog application key. This key is [created in your Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/) and should be stored as a [secret](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables).",
       "required": true,
