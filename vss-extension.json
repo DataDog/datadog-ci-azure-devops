@@ -168,7 +168,7 @@
               {
                 "id": "appkey",
                 "name": "Application Key",
-                "description": "Your Datadog application key. This key is created by your [Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/).",
+                "description": "Your Datadog application key. This key is [created in your Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/).",
                 "inputMode": "textbox",
                 "isConfidential": true,
                 "validation": {
