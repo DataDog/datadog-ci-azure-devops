@@ -30,7 +30,7 @@
       "type": "string",
       "label": "Datadog API key",
       "defaultValue": "",
-      "helpMarkDown": "Your Datadog API key. This key is created by your [Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/) and will be accessed as an environment variable.",
+      "helpMarkDown": "Your Datadog API key. This key is [created in your Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/) and should be stored as a [secret](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables).",
       "required": true,
       "visibleRule": "authenticationType = apiAppKeys"
     },

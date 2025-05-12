@@ -156,7 +156,7 @@
                 "_comment": "We need to override this input and keep the original ID from the `ms.vss-endpoint.endpoint-auth-scheme-token` scheme",
                 "id": "apitoken",
                 "name": "API Key",
-                "description": "Your Datadog API key. This key is created by your [Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/).",
+                "description": "Your Datadog API key. This key is [created in your Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/).",
                 "inputMode": "textbox",
                 "isConfidential": true,
                 "validation": {
