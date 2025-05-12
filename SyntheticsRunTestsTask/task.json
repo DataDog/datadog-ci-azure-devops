@@ -72,7 +72,7 @@
       "type": "string",
       "label": "Datadog Site",
       "defaultValue": "datadoghq.com",
-      "helpMarkDown": "The [Datadog site](https://docs.datadoghq.com/getting_started/site/)",
+      "helpMarkDown": "Your Datadog site. The possible values are listed [in this table](https://docs.datadoghq.com/getting_started/site/#access-the-datadog-site).",
       "visibleRule": "authenticationType = apiAppKeys"
     },
     {

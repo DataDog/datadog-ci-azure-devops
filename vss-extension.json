@@ -100,7 +100,7 @@
           {
             "id": "site",
             "name": "Datadog Site",
-            "description": "Datadog site to connect to",
+            "description": "Your Datadog site.",
             "inputMode": "combo",
             "isConfidential": false,
             "validation": {
