@@ -47,9 +47,9 @@
     {
       "name": "batchTimeout",
       "type": "int",
-      "label": "Batch timeout",
+      "label": "Batch Timeout",
       "defaultValue": "",
-      "helpMarkDown": "The duration (in milliseconds) after which the batch fails as timed out."
+      "helpMarkDown": "The duration in milliseconds after which the CI batch fails as timed out. This does not affect the outcome of a test run that already started."
     },
     {
       "name": "connectedService",
