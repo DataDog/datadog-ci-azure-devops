@@ -92,9 +92,9 @@
     {
       "name": "failOnTimeout",
       "type": "boolean",
-      "label": "Fail on timeout",
+      "label": "Fail On Timeout",
       "defaultValue": "",
-      "helpMarkDown": "Fail the CI job if at least one test exceeds the default test timeout."
+      "helpMarkDown": "Fail the CI job if the CI batch fails as timed out."
     },
     {
       "name": "files",
