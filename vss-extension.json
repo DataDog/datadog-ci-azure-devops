@@ -137,8 +137,8 @@
           },
           {
             "id": "subdomain",
-            "name": "Custom subdomain",
-            "description": "The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`.",
+            "name": "Custom Subdomain",
+            "description": "The custom subdomain to access your Datadog organization. If your URL is `myorg.datadoghq.com`, the custom subdomain is `myorg`.",
             "inputMode": "textbox",
             "isConfidential": false,
             "validation": {
