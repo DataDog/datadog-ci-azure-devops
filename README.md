@@ -163,6 +163,7 @@ For more information on the available configuration, see the [`datadog-ci synthe
 
 Additional helpful documentation, links, and articles:
 
+- [Getting Started with Continuous Testing][17]
 - [Continuous Testing and CI/CD Configuration][4]
 - [Best practices for continuous testing with Datadog][12]
 
@@ -182,3 +183,4 @@ Additional helpful documentation, links, and articles:
 [14]: https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#test-files
 [15]: https://app.datadoghq.com/synthetics/tests
 [16]: https://docs.datadoghq.com/synthetics/platform/settings/?tab=specifyvalue#global-variables
+[17]: https://docs.datadoghq.com/getting_started/continuous_testing/
