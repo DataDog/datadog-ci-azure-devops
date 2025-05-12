@@ -99,9 +99,9 @@
     {
       "name": "files",
       "type": "multiLine",
-      "label": "Synthetic test config files",
+      "label": "Synthetic Test Configuration Files",
       "defaultValue": "",
-      "helpMarkDown": "Glob pattern to detect Synthetic tests config files."
+      "helpMarkDown": "Glob patterns to detect Synthetic [test configuration files](https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#test-files)."
     },
     {
       "name": "jUnitReport",
