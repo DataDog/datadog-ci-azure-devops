@@ -100,7 +100,7 @@
           {
             "id": "site",
             "name": "Datadog Site",
-            "description": "Datadog site to connect to",
+            "description": "Your Datadog site.",
             "inputMode": "combo",
             "isConfidential": false,
             "validation": {
@@ -137,8 +137,8 @@
           },
           {
             "id": "subdomain",
-            "name": "Custom subdomain",
-            "description": "The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`.",
+            "name": "Custom Subdomain",
+            "description": "The custom subdomain to access your Datadog organization. If your URL is `myorg.datadoghq.com`, the custom subdomain is `myorg`.",
             "inputMode": "textbox",
             "isConfidential": false,
             "validation": {
@@ -156,7 +156,7 @@
                 "_comment": "We need to override this input and keep the original ID from the `ms.vss-endpoint.endpoint-auth-scheme-token` scheme",
                 "id": "apitoken",
                 "name": "API Key",
-                "description": "Your Datadog API key. This key is created by your [Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/).",
+                "description": "Your Datadog API key. This key is [created in your Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/).",
                 "inputMode": "textbox",
                 "isConfidential": true,
                 "validation": {
@@ -168,7 +168,7 @@
               {
                 "id": "appkey",
                 "name": "Application Key",
-                "description": "Your Datadog application key. This key is created by your [Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/).",
+                "description": "Your Datadog application key. This key is [created in your Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/).",
                 "inputMode": "textbox",
                 "isConfidential": true,
                 "validation": {

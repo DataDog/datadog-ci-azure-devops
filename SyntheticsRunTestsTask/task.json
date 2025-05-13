@@ -17,8 +17,9 @@
     {
       "name": "authenticationType",
       "type": "radio",
-      "label": "Choose an authentication method",
+      "label": "Choose an authentication type",
       "defaultValue": "apiAppKeys",
+      "helpMarkDown": "How to store and retrieve credentials.",
       "required": true,
       "options": {
         "connectedService": "Use a Service Connection",
@@ -28,27 +29,27 @@
     {
       "name": "apiKey",
       "type": "string",
-      "label": "Datadog API key",
+      "label": "Datadog API Key",
       "defaultValue": "",
-      "helpMarkDown": "Your Datadog API key. This key is created by your [Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/) and will be accessed as an environment variable.",
+      "helpMarkDown": "Your Datadog API key. This key is [created in your Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/) and should be stored as a [secret](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables).",
       "required": true,
       "visibleRule": "authenticationType = apiAppKeys"
     },
     {
       "name": "appKey",
       "type": "string",
-      "label": "Datadog Application key",
+      "label": "Datadog Application Key",
       "defaultValue": "",
-      "helpMarkDown": "Your Datadog application key. This key is created by your [Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/) and will be accessed as an environment variable.",
+      "helpMarkDown": "Your Datadog application key. This key is [created in your Datadog organization](https://docs.datadoghq.com/account_management/api-app-keys/) and should be stored as a [secret](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables).",
       "required": true,
       "visibleRule": "authenticationType = apiAppKeys"
     },
     {
       "name": "batchTimeout",
       "type": "int",
-      "label": "Batch timeout",
+      "label": "Batch Timeout",
       "defaultValue": "",
-      "helpMarkDown": "The duration (in milliseconds) after which the batch fails as timed out."
+      "helpMarkDown": "The duration in milliseconds after which the CI batch fails as timed out. This does not affect the outcome of a test run that already started."
     },
     {
       "name": "connectedService",
@@ -62,45 +63,45 @@
     {
       "name": "configPath",
       "type": "filePath",
-      "label": "Global JSON configuration",
+      "label": "Global Configuration File",
       "defaultValue": "",
-      "helpMarkDown": "The [global JSON configuration](https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#setup-the-client) is used when launching tests. See the [example configuration](https://docs.datadoghq.com/synthetics/cicd_integrations/configuration/?tabs=npm#setup-a-client) for more details."
+      "helpMarkDown": "The path to the [global configuration file](https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#global-configuration-file) that configures datadog-ci."
     },
     {
       "name": "datadogSite",
       "type": "string",
       "label": "Datadog Site",
       "defaultValue": "datadoghq.com",
-      "helpMarkDown": "The [Datadog site](https://docs.datadoghq.com/getting_started/site/)",
+      "helpMarkDown": "Your Datadog site. The possible values are listed [in this table](https://docs.datadoghq.com/getting_started/site/#access-the-datadog-site).",
       "visibleRule": "authenticationType = apiAppKeys"
     },
     {
       "name": "failOnCriticalErrors",
       "type": "boolean",
-      "label": "Fail on critical errors",
+      "label": "Fail On Critical Errors",
       "defaultValue": "",
-      "helpMarkDown": "Fail the CI job if no tests were triggered, or results could not be fetched from Datadog."
+      "helpMarkDown": "Fail the CI job if a critical error that is typically transient occurs, such as rate limits, authentication failures, or Datadog infrastructure issues."
     },
     {
       "name": "failOnMissingTests",
       "type": "boolean",
-      "label": "Fail on missing tests",
+      "label": "Fail On Missing Tests",
       "defaultValue": "",
-      "helpMarkDown": "Fail the CI job if at least one specified test with a public ID (using `publicIds` or listed in a [test file](https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#test-files)) is missing in a run (for example, if it has been deleted programmatically or on the Datadog site)."
+      "helpMarkDown": "Fail the CI job if the list of tests to run is empty or if some explicitly listed tests are missing."
     },
     {
       "name": "failOnTimeout",
       "type": "boolean",
-      "label": "Fail on timeout",
+      "label": "Fail On Timeout",
       "defaultValue": "",
-      "helpMarkDown": "Fail the CI job if at least one test exceeds the default test timeout."
+      "helpMarkDown": "Fail the CI job if the CI batch fails as timed out."
     },
     {
       "name": "files",
       "type": "multiLine",
-      "label": "Synthetic test config files",
+      "label": "Synthetic Test Configuration Files",
       "defaultValue": "",
-      "helpMarkDown": "Glob pattern to detect Synthetic tests config files."
+      "helpMarkDown": "Glob patterns to detect Synthetic [test configuration files](https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#test-files)."
     },
     {
       "name": "jUnitReport",
@@ -112,31 +113,31 @@
     {
       "name": "publicIds",
       "type": "multiLine",
-      "label": "Synthetic test IDs",
+      "label": "Synthetic Test Public IDs",
       "defaultValue": "",
-      "helpMarkDown": "Public IDs of Synthetic tests to run, separated by new lines or commas. If no value is provided, tests are discovered in `*.synthetics.json` files."
+      "helpMarkDown": "Public IDs of Synthetic tests to run, separated by new lines or commas. If no value is provided, tests are discovered in Synthetic [test configuration files](https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#test-files)."
     },
     {
       "name": "subdomain",
       "type": "string",
-      "label": "Custom subdomain",
+      "label": "Custom Subdomain",
       "defaultValue": "app",
-      "helpMarkDown": "The name of the custom subdomain set to access your Datadog application. If the URL used to access Datadog is `myorg.datadoghq.com`, this value needs to be set to `myorg`.",
+      "helpMarkDown": "The custom subdomain to access your Datadog organization. If your URL is `myorg.datadoghq.com`, the custom subdomain is `myorg`.",
       "visibleRule": "authenticationType = apiAppKeys"
     },
     {
       "name": "testSearchQuery",
       "type": "string",
-      "label": "Test search query",
+      "label": "Test Search Query",
       "defaultValue": "",
-      "helpMarkDown": "Trigger tests corresponding to a [search](https://docs.datadoghq.com/synthetics/search/#search) query. This can be useful if you are tagging your test configurations. See [best practices](https://docs.datadoghq.com/developers/guide/what-best-practices-are-recommended-for-naming-metrics-and-tags/#rules-and-best-practices-for-naming-tags) for more information on tagging."
+      "helpMarkDown": "Use a [search query](https://docs.datadoghq.com/synthetics/explore/#search) to select which Synthetic tests to run. Use the [Synthetic Tests list page's search bar](https://app.datadoghq.com/synthetics/tests) to craft your query, then copy and paste it."
     },
     {
       "name": "variables",
       "type": "multiLine",
       "label": "Variables",
       "defaultValue": "",
-      "helpMarkDown": "Key-value pairs for injecting variables into tests, separated by newlines or commas. For example: `START_URL=https://example.org,MY_VARIABLE=My title`."
+      "helpMarkDown": "Override existing or inject new local and [global variables](https://docs.datadoghq.com/synthetics/platform/settings/?tab=specifyvalue#global-variables) in Synthetic tests as key-value pairs, separated by new lines or commas. For example: `START_URL=https://example.org,MY_VARIABLE=My title`."
     }
   ],
   "execution": {
