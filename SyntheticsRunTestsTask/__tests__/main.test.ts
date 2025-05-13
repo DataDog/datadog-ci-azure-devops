@@ -130,7 +130,7 @@ describe('Test suite', () => {
     expect(result.errorIssues.length).toEqual(0)
   })
 
-  test('selectiveRerun input is properly passed to the config', async () => {
+  test('selectiveRerun input overrides the default config', async () => {
     const result = await runScenario('selective-rerun')
 
     expectSpy(result, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
