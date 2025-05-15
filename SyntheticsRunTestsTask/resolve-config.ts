@@ -81,6 +81,7 @@ export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<
   })
   const failOnMissingTests = getDefinedBoolean(task.getInput('failOnMissingTests'), {inputName: 'failOnMissingTests'})
   const failOnTimeout = getDefinedBoolean(task.getInput('failOnTimeout'), {inputName: 'failOnTimeout'})
+  const selectiveRerun = getDefinedBoolean(task.getInput('selectiveRerun'), {inputName: 'selectiveRerun'})
 
   let config = JSON.parse(JSON.stringify(synthetics.DEFAULT_COMMAND_CONFIG))
   // Override with file config variables
@@ -111,6 +112,7 @@ export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<
       failOnTimeout,
       files,
       publicIds,
+      selectiveRerun,
       subdomain,
       testSearchQuery,
       defaultTestOverrides: deepExtend(

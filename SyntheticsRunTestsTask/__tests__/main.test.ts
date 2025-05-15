@@ -129,4 +129,19 @@ describe('Test suite', () => {
     expect(result.warningIssues.length).toEqual(0)
     expect(result.errorIssues.length).toEqual(0)
   })
+
+  test('selectiveRerun input overrides the default config', async () => {
+    const result = await runScenario('selective-rerun')
+
+    expectSpy(result, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
+      ...BASE_CONFIG,
+      ...BASE_INPUTS,
+      publicIds: CUSTOM_PUBLIC_IDS,
+      selectiveRerun: true,
+    })
+
+    expect(result.succeeded).toBe(true)
+    expect(result.warningIssues.length).toEqual(0)
+    expect(result.errorIssues.length).toEqual(0)
+  })
 })
