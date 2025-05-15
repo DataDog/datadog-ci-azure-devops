@@ -122,7 +122,7 @@
       "type": "boolean",
       "label": "Selective Rerun",
       "defaultValue": "",
-      "helpMarkDown": "Whether to only rerun failed tests. If a test has already passed for a given commit, it will not be rerun in subsequent CI batches. By default, your [organization's default setting](https://app.datadoghq.com/synthetics/settings/continuous-testing) is used. Set it to `false` to force full runs when your configuration enables it by default."
+      "helpMarkDown": "Whether to only rerun failed tests. If a test has already passed for a given commit, it is not rerun in subsequent CI batches. By default, your [organization's default setting](https://app.datadoghq.com/synthetics/settings/continuous-testing) is used. Set it to `false` to force full runs when your configuration enables it by default."
     },
     {
       "name": "subdomain",
