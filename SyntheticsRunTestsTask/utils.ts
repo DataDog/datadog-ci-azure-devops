@@ -1,9 +1,5 @@
 import * as task from 'azure-pipelines-task-lib/task'
 
-export const parseMultiline = (value: string | undefined): string[] | undefined => {
-  return value?.split(/,|\n/).map((variableString: string) => variableString.trim())
-}
-
 export const getDefinedInteger = (value: string | undefined, {inputName}: {inputName: string}): number | undefined => {
   if (!value) {
     return undefined
@@ -68,4 +64,17 @@ export const parseVariableStrings = (
   }
 
   return Object.keys(variables).length > 0 ? variables : undefined
+}
+
+const SEPARATORS = {
+  comma: ',',
+  newline: '\n',
+  'newline-or-comma': /,|\n/,
+}
+
+export const parseMultiple = (
+  inputValue: string | undefined,
+  {separator}: {separator: 'comma' | 'newline' | 'newline-or-comma'}
+): string[] | undefined => {
+  return inputValue?.split(SEPARATORS[separator]).map((datum: string) => datum.trim())
 }

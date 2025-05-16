@@ -3,7 +3,7 @@ import * as task from 'azure-pipelines-task-lib/task'
 import {synthetics, utils} from '@datadog/datadog-ci'
 import deepExtend from 'deep-extend'
 
-import {getDefinedBoolean, getDefinedInteger, parseMultiline, parseVariableStrings} from './utils'
+import {getDefinedBoolean, getDefinedInteger, parseMultiple, parseVariableStrings} from './utils'
 
 const ENDPOINT_URL_TO_SITE = {
   'https://app.datadoghq.com/': 'datadoghq.com',
@@ -70,18 +70,18 @@ export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<
   const {apiKey, appKey} = resolveKeys()
   const {datadogSite, subdomain} = resolveDatadogEndpoint()
 
-  const publicIds = parseMultiline(task.getInput('publicIds'))
   const batchTimeout = getDefinedInteger(task.getInput('batchTimeout'), {inputName: 'batchTimeout'})
   const configPath = task.getPathInput('configPath')
-  const files = parseMultiline(task.getInput('files'))
-  const testSearchQuery = task.getInput('testSearchQuery')
-  const variableStrings = parseMultiline(task.getInput('variables'))
   const failOnCriticalErrors = getDefinedBoolean(task.getInput('failOnCriticalErrors'), {
     inputName: 'failOnCriticalErrors',
   })
   const failOnMissingTests = getDefinedBoolean(task.getInput('failOnMissingTests'), {inputName: 'failOnMissingTests'})
   const failOnTimeout = getDefinedBoolean(task.getInput('failOnTimeout'), {inputName: 'failOnTimeout'})
+  const files = parseMultiple(task.getInput('files'), {separator: 'newline'})
+  const publicIds = parseMultiple(task.getInput('publicIds'), {separator: 'newline-or-comma'})
   const selectiveRerun = getDefinedBoolean(task.getInput('selectiveRerun'), {inputName: 'selectiveRerun'})
+  const testSearchQuery = task.getInput('testSearchQuery')
+  const variableStrings = parseMultiple(task.getInput('variables'), {separator: 'newline-or-comma'})
 
   let config = JSON.parse(JSON.stringify(synthetics.DEFAULT_COMMAND_CONFIG))
   // Override with file config variables
