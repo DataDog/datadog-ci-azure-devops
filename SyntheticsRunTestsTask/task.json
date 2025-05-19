@@ -101,7 +101,7 @@
       "type": "multiLine",
       "label": "Synthetic Test Configuration Files",
       "defaultValue": "",
-      "helpMarkDown": "Glob patterns to detect Synthetic [test configuration files](https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#test-files)."
+      "helpMarkDown": "Glob patterns to detect Synthetic [test configuration files](https://docs.datadoghq.com/continuous_testing/cicd_integrations/configuration/?tab=npm#test-files), separated by new lines."
     },
     {
       "name": "jUnitReport",
