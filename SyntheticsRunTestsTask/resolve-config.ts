@@ -78,6 +78,7 @@ export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<
   const failOnMissingTests = getDefinedBoolean(task.getInput('failOnMissingTests'), {inputName: 'failOnMissingTests'})
   const failOnTimeout = getDefinedBoolean(task.getInput('failOnTimeout'), {inputName: 'failOnTimeout'})
   const files = parseMultiple(task.getInput('files'), {separator: 'newline'})
+  const locations = parseMultiple(task.getInput('locations'), {separator: 'newline-or-comma'})
   const publicIds = parseMultiple(task.getInput('publicIds'), {separator: 'newline-or-comma'})
   const selectiveRerun = getDefinedBoolean(task.getInput('selectiveRerun'), {inputName: 'selectiveRerun'})
   const testSearchQuery = task.getInput('testSearchQuery')
@@ -107,6 +108,13 @@ export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<
       batchTimeout,
       configPath,
       datadogSite,
+      defaultTestOverrides: deepExtend(
+        config.defaultTestOverrides,
+        utils.removeUndefinedValues({
+          locations,
+          variables: parseVariableStrings(variableStrings, reporter.log.bind(reporter)),
+        })
+      ),
       failOnCriticalErrors,
       failOnMissingTests,
       failOnTimeout,
@@ -115,12 +123,6 @@ export const resolveConfig = async (reporter: synthetics.MainReporter): Promise<
       selectiveRerun,
       subdomain,
       testSearchQuery,
-      defaultTestOverrides: deepExtend(
-        config.defaultTestOverrides,
-        utils.removeUndefinedValues({
-          variables: parseVariableStrings(variableStrings, reporter.log.bind(reporter)),
-        })
-      ),
     })
   )
 

@@ -111,6 +111,13 @@
       "helpMarkDown": "The filename for a JUnit report if you want to generate one."
     },
     {
+      "name": "locations",
+      "type": "multiLine",
+      "label": "Locations",
+      "defaultValue": "",
+      "helpMarkDown": "Override the list of locations to run the test from, separated by new lines or commas. The possible values are listed [in this API response](https://app.datadoghq.com/api/v1/synthetics/locations?only_public=true)."
+    },
+    {
       "name": "publicIds",
       "type": "multiLine",
       "label": "Synthetic Test Public IDs",
