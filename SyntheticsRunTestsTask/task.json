@@ -7,8 +7,8 @@
   "releaseNotes": "Run Datadog Synthetics CI tests as part of your Azure pipelines",
   "category": "Test",
   "version": {
-    "Major": 2,
-    "Minor": 2,
+    "Major": 3,
+    "Minor": 0,
     "Patch": 0
   },
   "preview": true,
