@@ -144,4 +144,22 @@ describe('Test suite', () => {
     expect(result.warningIssues.length).toEqual(0)
     expect(result.errorIssues.length).toEqual(0)
   })
+
+  test('locations input overrides the default config', async () => {
+    const result = await runScenario('locations')
+
+    expectSpy(result, synthetics.executeTests).toHaveBeenCalledWith(expect.anything(), {
+      ...BASE_CONFIG,
+      ...BASE_INPUTS,
+      publicIds: CUSTOM_PUBLIC_IDS,
+      defaultTestOverrides: {
+        ...BASE_CONFIG.defaultTestOverrides,
+        locations: ['aws:eu-central-1', 'aws:eu-west-1'],
+      },
+    })
+
+    expect(result.succeeded).toBe(true)
+    expect(result.warningIssues.length).toEqual(0)
+    expect(result.errorIssues.length).toEqual(0)
+  })
 })
