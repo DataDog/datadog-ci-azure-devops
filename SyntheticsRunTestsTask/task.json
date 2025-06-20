@@ -154,6 +154,48 @@
       "helpMarkDown": "Override existing or inject new local and [global variables](https://docs.datadoghq.com/synthetics/platform/settings/?tab=specifyvalue#global-variables) in Synthetic tests as key-value pairs, separated by new lines or commas. For example: `START_URL=https://example.org,MY_VARIABLE=My title`."
     }
   ],
+  "outputVariables": [
+    {
+      "name": "batchUrl",
+      "description": "The URL of the CI batch."
+    },
+    {
+      "name": "criticalErrorsCount",
+      "description": "The number of critical errors that occurred during the CI batch."
+    },
+    {
+      "name": "failedCount",
+      "description": "The number of results that failed during the CI batch."
+    },
+    {
+      "name": "failedNonBlockingCount",
+      "description": "The number of results that failed during the CI batch without blocking the CI."
+    },
+    {
+      "name": "passedCount",
+      "description": "The number of results that passed during the CI batch."
+    },
+    {
+      "name": "previouslyPassedCount",
+      "description": "The number of results that already passed in previous CI batches on the same commit."
+    },
+    {
+      "name": "testsNotFoundCount",
+      "description": "The number of tests that could not be found when starting the CI batch."
+    },
+    {
+      "name": "testsSkippedCount",
+      "description": "The number of tests that were skipped when starting the CI batch."
+    },
+    {
+      "name": "timedOutCount",
+      "description": "The number of results that failed due to the CI batch timing out."
+    },
+    {
+      "name": "rawResults",
+      "description": "The `synthetics.Result[]` array, as a JSON-encoded string."
+    }
+  ],
   "execution": {
     "Node20_1": {
       "target": "task.js"
