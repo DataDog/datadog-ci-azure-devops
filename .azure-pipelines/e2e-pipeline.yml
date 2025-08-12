@@ -41,9 +41,11 @@ stages:
           - bash: |
               echo 'Batch URL: $(runSyntheticsTests.batchUrl)'
               echo 'Raw Results:'
-              echo '$(runSyntheticsTests.rawResults)' | jq '.'
+              echo $RAW_RESULTS | jq '.'
             displayName: Example of using outputs (Linux)
             condition: eq(variables['Agent.OS'], 'Linux')
+            env:
+              RAW_RESULTS: $(runSyntheticsTests.rawResults)
           - powershell: |
               echo "Batch URL: $(runSyntheticsTests.batchUrl)"
               echo "Raw Results:"
