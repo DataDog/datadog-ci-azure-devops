@@ -89,7 +89,7 @@ stages:
             inputs:
               version: 'v0.15.0'
 
-          - task: QueryAzureDevOpsExtensionVersion@4
+          - task: QueryAzureDevOpsExtensionVersion@5
             displayName: Query existing DEV extension version
             name: 'queryDevVersion'
             inputs:
