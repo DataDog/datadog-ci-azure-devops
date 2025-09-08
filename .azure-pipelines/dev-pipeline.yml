@@ -37,15 +37,15 @@ stages:
       - job: BuildAndPackage
         displayName: Build and package
         steps:
-          - task: TfxInstaller@4
+          - task: TfxInstaller@5
             displayName: Install TFX CLI
             inputs:
               version: 'v0.15.0'
 
-          - task: NodeTool@0
+          - task: UseNode@1
             displayName: Install Node.js
             inputs:
-              versionSpec: '20.11.0'
+              version: '20.11.0'
 
           - task: Bash@3
             displayName: Compile the Synthetics task
@@ -58,7 +58,7 @@ stages:
                 yarn workspaces focus --production
                 rm -rf .yarn/
 
-          - task: PackageAzureDevOpsExtension@4
+          - task: PackageAzureDevOpsExtension@5
             displayName: Package Datadog CI extension
             name: 'packageStep'
             inputs:
@@ -84,12 +84,12 @@ stages:
             displayName: Download VSIX artifact
             artifact: $(artifactPath)
 
-          - task: TfxInstaller@4
+          - task: TfxInstaller@5
             displayName: Install TFX CLI
             inputs:
               version: 'v0.15.0'
 
-          - task: QueryAzureDevOpsExtensionVersion@4
+          - task: QueryAzureDevOpsExtensionVersion@5
             displayName: Query existing DEV extension version
             name: 'queryDevVersion'
             inputs:
@@ -100,7 +100,7 @@ stages:
               extensionTag: '$(devExtensionTag)'
               versionAction: 'Patch'
 
-          - task: PublishAzureDevOpsExtension@4
+          - task: PublishAzureDevOpsExtension@5
             displayName: Publish new DEV extension version
             inputs:
               connectTo: 'VsTeam'
