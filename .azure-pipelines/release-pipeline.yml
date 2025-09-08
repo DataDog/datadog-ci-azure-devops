@@ -37,10 +37,10 @@ stages:
             inputs:
               version: 'v0.15.0'
 
-          - task: NodeTool@0
+          - task: UseNode@1
             displayName: Install Node.js
             inputs:
-              versionSpec: '20.11.0'
+              version: '20.11.0'
 
           - task: Bash@3
             displayName: Compile the Synthetics task

@@ -56,10 +56,10 @@ stages:
               RAW_RESULTS: $(runSyntheticsTests.rawResults)
 
           # Example of parsing and using raw results with JS
-          - task: NodeTool@0
+          - task: UseNode@1
             displayName: 'Install Node.js'
             inputs:
-              versionSpec: '20.x'
+              version: '20.x'
           # Linux only
           - bash: |
               cat > parse-results.js << 'EOF'
