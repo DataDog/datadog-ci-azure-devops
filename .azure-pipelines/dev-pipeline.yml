@@ -100,7 +100,7 @@ stages:
               extensionTag: '$(devExtensionTag)'
               versionAction: 'Patch'
 
-          - task: PublishAzureDevOpsExtension@4
+          - task: PublishAzureDevOpsExtension@5
             displayName: Publish new DEV extension version
             inputs:
               connectTo: 'VsTeam'

@@ -87,7 +87,7 @@ stages:
             inputs:
               version: 'v0.15.0'
 
-          - task: PublishAzureDevOpsExtension@4
+          - task: PublishAzureDevOpsExtension@5
             displayName: Publish Extension
             inputs:
               connectTo: 'VsTeam'
