@@ -58,7 +58,7 @@ stages:
                 yarn workspaces focus --production
                 rm -rf .yarn/
 
-          - task: PackageAzureDevOpsExtension@4
+          - task: PackageAzureDevOpsExtension@5
             displayName: Package Datadog CI extension
             name: 'packageStep'
             inputs:
