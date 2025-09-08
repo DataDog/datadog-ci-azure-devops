@@ -37,7 +37,7 @@ stages:
       - job: BuildAndPackage
         displayName: Build and package
         steps:
-          - task: TfxInstaller@4
+          - task: TfxInstaller@5
             displayName: Install TFX CLI
             inputs:
               version: 'v0.15.0'
@@ -84,7 +84,7 @@ stages:
             displayName: Download VSIX artifact
             artifact: $(artifactPath)
 
-          - task: TfxInstaller@4
+          - task: TfxInstaller@5
             displayName: Install TFX CLI
             inputs:
               version: 'v0.15.0'
