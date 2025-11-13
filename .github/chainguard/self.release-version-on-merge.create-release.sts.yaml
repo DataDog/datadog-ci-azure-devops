@@ -1,0 +1,11 @@
+issuer: https://token.actions.githubusercontent.com
+
+subject: repo:DataDog/datadog-ci-azure-devops:pull_request
+claim_pattern:
+  event_name: pull_request
+  ref: refs/heads/main
+  ref_protected: "true"
+  job_workflow_ref: DataDog/datadog-ci-azure-devops/\.github/workflows/release-version-on-merge\.yml@refs/heads/main
+
+permissions:
+  contents: write
