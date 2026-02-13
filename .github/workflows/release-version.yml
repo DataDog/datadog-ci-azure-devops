@@ -31,7 +31,7 @@ jobs:
         with:
           scope: DataDog/datadog-ci-azure-devops
           policy: self.release-version.create-pr
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
           token: ${{ steps.octo-sts.outputs.token }}
