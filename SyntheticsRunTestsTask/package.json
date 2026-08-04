@@ -55,7 +55,11 @@
     "jws": "^4.0.1",
     "glob": "^10.5.0",
     "js-yaml": "^3.15.0",
-    "brace-expansion": "^1.1.15",
-    "ajv": "^6.15.0"
+    "brace-expansion": "^1.1.18",
+    "ajv": "^6.15.0",
+    "protobufjs@npm:^7.2.5": "npm:^7.6.5",
+    "protobufjs@npm:^7.3.2": "npm:^7.6.5",
+    "protobufjs@npm:^7.4.0": "npm:^7.6.5",
+    "protobufjs@npm:^7.5.3": "npm:^7.6.5"
   }
 }
