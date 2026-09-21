@@ -61,6 +61,6 @@
     "protobufjs@npm:^7.3.2": "npm:^7.6.6",
     "protobufjs@npm:^7.4.0": "npm:^7.6.6",
     "protobufjs@npm:^7.5.3": "npm:^7.6.6",
-    "browserslist@npm:^4.24.0": "npm:^4.28.9"
+    "baseline-browser-mapping@npm:^2.10.42": "npm:^2.11.22"
   }
 }
