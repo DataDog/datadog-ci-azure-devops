@@ -1630,12 +1630,12 @@ __metadata:
   linkType: hard
 
 "@grpc/grpc-js@npm:^1.10.9, @grpc/grpc-js@npm:^1.12.6":
-  version: 1.14.4
-  resolution: "@grpc/grpc-js@npm:1.14.4"
+  version: 1.14.7
+  resolution: "@grpc/grpc-js@npm:1.14.7"
   dependencies:
     "@grpc/proto-loader": ^0.8.0
     "@js-sdsl/ordered-map": ^4.4.2
-  checksum: c4b4a4d81f566b483e08bac6ea31f55e63c3befb249d54bd071ece3d156b6b7af4aaaef6bbf8d0e8ee0cb6d86eac304766d5e1f684fde772f248b85f0f2d61f1
+  checksum: ec384859dff032809276c39ebcb5a19f6d25a4f3af8a7872572befb4d929a42d54be73c03ebcf5f37d1a7f6d46d33f39528a3300cadd8afea5acbeca89516e42
   languageName: node
   linkType: hard
 
@@ -3328,14 +3328,14 @@ __metadata:
   linkType: hard
 
 "axios@npm:^1.11.0, axios@npm:^1.12.1":
-  version: 1.18.0
-  resolution: "axios@npm:1.18.0"
+  version: 1.21.0
+  resolution: "axios@npm:1.21.0"
   dependencies:
     follow-redirects: ^1.16.0
-    form-data: ^4.0.5
+    form-data: ^4.0.6
     https-proxy-agent: ^5.0.1
     proxy-from-env: ^2.1.0
-  checksum: 87e66c8583f69f3aec2d03d2840e4074d71c67d0e06a5c33de8926b0f11c9d31a8509adc6814167cc1fc470bc3f24f99a10fcb6632843192126567340dd1a8ce
+  checksum: d9858b39b6e382ac44967621ba9da1910e5f8dfb84c1866b16376f772eb18fa2544f70e1e6573fb90936192d2227277c3d5013db8df6c7002c940743f5f5bf64
   languageName: node
   linkType: hard
 
@@ -3445,11 +3445,11 @@ __metadata:
   linkType: hard
 
 "baseline-browser-mapping@npm:^2.10.42":
-  version: 2.10.44
-  resolution: "baseline-browser-mapping@npm:2.10.44"
+  version: 2.11.34
+  resolution: "baseline-browser-mapping@npm:2.11.34"
   bin:
     baseline-browser-mapping: dist/cli.cjs
-  checksum: 3e9801210bd0cf2fcd1114ea4defb54f3bd556ece00faff1b8e70978b1efceff41b58d82da8671fb3e71bf5ffbb547124ff183bdff4118d112dd664db5247131
+  checksum: 4b4021874157ebddbfd2f8ee107504beb91e9b5a8141e693e55a524af69296362f812bcdbad6a2af69db3fc0bdfb39fa4188021266eb88b9a5ad87ea782ea788
   languageName: node
   linkType: hard
 
@@ -3972,9 +3972,9 @@ __metadata:
   linkType: hard
 
 "deepmerge@npm:^4.2.2":
-  version: 4.3.0
-  resolution: "deepmerge@npm:4.3.0"
-  checksum: c7980eb5c5be040b371f1df0d566473875cfabed9f672ccc177b81ba8eee5686ce2478de2f1d0076391621cbe729e5eacda397179a59ef0f68901849647db126
+  version: 4.3.1
+  resolution: "deepmerge@npm:4.3.1"
+  checksum: 2024c6a980a1b7128084170c4cf56b0fd58a63f2da1660dcfe977415f27b17dbe5888668b59d0b063753f3220719d5e400b7f113609489c90160bb9a5518d052
   languageName: node
   linkType: hard
 
@@ -4720,12 +4720,12 @@ __metadata:
   linkType: hard
 
 "follow-redirects@npm:^1.15.1, follow-redirects@npm:^1.16.0":
-  version: 1.16.0
-  resolution: "follow-redirects@npm:1.16.0"
+  version: 1.16.2
+  resolution: "follow-redirects@npm:1.16.2"
   peerDependenciesMeta:
     debug:
       optional: true
-  checksum: e90dce4607b1f6b8b9883287f912585573c19088209ad82341d550a795b4ba514522b73b1b340cf618279df27975cd46504d09149be60291ba6767384c1fd8f8
+  checksum: 08f5c20c94945cd35d1b135b560cce7eb597c5f7b758f196467ac75b99ab7c28cb4fe28030467ed5ba386499a48030d804d47f559d32f103ad11336ed5402086
   languageName: node
   linkType: hard
 
